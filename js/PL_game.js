@@ -1,9 +1,7 @@
 ﻿const END_POINT = "https://script.google.com/macros/s/AKfycbyITmeqw_d-IdnAzsud5fzLHOt4A2wwOJ0CWa5Wxe7J-Fac6ZFOYRQuQbbzURLOc8hh/exec";
 const END_POINT1 = "https://script.google.com/macros/s/AKfycbwn8aLWcJLzGN4PmOFIZyLuw_vsr_WDqoOP-d4jnS_UDlzkxImLiTKQIHuSBOuPkI6g4w/exec"
 let now1 = new Date();
-var Hour1 = now1.getHours();
-var Minut1 = now1.getMinutes();
-var Second1 = now1.getSeconds();
+
 //このウインドを閉じたときに動く
 $(window).on('beforeunload', function (event) {
     seve_data()
@@ -105,6 +103,7 @@ function game_re_register() {
         //showPatternLine: false,//ルートの非表示
         drawEnd: function (data) {
             patten_strength(data)
+
             newbutton2.onclick = function () {
                 let Mp = patten_strength(data)
 
@@ -118,15 +117,21 @@ function game_re_register() {
 }
 
 function game_choice() {
+    localStorage.setItem('map1', JSON.stringify(0));
+    localStorage.setItem('map', JSON.stringify(0));
     sessionStorage.setItem('px', JSON.stringify(0));
     sessionStorage.setItem('py', JSON.stringify(0));
     sessionStorage.setItem('battle_now', JSON.stringify(0));
     sessionStorage.setItem('obstacle_now', JSON.stringify(0));
     localStorage.setItem('map1', JSON.stringify(0));
+    
+    let num = JSON.parse(localStorage.getItem('num'))
+    localStorage.setItem('hp', JSON.stringify(150+(num*15)));
+    localStorage.setItem('hp_max', JSON.stringify(150 + (num * 15)));
     for (let i = 1; i < 4; i++) {
         let number1 = localStorage.getItem(i)
         console.log(number1)
-        
+       
         if (number1 == 1) {
             document.querySelector("h1" + i).textContent = "クリア"
         }
@@ -137,9 +142,7 @@ function game_choice() {
     //document.querySelector("h11").textContent = "クリア"
 
     document.querySelector("#register").style.display = "none";//非表示
-    document.querySelector("#battle1").style.display = "none";//非表示
-    document.querySelector("#battle2").style.display = "none";//非表示
-    document.querySelector("#battle3").style.display = "none";//非表示
+    document.querySelector("#battle").style.display = "none";//非表示
     document.querySelector("#game_map").style.display = "none"//非表示
     document.querySelector("#re_register").style.display = "none";//非表示
     document.querySelector("#clear").style.display = "none";//表示
@@ -152,9 +155,7 @@ function game_map(num) {
     document.querySelector("h20").textContent ="ダンジョン"+ num
     let cun_num = 0
     document.querySelector("#choice").style.display = "none";//非表示
-    document.querySelector("#battle1").style.display = "none";//非表示
-    document.querySelector("#battle2").style.display = "none";//非表示
-    document.querySelector("#battle3").style.display = "none";//非表示
+    document.querySelector("#battle").style.display = "none";//非表示
     document.querySelector("#map_ch").style.display = "none";//非表示
     document.querySelector("#game_map").style.display = "block";//表示
     let min = 0
@@ -322,6 +323,7 @@ function game_map(num) {
     }
     initialize()
     function keydown(e) {
+        //イベント中は動かない
         let battle_now = JSON.parse(sessionStorage.getItem('battle_now'));
         let obstacle_now = JSON.parse(sessionStorage.getItem('obstacle_now'));
         if (battle_now != 1 && obstacle_now != 1) {
@@ -329,6 +331,7 @@ function game_map(num) {
         }
         
     }
+
     //キャラの移動
     function charactermove(keyCode) {
         let px = JSON.parse(sessionStorage.getItem('px'))
@@ -416,7 +419,7 @@ function game_map(num) {
             }
         if (n < 0.2) {
             //プレイヤーの位置を更新
-            // localStorage.setItem('map1', JSON.stringify(map));
+            //localStorage.setItem('map1', JSON.stringify(map));
             sessionStorage.setItem('battle_now', JSON.stringify(1));
             game_battle(num)
             console.log("接敵")
@@ -465,9 +468,9 @@ function game_map(num) {
     function sub(cun_num) {
         let cun = cun_num
         console.log(num + 1)
+        console.log(cun_num)
         console.log(cun)
         if (num + 1 == cun) {
-
             game_clear(num)
         } else {
             map = map1[cun]
@@ -512,40 +515,49 @@ function game_battle(dungeon_number) {
     let success = JSON.parse(sessionStorage.getItem('success'))
     let failure = JSON.parse(sessionStorage.getItem('failure'))
     let Mp = JSON.parse(localStorage.getItem('Mp'))
+
     let min1 = -5 * dungeon_number
     let max1 = 5 * dungeon_number
     let n = Math.floor(Math.random() * (max1 + 1 - min1)) + min1;
-    let enemy_physical = 95 + n//敵体力
-    console.log(enemy_physical)
-    let player_physical = 125//自分の体力
+    //自分の体力
+    let player_physical = JSON.parse(localStorage.getItem('hp'))
+    let player_physical_max = JSON.parse(localStorage.getItem('hp_max'))
+            //敵体力
+    let enemy_physical = 95 + n
+    let enemy_physical_max = enemy_physical//敵体力の最大値を更新
+    sessionStorage.setItem('enemy', JSON.stringify(enemy_physical));
+
     let Defense_p = 25
     let Offensive_p=0
-
     let min = 1;//乱数用
     let max = 7;//乱数用
     let enemy_number = Math.floor(Math.random() * (max + 1 - min)) + min;//乱数生成
-    $("#pgss" + dungeon_number).css({ 'width': enemy_physical });
-    $("#ph" + dungeon_number).css({ 'width': player_physical });
+    document.getElementById("pgss1").textContent = enemy_physical;
+    $("#pgss1").css({ 'width':100 + "%" });
+    $("#ph" + dungeon_number).css({ 'width': (player_physical / player_physical_max) * 100 + "%" });
     //document.querySelector("h" + dungeon_number).textContent = "ダンジョン" + dungeon_number + "-" + n;
     document.querySelector("#game_map").style.display = "none";//非表示
-    document.querySelector("#battle" + dungeon_number).style.display = "block";//表示
-
-    let img = document.getElementById("monster" + dungeon_number);
+    document.querySelector("#battle").style.display = "block";//表示
+    
+    console.log(enemy_physical)
+    let img = document.getElementById("monster");
     img.src = "img/" + dungeon_number + "/monster" + dungeon_number + "-" + enemy_number + ".png";
-
+    
     //jQueryからpatternLockを取得して、#patternLock1に表示する
-    $('#patternLock' + dungeon_number).patternLock({
+    $('#patternLock1').patternLock({
         timeout: 800,//表示時間(1000で1秒)
         //showPatternLine: false,//ルートの非表示
         //#patternLock1のvalueを取る
         drawEnd: function (data) {
-
             const loaddata = JSON.parse(localStorage.getItem('key'))
-
+            
+            let enemy = JSON.parse(sessionStorage.getItem('enemy'))
+            let hp = JSON.parse(localStorage.getItem('hp'))
             //patternLockの値の判定
             if (loaddata == data) {
+                
                 success = success + 1//認証の成功回数
-
+                console.log(enemy)
                 //防御力に対しての攻撃力の計算
                 if ((Mp * 100) < (Defense_p * dungeon_number)) {
 
@@ -563,17 +575,19 @@ function game_battle(dungeon_number) {
                     }
                 }
                 console.log(Math.floor(Offensive_p))
-                enemy_physical = enemy_physical - Math.floor(Offensive_p)//敵の体力計算
-                console.log(enemy_physical)
-                //HPゲージ
-                $("#pgss" + dungeon_number).css({ 'width': enemy_physical });
+                enemy = enemy - Math.floor(Offensive_p)//敵の体力計算
+                sessionStorage.setItem('enemy', JSON.stringify(enemy));//敵のHPの更新
+                document.getElementById("pgss1").textContent = enemy;
+                sessionStorage.setItem('success', JSON.stringify(success));
+                //敵のHPゲージ
+                $("#pgss1").css({ 'width': (enemy / enemy_physical_max)*100 +"%" });
 
-                console.log("成功" + enemy_physical)
-                //倒したかつダンジョンをクリアした時の処理
-                if (enemy_physical < 0 || enemy_physical==0) {
+                console.log("成功" + enemy)
+                //倒した時の処理
+                if (enemy < 0 || enemy==0) {
                     const delay_processing = () => {
-
-                        sessionStorage.setItem('success', JSON.stringify(success));
+                        
+                        
                         sessionStorage.setItem('battle_now', JSON.stringify(0));
                         game_map(dungeon_number)
                     }
@@ -585,9 +599,10 @@ function game_battle(dungeon_number) {
             else {
                 failure = failure + 1
                 sessionStorage.setItem('failure', JSON.stringify(failure));
-                player_physical = player_physical - 50//プレイヤーの体力を減らす
-                $("#ph" + dungeon_number).css({ 'width': player_physical });
-                if (player_physical == 0) {
+                hp = hp - 50//プレイヤーの体力を減らす
+                localStorage.setItem('hp', JSON.stringify(hp));//自分のHPの更新
+                $("#ph" + dungeon_number).css({ 'width': (hp / player_physical_max) * 100 + "%" });
+                if (hp < 0 || hp==0) {
                     game_over(dungeon_number)
                 }
             }
@@ -603,7 +618,10 @@ function game_battle(dungeon_number) {
 function game_clear(dungeon_number) {
     localStorage.setItem('map1', JSON.stringify(0));
     localStorage.setItem('map', JSON.stringify(0));
-    document.querySelector("#battle" + dungeon_number).style.display = "none";
+    let num = JSON.parse(localStorage.getItem('num'))
+    num=1+num
+    localStorage.setItem('num', JSON.stringify(num));
+    document.querySelector("#battle").style.display = "none";
     document.querySelector("#game_map").style.display = "none";
     document.querySelector("#clear").style.display = "block";//表示
 
@@ -612,14 +630,14 @@ function game_clear(dungeon_number) {
 }
 
 function game_over(dungeon_number) {
-    document.querySelector("#battle" + dungeon_number).style.display = "none";
+    localStorage.setItem('map1', JSON.stringify(0));
+    localStorage.setItem('map', JSON.stringify(0));
+    document.querySelector("#battle").style.display = "none";
     document.querySelector("#over").style.display = "block";//表示
 }
 
 function game_end() {
-    document.querySelector("#battle1").style.display = "none";//非表示
-    document.querySelector("#battle2").style.display = "none";//非表示
-    document.querySelector("#battle3").style.display = "none";//非表示
+    document.querySelector("#battle").style.display = "none";//非表示
     document.querySelector("#choice").style.display = "none";//非表示
     document.querySelector("#end").style.display = "block";//表示
 
@@ -939,6 +957,8 @@ function patten_strength(data, a, name) {
     }
     let w = 1 / 3
     let meter
+    const output = document.getElementById('register_Strength');
+    const output1 = document.getElementById('re_register_Strength');
     Mp = w * (Lp / 15) + (w * Np) + w * (Ip / 5)
     if (Mp >= 0.68) {
         meter = "強"
@@ -947,8 +967,11 @@ function patten_strength(data, a, name) {
     } else {
         meter = "弱"
     }
-    $("#pgss9").css({ 'width': Mp * 100 + "%" });
+    output.textContent = "パタンロックの強度は" + meter + "です"
+    output1.textContent = "パタンロックの強度は" + meter + "です"
+    $("#pgss10").css({ 'width': Mp * 100 + "%" });
     console.log(Mp)  
+
     if (!isFinite(Mp)) {
         Mp=0
     }
@@ -976,7 +999,7 @@ function patternLockseve(data, a, name, Mp) {
         localStorage.setItem(1, 0)
         localStorage.setItem(2, 0)
         localStorage.setItem(3, 0)
-
+        localStorage.setItem('num', JSON.stringify(0));
         let data_name = [{ name: name }]
         const SHEET_NO = 1;
         let dataJSON1 = JSON.stringify(data_name);
@@ -1009,25 +1032,33 @@ function seve_data() {
     const Mp = JSON.parse(localStorage.getItem('Mp'))
     let success = JSON.parse(sessionStorage.getItem('success'))
     let failure = JSON.parse(sessionStorage.getItem('failure'))
-
+    let password = JSON.parse(localStorage.getItem('key'))
     let now = new Date();
-
+    
     const Year = now.getFullYear();
     const Month = now.getMonth() + 1;
     const date = now.getDate();
-    const Hour = now.getHours();
-    const Minut = now.getMinutes();
-    const Second = now.getSeconds();
-    let playtime_H = Hour - Hour1
-    let playtime_M = Minut - Minut1
-    let playtime_S = Second - Second1
+
+    let playtime = now1.getTime() - now.getTime()
+
+    if (Math.abs(playtime) / (60 * 60 * 1000) > 0) {
+        var playtime_H = Math.floor(Math.abs(playtime) / (60 * 60 * 1000))
+    } else {
+        var playtime_H = 0
+    }
+    if (Math.abs(playtime) / (60 * 1000) > 0) {
+        var playtime_M = Math.floor( Math.abs(playtime) / (60 * 1000))
+    } else {
+        var playtime_M = 0
+    }
+    let playtime_S = Math.floor(Math.abs(playtime) / 1000)
 
     let play_time = playtime_H + "時間" + playtime_M + "分" + playtime_S + "秒"
     let today = Year + "/" + Month + "/" + date
 
     console.log(play_time)
 
-    let data2 = [{ name: loaddata, strength: Mp, success: success, failure: failure, day: today, playtime: play_time }]
+    let data2 = [{ name: loaddata, password: password,strength: Mp, success: success, failure: failure, day: today, playtime: play_time }]
     console.log(data2);
 
     let dataJSON = JSON.stringify(data2);
