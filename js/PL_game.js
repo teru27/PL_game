@@ -95,7 +95,6 @@ function game_re_register() {
         drawEnd: function (data) {
             let Mp = patten_strength(data)
             newbutton2.onclick = function () {
-                $("#pgss10").css({ 'width': Mp * 100 + "%" });
                 patternLockseve(data, 2, name, Mp)
             }
         }
@@ -111,7 +110,9 @@ function game_choice() {
     sessionStorage.setItem('py', JSON.stringify(0));
     sessionStorage.setItem('battle_now', JSON.stringify(0));
     sessionStorage.setItem('obstacle_now', JSON.stringify(0));
+    sessionStorage.setItem('cun_num', JSON.stringify(0));
     localStorage.setItem('map1', JSON.stringify(0));
+    sessionStorage.setItem('button_down_num', JSON.stringify(0));
     
     let num = JSON.parse(localStorage.getItem('num'))
     localStorage.setItem('hp', JSON.stringify(150+(num*15)));
@@ -139,7 +140,7 @@ function game_choice() {
     document.querySelector("#choice").style.display = "block";//表示
 
 }
-function game_map(num) {
+function game_map(num,domn) {
     document.querySelector("h20").textContent ="ダンジョン"+ num
     let cun_num = 0
     document.querySelector("#choice").style.display = "none";//非表示
@@ -311,14 +312,36 @@ function game_map(num) {
         paint();
     }
     initialize()
-    function keydown(e) {
+
+    function keydown(e,a) {
         //イベント中は動かない
         let battle_now = JSON.parse(sessionStorage.getItem('battle_now'));
         let obstacle_now = JSON.parse(sessionStorage.getItem('obstacle_now'));
         if (battle_now != 1 && obstacle_now != 1) {
-            charactermove(e.keyCode);
+            if (a == 1) {
+                charactermove(e);
+            } else {
+                charactermove(e.keyCode);
+            }
         }
-    }
+    } 
+    document.getElementById("button10").onclick = function () {
+        console.log("上")
+        keydown(38,1)
+    };
+    document.getElementById("button11").onclick = function () {
+        console.log("左")
+        keydown(37,1)
+    };
+    document.getElementById("button12").onclick = function () {
+        console.log("下")
+        keydown(40,1)
+    };
+    document.getElementById("button13").onclick = function () {
+        console.log("右")
+        keydown(39,1)
+    };
+
     //キャラの移動
     function charactermove(keyCode) {
         let px = JSON.parse(sessionStorage.getItem('px'))
@@ -334,7 +357,7 @@ function game_map(num) {
                 case 39:
                 case 68:
                     c = 0
-                    d = 55 * 3
+                    d = 32 * 2
                     if ((map[hity][hitx + 1]) == 0 ) {
                         px++;//右移動
                     } else if ((map[hity][hitx + 1]) == 2) {
@@ -343,15 +366,15 @@ function game_map(num) {
                         sessionStorage.setItem('obstacle_now', JSON.stringify(1));
                         obstacle(map_move, hitx, hity, c, d)
                     } else if ((map[hity][hitx + 1]) == 3) {
-                        cun_num = cun_num + 1
+                       
                         ch = 1
-                        sub(cun_num)
+                        sub(num)
                     }
                     break;
                 case 37:
                 case 65:
                     c = 0
-                    d = 55 * 2
+                    d = 32
                     if ((map[hity][hitx - 1]) == 0 ) {
                         px--;//左移動
                     } else if ((map[hity][hitx - 1]) == 2) {
@@ -360,15 +383,15 @@ function game_map(num) {
                         sessionStorage.setItem('obstacle_now', JSON.stringify(1));
                         obstacle(map_move, hitx, hity, c, d)
                     } else if ((map[hity][hitx - 1]) == 3) {
-                        cun_num = cun_num + 1
+                       
                         ch = 1
-                        sub(cun_num)
+                        sub(num)
                     }
                     break;
                 case 38:
                 case 87:
                     c = 0
-                    d = 0
+                    d = 32 * 3
                     if (py > 0) {
                         if ((map[hity - 1][hitx]) == 0 ) {
                             py--;//上移動
@@ -378,16 +401,16 @@ function game_map(num) {
                             sessionStorage.setItem('obstacle_now', JSON.stringify(1));
                             obstacle(map_move, hitx, hity, c, d)
                         } else if ((map[hity - 1][hitx]) == 3) {
-                            cun_num = cun_num + 1
+                           
                             ch = 1
-                            sub(cun_num)
+                            sub(num)
                         }
                     }
                     break;
                 case 40:
                 case 83:
                     c = 0
-                    d = 55
+                    d = 0
                     if (py < 14) {
                         if ((map[hity + 1][hitx]) == 0 ) {
                             py++;//下移動
@@ -397,70 +420,71 @@ function game_map(num) {
                             sessionStorage.setItem('obstacle_now', JSON.stringify(1));
                             obstacle(map_move, hitx, hity, c, d)
                         } else if ((map[hity + 1][hitx]) == 3) {
-                            cun_num = cun_num + 1
+                            
                             ch = 1
-                            sub(cun_num)
+                            sub(num)
                         }
                     }
                     break;
-            }
-        if (n < 0.2) {
+        }
+        console.log(px+","+py)
+        if (n < 0.1) {
             //プレイヤーの位置を更新
             //localStorage.setItem('map1', JSON.stringify(map));
             sessionStorage.setItem('battle_now', JSON.stringify(1));
             game_battle(num)
             console.log("接敵")
         }
-            sessionStorage.setItem('px', JSON.stringify(px));
-            sessionStorage.setItem('py', JSON.stringify(py));
+            
         if (ch == 1) {
             sessionStorage.setItem('px', JSON.stringify(0));
             sessionStorage.setItem('py', JSON.stringify(0));
             ch = 0
+        } else {
+            sessionStorage.setItem('px', JSON.stringify(px));
+            sessionStorage.setItem('py', JSON.stringify(py));
         }
         paint(c, d);
     }
 
-    function paint(c, d,ch) {
+    function paint(c, d) {
         let px = JSON.parse(sessionStorage.getItem('px'))
         let py = JSON.parse(sessionStorage.getItem('py'));
         for (var y = 0; y < map.length; y++) {
             for (var x = 0; x < map[y].length; x++) {
-
                 if (map[y][x] == 0) {
-                    gc.drawImage(map002, 0, 0, 48, 48, x * 48, y * 48, 48, 48);
-
+                    gc.drawImage(map002, 0, 0, 32, 32, x * 32, y * 32, 32, 32);
                 }
                 else if (map[y][x] == 1) {
-                    gc.drawImage(map002, 5 * 48, 48 * 40, 48, 48, x * 48, y * 48, 48, 48);
+                    gc.drawImage(map002, 5 * 32, 32 * 40, 32, 32, x * 32, y * 32, 32, 32);
 
                 } else if (map[y][x] == 2) {
-                    gc.drawImage(map002, 4 * 48, 48 * 40, 48, 48, x * 48, y * 48, 48, 48);
+                    gc.drawImage(map002, 4 * 32, 32 * 40, 32, 32, x * 32, y * 32, 32, 32);
 
                 } else if (map[y][x] == 3) {
-                    gc.drawImage(map001, 0, 0, 48, 48, x * 48, y * 48, 48, 48);
-
+                    gc.drawImage(map001, 0, 0, 32, 32, x * 32, y * 32, 32, 32);
                 }
             }
         }
         if (c == undefined && d == undefined) {
             c = 0
-            d = 55
+            d = 0
         }
-        gc.drawImage(character1, c, d, 32, 48, px * 48, py * 48, 48, 48);
-        //gc.drawImage(keyimg, 840, 0);
+        gc.drawImage(character1, c, d, 32, 32, px * 32, py * 32, 32, 32);
     }
+
     //ダンジョン切り替えとクリア判定
-    function sub(cun_num) {
-        let cun = cun_num
+    function sub(num) {
+        let cun_num = JSON.parse(sessionStorage.getItem('cun_num'))
+        cun_num = cun_num + 1
         console.log(num + 1)
         console.log(cun_num)
-        console.log(cun)
-        if (num + 1 == cun) {
-            game_clear(num)
+        if (num + 1 == cun_num) {
+            game_clear(cun_num)
         } else {
-            map = map1[cun]
+            map = map1[cun_num]
             localStorage.setItem('map1', JSON.stringify(map));
+            sessionStorage.setItem('cun_num', JSON.stringify(cun_num));
         }
         px = 0
         py = 0
@@ -469,24 +493,19 @@ function game_map(num) {
         document.querySelector("#game_map").style.display = "none";
         document.querySelector("#map_ch").style.display = "block";//表示
         let key = JSON.parse(localStorage.getItem('key'))
-        let px = JSON.parse(sessionStorage.getItem('px'))
-        let py = JSON.parse(sessionStorage.getItem('py'));
-        
-
-
         $('#patternLock_map').patternLock({
             timeout: 1000,//表示時間(1000で1秒)
             //showPatternLine: false,//ルートの非表示
             drawEnd: function (data) {
                 if (data == key) {
                     //マップの変更
-                    gc.drawImage(map002, 0, 0, 48, 48, hitx * 48, hity * 48, 48, 48);
+                    gc.drawImage(map002, 0, 0, 32, 32, hitx * 32, hity * 32, 32, 32);
 
                     localStorage.setItem('map1', JSON.stringify(map));
                     sessionStorage.setItem('obstacle_now', JSON.stringify(0));
                     document.querySelector("#game_map").style.display = "block";//表示
                     document.querySelector("#map_ch").style.display = "none";//表示
-                    paint(c, d, px, py)
+                    paint(c, d)
                 }
 
             }
@@ -598,7 +617,6 @@ function game_battle(dungeon_number) {
 
 }
 
-
 function game_clear(dungeon_number) {
     localStorage.setItem('map1', JSON.stringify(0));
     localStorage.setItem('map', JSON.stringify(0));
@@ -632,7 +650,7 @@ function game_end() {
 function dungeon_sevedata(dungeon_number) {
 
     localStorage.setItem(dungeon_number, 1)
-
+    seve_data(1) 
     console.log('ダンジョンクリア')
 }
 
@@ -963,9 +981,6 @@ function patten_strength(data, a, name) {
     return Mp
     
 }
-
-
-
 //ここからは色々な処理
 function patternLockseve(data, a, name, Mp) {
     console.log(Mp)
@@ -1008,7 +1023,7 @@ function game_processing(data, dungeon_number) {
 
 }
 
-function seve_data() {
+function seve_data(a) {
     //GAS WebアプリのURL
     //const END_POINT = "https://script.google.com/macros/s/AKfycbxY26C_z6TlaPzPI-cxNPZNbS0N36OPGb7m1W0oKoZRnS2wcnI4ttTW0dtDcDLqyPOk/exec";
     //読み書きするスプレッドシート（タブ）の番号
@@ -1072,13 +1087,14 @@ function seve_data() {
         dataType: "json",//データの形式
         data: { sheetNo: SHEET_NO, data: dataJSON }
     })
+    if (a != 1) {
+        //ajaxが終わると動く
+        $(document).ajaxStop(function () {
 
-    //ajaxが終わると動く
-    $(document).ajaxStop(function () {
-
-        setTimeout('window.close()');
-    });
-
+            setTimeout('window.close()');
+        });
+    }
+    
 }
 
 //ゲームリセット（デバックのための）

@@ -98,75 +98,79 @@
     </div>
 
     <div id="game_map" style="text-align: center; display: none">
-        <br> <br>
         <h20><span class="maintitle"></span></h20>
         <br> <br>
-
-        <canvas id="test" width="780" height="780"></canvas>
+        <canvas id="test" width="550" height="550"></canvas>
         <img id="map001" src="img/EDGE1.png" style="display:none" />
         <img id="map002" src="img/EDGE2.png" style="display:none" />
-        <img id="character1" src="img/EDGE4.png" style="display:none" />
-
-
+        <img id="character1" src="img/EDGE6.png" style="display:none" />
+        <div class="text-center">
+            <button class="btn btn-secondary btn-lg"id="button10" >↑</button>
+        </div>
+        <div class="text-center mt-3">
+            <button class="btn btn-secondary btn-lg"id="button11">←</button>
+            <button class="btn btn-secondary btn-lg"id="button12">↓</button>
+            <button class="btn btn-secondary btn-lg"id="button13">→</button>
+        </div>
     </div>
 
-    <div id="map_ch" style="text-align: center; display: none">
-        <div id="patternLock_map"></div>
-    </div>
+        <div id="map_ch" style="text-align: center; display: none">
+            <div id="patternLock_map"></div>
+        </div>
 
-    <div id="battle" style="text-align: center; display: none">
+        <div id="battle" style="text-align: center; display: none">
 
 
-        <div class="box" id="battle_screen1">
+            <div class="box" id="battle_screen1">
 
-            <div class="code" style="width: 50%;">
-                
+                <div class="code" style="width: 50%;">
+
+                    <div class="progress">
+
+                        <div class="progress-bar progress-bar-info" id="pgss1" style="width: 100%;"></div>
+
+                    </div>
+                </div>
+
+                <img id="monster">
+
+            </div>
+
+            <br> <br>
+
+            <div id="patternLock1"></div>
+
+            <br> <br>
+
+            <div class="code" style="width: 30%;">
                 <div class="progress">
-
-                    <div class="progress-bar progress-bar-info" id="pgss1" style="width: 100%;"></div>
-
+                    <div class="progress-bar progress-bar-danger" id="ph1" style="width: 100%;"></div>
                 </div>
             </div>
 
-            <img id="monster">
 
         </div>
 
-        <br> <br>
+        <div id="clear" style="text-align: center; display: none">
+            <br> <br>
+            <h10><span class="maintitle">ダンジョンクリア</span></h10>
+            <br> <br>
+            <button onclick="game_choice()" class="btn btn-success">選択画面</button>
 
-        <div id="patternLock1"></div>
-
-        <br> <br>
-
-        <div class="code" style="width: 30%;">
-            <div class="progress">
-                <div class="progress-bar progress-bar-danger" id="ph1" style="width: 100%;"></div>
-            </div>
         </div>
 
+        <div id="over" style="text-align: center; display: none">
+            <br> <br>
+            <h10><span class="maintitle">モンスターに負けた</span></h10>
+            <br> <br>
+            <button onclick="game_choice()" class="btn btn-success">選択画面</button>
+        </div>
 
-    </div>
-
-    <div id="clear" style="text-align: center; display: none">
-        <br> <br>
-        <h10><span class="maintitle">ダンジョンクリア</span></h10>
-        <br> <br>
-        <button onclick="game_choice()" class="btn btn-success">選択画面</button>
-
-    </div>
-
-    <div id="over" style="text-align: center; display: none">
-        <br> <br>
-        <h10><span class="maintitle">モンスターに負けた</span></h10>
-        <br> <br>
-        <button onclick="game_choice()" class="btn btn-success">選択画面</button>
-    </div>
-
-    <div id="end" style="text-align: center; display: none">
-        <br> <br>
-        <h10><span class="maintitle">終了します</span></h10>
-        <br> <br>
-    </div>
+        <div id="end" style="text-align: center; display: none">
+            <br> <br>
+            <h10><span class="maintitle">終了します</span></h10>
+            <br> <br>
+        </div>
 
 </body>
 </html>
