@@ -1,15 +1,12 @@
 ﻿const END_POINT = "https://script.google.com/macros/s/AKfycbyITmeqw_d-IdnAzsud5fzLHOt4A2wwOJ0CWa5Wxe7J-Fac6ZFOYRQuQbbzURLOc8hh/exec";
 const END_POINT1 = "https://script.google.com/macros/s/AKfycbwn8aLWcJLzGN4PmOFIZyLuw_vsr_WDqoOP-d4jnS_UDlzkxImLiTKQIHuSBOuPkI6g4w/exec"
-let now1 = new Date();
-
+let start = new Date();
 //このウインドを閉じたときに動く
 $(window).on('beforeunload', function (event) {
     seve_data()
 });
 function game_Start() {
-
     let local_length = localStorage.length//ローカルストレージの内の個数
-
     sessionStorage.setItem('success', JSON.stringify(0));
     sessionStorage.setItem('failure', JSON.stringify(0));
     let josn_data
@@ -30,7 +27,6 @@ function game_Start() {
     }).always((data) => {// 常にやる処理
         // do something
     });
-
     if (local_length < 4) {
         $(document).ajaxStop(function () {
 
@@ -44,40 +40,36 @@ function game_Start() {
 }
 //初期登録
 function game_register(josn_data) {
-
     document.querySelector("#register").style.display = "block";//表示
-
     const newbutton1 = document.getElementById('button1')//登録
-
     let name//空の箱を作る
-
     //string型なのでオブジェクト型にする
     josn_data = (new Function("return" + josn_data))();
     console.log(josn_data)
+
     //jQueryからpatternLockを取得して、#patternLock1に表示する
     $('#patternLock_register').patternLock({
         timeout: 100000,//表示時間(1000で1秒)
         //showPatternLine: false,//ルートの非表示
         drawEnd: function (data) {
-            patten_strength(data)
-            newbutton1.onclick = function () {
-                name = document.getElementsByClassName('coment')[0].value
+            let Mp = patten_strength(data)
 
+            newbutton1.onclick = function () {
+
+                name = document.getElementsByClassName('coment')[0].value
+                
                 //二次元配列ならこれ
                 const result = josn_data.some(function (value) {
                     //配列内にnameが存在するかどうかを検索
                     return value == name;
 
                 });
-
                 if (result) {
                     // データが存在した時の処理
                     window.alert("同じIDのため登録できません")
                     document.getElementById('textbox').value = ""//ここでテキストボックスの中身を消す
                 } else {
-                    let Mp = patten_strength(data)
-                    console.log("a")
-                   
+                    
                     if (Mp == null) {
                         console.log("b")
                         Mp = 0
@@ -94,27 +86,23 @@ function game_register(josn_data) {
 function game_re_register() {
     document.querySelector("#re_register").style.display = "block";//表示
     document.querySelector("#choice").style.display = "none";//非表示
-
     const newbutton2 = document.getElementById('button2')//登録
-
     //jQueryからpatternLockを取得して、#patternLock1に表示する
+    
     $('#patternLock_re_register').patternLock({
         timeout: 1000,//表示時間(1000で1秒)
         //showPatternLine: false,//ルートの非表示
         drawEnd: function (data) {
-            patten_strength(data)
-
+            let Mp = patten_strength(data)
             newbutton2.onclick = function () {
-                let Mp = patten_strength(data)
-
-                
+                $("#pgss10").css({ 'width': Mp * 100 + "%" });
                 patternLockseve(data, 2, name, Mp)
-
             }
         }
     });
 
 }
+
 
 function game_choice() {
     localStorage.setItem('map1', JSON.stringify(0));
@@ -309,6 +297,7 @@ function game_map(num) {
 
         ];
     }
+
     localStorage.setItem('map', JSON.stringify(map1[0]));
     if (JSON.parse(localStorage.getItem('map1')) == 0) {
         var map = JSON.parse(localStorage.getItem('map'));
@@ -329,9 +318,7 @@ function game_map(num) {
         if (battle_now != 1 && obstacle_now != 1) {
             charactermove(e.keyCode);
         }
-        
     }
-
     //キャラの移動
     function charactermove(keyCode) {
         let px = JSON.parse(sessionStorage.getItem('px'))
@@ -431,7 +418,6 @@ function game_map(num) {
             sessionStorage.setItem('py', JSON.stringify(0));
             ch = 0
         }
-
         paint(c, d);
     }
 
@@ -479,7 +465,6 @@ function game_map(num) {
         px = 0
         py = 0
     }
-
     function obstacle(map_move, hitx, hity, c, d) {
         document.querySelector("#game_map").style.display = "none";
         document.querySelector("#map_ch").style.display = "block";//表示
@@ -508,7 +493,6 @@ function game_map(num) {
         });
     }
 }
-
 
 function game_battle(dungeon_number) {
 
@@ -970,6 +954,7 @@ function patten_strength(data, a, name) {
     output.textContent = "パタンロックの強度は" + meter + "です"
     output1.textContent = "パタンロックの強度は" + meter + "です"
     $("#pgss10").css({ 'width': Mp * 100 + "%" });
+    $("#pgss9").css({ 'width': Mp * 100 + "%" });
     console.log(Mp)  
 
     if (!isFinite(Mp)) {
@@ -1033,32 +1018,35 @@ function seve_data() {
     let success = JSON.parse(sessionStorage.getItem('success'))
     let failure = JSON.parse(sessionStorage.getItem('failure'))
     let password = JSON.parse(localStorage.getItem('key'))
-    let now = new Date();
+    let end = new Date();
     
-    const Year = now.getFullYear();
-    const Month = now.getMonth() + 1;
-    const date = now.getDate();
+    const Year = end.getFullYear();
+    const Month = end.getMonth() + 1;
+    const date = end.getDate();
 
-    let playtime = now1.getTime() - now.getTime()
+    let play_time = end.getTime() - start.getTime()
 
-    if (Math.abs(playtime) / (60 * 60 * 1000) > 0) {
-        var playtime_H = Math.floor(Math.abs(playtime) / (60 * 60 * 1000))
+    
+    if (Math.abs(play_time) / (60 * 60 * 1000) > 0) {
+        var playtime_H = Math.floor(Math.abs(play_time) / (60 * 60 * 1000))
     } else {
         var playtime_H = 0
     }
-    if (Math.abs(playtime) / (60 * 1000) > 0) {
-        var playtime_M = Math.floor( Math.abs(playtime) / (60 * 1000))
+
+    if (Math.abs(play_time) / (60 * 1000) > 0) {
+        var playtime_M = Math.floor(Math.abs(play_time) / (60 * 1000))
     } else {
         var playtime_M = 0
     }
-    let playtime_S = Math.floor(Math.abs(playtime) / 1000)
 
-    let play_time = playtime_H + "時間" + playtime_M + "分" + playtime_S + "秒"
+    let playtime_S = Math.floor(Math.abs(play_time) / 1000)
+    
+    let play_time1 = playtime_H + "時間" + playtime_M + "分" + playtime_S + "秒"
     let today = Year + "/" + Month + "/" + date
 
-    console.log(play_time)
+    console.log(play_time1)
 
-    let data2 = [{ name: loaddata, password: password,strength: Mp, success: success, failure: failure, day: today, playtime: play_time }]
+    let data2 = [{ name: loaddata, password: password, strength: Mp, success: success, failure: failure, day: today, playtime: play_time1 }]
     console.log(data2);
 
     let dataJSON = JSON.stringify(data2);
