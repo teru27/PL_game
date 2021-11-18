@@ -322,21 +322,18 @@ function game_map(num,domn) {
                 charactermove(e.keyCode);
             }
         }
-    } 
+    }
+
     document.getElementById("button10").onclick = function () {
-        console.log("上")
         keydown(38,1)
     };
     document.getElementById("button11").onclick = function () {
-        console.log("左")
         keydown(37,1)
     };
     document.getElementById("button12").onclick = function () {
-        console.log("下")
         keydown(40,1)
     };
     document.getElementById("button13").onclick = function () {
-        console.log("右")
         keydown(39,1)
     };
 
