@@ -147,26 +147,24 @@ function game_map(num,domn) {
     document.querySelector("#battle").style.display = "none";//非表示
     document.querySelector("#map_ch").style.display = "none";//非表示
     document.querySelector("#game_map").style.display = "block";//表示
-    let min = 0
-    let max = 2
-    var n = Math.floor(Math.random() * (max + 1 - min)) + min;
+    
     var gc
     if (num == 1) {
         var map1 = [//マップデータ
             [[0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
-            [0, 2, 0, 0, 0, 1, 1, 1, n, 1, 0, 1, 1, 0, 1, 1],
+            [0, 2, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1],
             [0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1],
-            [1, 0, 1, 0, 1, 1, 0, n, 0, 1, 1, 1, 1, 1, 0, 0],
+            [1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 0],
             [0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 1],
-            [0, 1, 1, 1, 0, n, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1],
+            [0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1],
             [0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0],
-            [0, 0, 0, n, 0, 0, 0, 0, 0, 2, 0, 1, 0, 1, 1, 0],
+            [0, 0, 0, 1, 0, 0, 0, 0, 0, 2, 0, 1, 0, 1, 1, 0],
             [1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 1, 1],
-            [1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, n, 1, 1],
+            [1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 2, 1, 1],
             [1, 0, 1, 1, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0],
-            [1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, n],
+            [1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1],
             [0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0],
-            [0, 1, 1, 1, 0, n, 0, 1, 0, 0, 1, 1, 0, 1, 0, 0],
+            [0, 1, 1, 1, 0, 1, 0, 1, 0, 0, 1, 1, 0, 1, 0, 0],
             [0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 0, 3]],
 
             [[0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1],
@@ -348,7 +346,7 @@ function game_map(num,domn) {
         let py = JSON.parse(sessionStorage.getItem('py'));
         let min = 0
         let max = 1
-        let n = Math.random(min, max)
+        let n 
         let hitx = px, hity = py;//当たり判定用の変数を作成
         let d = 0, c = 0
         let ch = 0
@@ -358,7 +356,8 @@ function game_map(num,domn) {
                 case 68:
                     c = 0
                     d = 32 * 2
-                    if ((map[hity][hitx + 1]) == 0 ) {
+                    if ((map[hity][hitx + 1]) == 0) {
+                        n = Math.random(min, max)
                         px++;//右移動
                     } else if ((map[hity][hitx + 1]) == 2) {
                         map_move = 1
@@ -366,7 +365,6 @@ function game_map(num,domn) {
                         sessionStorage.setItem('obstacle_now', JSON.stringify(1));
                         obstacle(map_move, hitx, hity, c, d)
                     } else if ((map[hity][hitx + 1]) == 3) {
-                       
                         ch = 1
                         sub(num)
                     }
@@ -375,7 +373,8 @@ function game_map(num,domn) {
                 case 65:
                     c = 0
                     d = 32
-                    if ((map[hity][hitx - 1]) == 0 ) {
+                    if ((map[hity][hitx - 1]) == 0) {
+                        n = Math.random(min, max)
                         px--;//左移動
                     } else if ((map[hity][hitx - 1]) == 2) {
                         map_move = 2
@@ -393,7 +392,8 @@ function game_map(num,domn) {
                     c = 0
                     d = 32 * 3
                     if (py > 0) {
-                        if ((map[hity - 1][hitx]) == 0 ) {
+                        if ((map[hity - 1][hitx]) == 0) {
+                            n = Math.random(min, max)
                             py--;//上移動
                         } else if ((map[hity - 1][hitx]) == 2) {
                             map_move = 3
@@ -401,7 +401,6 @@ function game_map(num,domn) {
                             sessionStorage.setItem('obstacle_now', JSON.stringify(1));
                             obstacle(map_move, hitx, hity, c, d)
                         } else if ((map[hity - 1][hitx]) == 3) {
-                           
                             ch = 1
                             sub(num)
                         }
@@ -412,7 +411,8 @@ function game_map(num,domn) {
                     c = 0
                     d = 0
                     if (py < 14) {
-                        if ((map[hity + 1][hitx]) == 0 ) {
+                        if ((map[hity + 1][hitx]) == 0) {
+                            n = Math.random(min, max)
                             py++;//下移動
                         } else if ((map[hity + 1][hitx]) == 2) {
                             map_move = 4
@@ -420,14 +420,14 @@ function game_map(num,domn) {
                             sessionStorage.setItem('obstacle_now', JSON.stringify(1));
                             obstacle(map_move, hitx, hity, c, d)
                         } else if ((map[hity + 1][hitx]) == 3) {
-                            
                             ch = 1
                             sub(num)
                         }
                     }
                     break;
         }
-        console.log(px+","+py)
+        console.log(px + "," + py)
+       
         if (n < 0.1) {
             //プレイヤーの位置を更新
             //localStorage.setItem('map1', JSON.stringify(map));
@@ -620,9 +620,11 @@ function game_battle(dungeon_number) {
 function game_clear(dungeon_number) {
     localStorage.setItem('map1', JSON.stringify(0));
     localStorage.setItem('map', JSON.stringify(0));
+
     let num = JSON.parse(localStorage.getItem('num'))
     num=1+num
     localStorage.setItem('num', JSON.stringify(num));
+
     document.querySelector("#battle").style.display = "none";
     document.querySelector("#game_map").style.display = "none";
     document.querySelector("#clear").style.display = "block";//表示
@@ -634,8 +636,12 @@ function game_clear(dungeon_number) {
 function game_over(dungeon_number) {
     localStorage.setItem('map1', JSON.stringify(0));
     localStorage.setItem('map', JSON.stringify(0));
+
+    document.querySelector("#game_map").style.display = "none";
     document.querySelector("#battle").style.display = "none";
     document.querySelector("#over").style.display = "block";//表示
+
+    dungeon_sevedata(dungeon_number)
 }
 
 function game_end() {
