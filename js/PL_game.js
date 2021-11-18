@@ -141,8 +141,6 @@ function game_choice() {
 
 }
 function game_map(num,domn) {
-    document.querySelector("h20").textContent ="ダンジョン"+ num
-    let cun_num = 0
     document.querySelector("#choice").style.display = "none";//非表示
     document.querySelector("#battle").style.display = "none";//非表示
     document.querySelector("#map_ch").style.display = "none";//非表示
