@@ -1,0 +1,114 @@
+html, body {
+    height: 50%;
+    font-family: "dotm";
+    background-color: cadetblue;
+}
+
+h10 {
+    font-family: 'Vidaloka', serif;
+    text-align: center;
+    font-weight: normal;
+    color: #444;
+}
+
+.maintitle {
+    display: block;
+    font-size: 40px;
+    line-height: 40px;
+    letter-spacing: -4px;
+    text-shadow: 3px 3px 6px #888;
+}
+
+#textbox {
+    border-radius: 4px; /*枠線の角の曲がり具合*/
+    border: 2px solid #1d49aa; /*枠線の太さと色*/
+    font-size: 25px; /*文字の大きさ*/
+}
+    /*テキストボックスが選択されたら表示する*/
+    #textbox:focus {
+        border: 2px solid #ff9900; /*枠線の太さと色*/
+        z-index: 1; /*重なりの順番　0が基準*/
+        outline: 0; /*アウトラインのスタイルの指定*/
+    }
+
+.patternlock {
+    border: 1px solid black;
+    border-radius: 10px;
+    box-shadow: inset 0px 0px 10px #aaa;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    background-color:aliceblue
+}
+
+.btn-wrapper {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: start; /* ADD */
+}
+
+.box {
+    margin: auto;
+    width: 250px;
+    height: 270px;
+    background: #fff;
+    border: 10px solid #000000;
+}
+.code {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+.patternlock, .patternlock * {
+    /**disable dragging**/
+    -webkit-touch-callout: none;
+    touch-callout: none;
+    -moz-user-select: -moz-none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+    cursor: pointer;
+}
+.patternlock .insideWrapper {
+    position: relative;
+    height: 100%;
+    width: 100%;
+}
+.patternlock .insideWrapper canvas, .patternlock .insideWrapper .tbl {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.patternlock .insideWrapper .tbl {
+    border-collapse: separate;
+    border-spacing: 25px;
+}
+.patternlock .tbl td {
+    background-color: #fff; /* required by IE to sense mouse over */
+    border: 1px solid black;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    text-align: center;    
+    cursor: pointer;
+    box-shadow: 4px 4px 4px #aaa;
+    vertical-align: middle;
+}
+.patternlock .tbl td:hover {
+    box-shadow: 4px 4px 4px #ccc;   
+}
+
+.patternlock .tbl td.ie8FallbackHighlight {
+    background-color: red;
+}
+
+.patternlock .centerCircle{
+    border:1px solid red;
+    margin:auto;
+    border-radius:50%;
+    background-color: yellow
+}
