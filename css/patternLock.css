@@ -18,7 +18,9 @@ h10 {
     letter-spacing: -4px;
     text-shadow: 3px 3px 6px #888;
 }
-
+.example {
+    text-align: center;
+}
 #textbox {
     border-radius: 4px; /*˜gü‚ÌŠp‚Ì‹È‚ª‚è‹ï‡*/
     border: 2px solid #1d49aa; /*˜gü‚Ì‘¾‚³‚ÆF*/

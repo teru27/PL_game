@@ -5,7 +5,7 @@
     <meta http-equiv="content-type" charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    
+
     <link href='http://fonts.googleapis.com/css?family=Vidaloka' rel='stylesheet' type='text/css'>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
@@ -14,6 +14,7 @@
     <!-- Pattern Lockの読込 ... （1） -->
     <script src="js/jquery.patternlock.js"></script>
     <script src="js/anime.min.js"></script>
+    <script src="js/random_map.js"></script>
     <link rel="stylesheet" type="text/css" href="css/patternLock.css" />
 
 
@@ -77,29 +78,31 @@
         <h10><span class="maintitle">ダンジョン選択</span></h10>
         <br> <br>
 
-        <div class="btn-group-vertical">
+             <div class="btn-group-vertical">
 
-            <br> <br>
-            <button onclick="game_re_register()" class="btn btn-danger">再登録</button>
-            <br> <br>
-            <button type="button" onclick="game_map(1)" class="btn btn-primary">ステージ1</button>
+                 <br> <br>
+                 <button onclick="game_re_register()" class="btn btn-danger">再登録</button>
+                 <br> <br>
+                 <button type="button" onclick="game_map(1)" class="btn btn-primary">ステージ1</button>
 
-            <h11 class="btn"></h11>
+                 <h11 class="btn"></h11>
 
-            <button onclick="game_map(2)" class="btn btn-primary">ステージ2</button>
-            <h12 class="btn"></h12>
+                 <button onclick="game_map(2)" class="btn btn-primary">ステージ2</button>
+                 <h12 class="btn"></h12>
 
-            <button onclick="game_map(3)" class="btn btn-primary">ステージ3</button>
-            <h13 class="btn"></h13>
-
-            <button onclick="game_end()" class="btn btn-success">ゲーム終了</button>
-        </div>
+                 <button onclick="game_map(3)" class="btn btn-primary">ステージ3</button>
+                 <h13 class="btn"></h13>
+                 <button onclick="game_random_map(4)" class="btn btn-primary">無限</button>
+                 <h14 class="btn"></h14>
+                 <button onclick="game_end()" class="btn btn-success">ゲーム終了</button>
+             </div>
 
     </div>
 
     <div id="game_map" style="text-align: center; display: none">
         <br> <br>
-        <canvas id="test" width="550" height="550"></canvas>
+
+        <canvas id="test" width="550" height="550" class="example"></canvas>
         <img id="map001" src="img/EDGE1.png" style="display:none" />
         <img id="map002" src="img/EDGE2.png" style="display:none" />
         <img id="character1" src="img/EDGE6.png" style="display:none" />
@@ -115,6 +118,10 @@
 
     <div id="map_ch" style="text-align: center; display: none">
         <div id="patternLock_map"></div>
+    </div>
+
+    <div id="map" style="text-align: center; display: none">
+        <div id="maze"></div>
     </div>
 
     <div id="battle" style="text-align: center; display: none">
@@ -134,7 +141,9 @@
             <img id="monster">
 
         </div>
-        <div id="patternLock1"></div>
+        <div id="patternLock1">
+
+        </div>
         <br> <br>
 
         <div class="code" style="width: 30%;">

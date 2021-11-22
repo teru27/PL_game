@@ -5,6 +5,7 @@ let start = new Date();
 $(window).on('beforeunload', function (event) {
     seve_data()
 });
+
 function game_Start() {
     let local_length = localStorage.length//ローカルストレージの内の個数
     sessionStorage.setItem('success', JSON.stringify(0));
@@ -57,7 +58,7 @@ function game_register(josn_data) {
             newbutton1.onclick = function () {
 
                 name = document.getElementsByClassName('coment')[0].value
-                
+
                 //二次元配列ならこれ
                 const result = josn_data.some(function (value) {
                     //配列内にnameが存在するかどうかを検索
@@ -69,7 +70,7 @@ function game_register(josn_data) {
                     window.alert("同じIDのため登録できません")
                     document.getElementById('textbox').value = ""//ここでテキストボックスの中身を消す
                 } else {
-                    
+
                     if (Mp == null) {
                         console.log("b")
                         Mp = 0
@@ -88,7 +89,7 @@ function game_re_register() {
     document.querySelector("#choice").style.display = "none";//非表示
     const newbutton2 = document.getElementById('button2')//登録
     //jQueryからpatternLockを取得して、#patternLock1に表示する
-    
+
     $('#patternLock_re_register').patternLock({
         timeout: 1000,//表示時間(1000で1秒)
         //showPatternLine: false,//ルートの非表示
@@ -102,7 +103,7 @@ function game_re_register() {
 
 }
 
-
+//ダンジョン選択
 function game_choice() {
     localStorage.setItem('map1', JSON.stringify(0));
     localStorage.setItem('map', JSON.stringify(0));
@@ -112,15 +113,17 @@ function game_choice() {
     sessionStorage.setItem('obstacle_now', JSON.stringify(0));
     sessionStorage.setItem('cun_num', JSON.stringify(0));
     localStorage.setItem('map1', JSON.stringify(0));
+    localStorage.setItem('random_map_make', JSON.stringify(0));
     sessionStorage.setItem('button_down_num', JSON.stringify(0));
-    
+    sessionStorage.setItem('map_change', JSON.stringify(0));
+
     let num = JSON.parse(localStorage.getItem('num'))
-    localStorage.setItem('hp', JSON.stringify(150+(num*15)));
+    localStorage.setItem('hp', JSON.stringify(150 + (num * 15)));
     localStorage.setItem('hp_max', JSON.stringify(150 + (num * 15)));
     for (let i = 1; i < 4; i++) {
         let number1 = localStorage.getItem(i)
         console.log(number1)
-       
+
         if (number1 == 1) {
             document.querySelector("h1" + i).textContent = "クリア"
         }
@@ -140,168 +143,177 @@ function game_choice() {
     document.querySelector("#choice").style.display = "block";//表示
 
 }
-function game_map(num,domn) {
+//ゲームマップ切り替えなどの機能（1～3までの）
+function game_map(num) {
+
     document.querySelector("#choice").style.display = "none";//非表示
     document.querySelector("#battle").style.display = "none";//非表示
     document.querySelector("#map_ch").style.display = "none";//非表示
     document.querySelector("#game_map").style.display = "block";//表示
-    
+
     var gc
     if (num == 1) {
         var map1 = [//マップデータ
-            [[0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
-            [0, 2, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1],
-            [0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1],
-            [1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 0],
-            [0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 1],
-            [0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1],
-            [0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0],
-            [0, 0, 0, 1, 0, 0, 0, 0, 0, 2, 0, 1, 0, 1, 1, 0],
-            [1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 1, 1],
-            [1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 2, 1, 1],
-            [1, 0, 1, 1, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0],
-            [1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1],
-            [0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0],
-            [0, 1, 1, 1, 0, 1, 0, 1, 0, 0, 1, 1, 0, 1, 0, 0],
-            [0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 0, 3]],
+            [[1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0],
+            [1, 1, 2, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1],
+            [1, 1, 0, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1],
+            [0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0],
+            [1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1],
+            [1, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1],
+            [1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 0],
+            [1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0],
+            [0, 0, 1, 0, 0, 0, 0, 0, 0, 2, 0, 0, 1, 1, 0, 1],
+            [0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 1, 0, 1],
+            [0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0],
+            [0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1],
+            [1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0],
+            [1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 0, 0, 1, 0, 1, 0],
+            [1, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 3]],
 
-            [[0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1],
-            [0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1],
-            [1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0],
-            [1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 0],
-            [0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0],
-            [0, 1, 2, 1, 1, 0, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0],
-            [1, 0, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1],
-            [1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1],
-            [1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 1, 1, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 1, 0],
-            [0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 0],
-            [0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1],
-            [0, 1, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0],
-            [1, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0],
-            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 3]]
+            [[1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1],
+            [1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 0, 1],
+            [0, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 1, 1, 0],
+            [0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0],
+            [1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0],
+            [1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0],
+            [0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1],
+            [0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 1],
+            [0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0],
+            [1, 1, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0],
+            [1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0],
+            [1, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1],
+            [1, 0, 1, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0],
+            [0, 0, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 3]]
 
         ];
     }
-    if (num == 2) {
+    else if (num == 2) {
         var map1 = [//マップデータ
-            [[0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 1],
-            [1, 0, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 1],
-            [1, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1],
-            [1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0],
-            [1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0],
-            [0, 0, 1, 2, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0],
-            [1, 0, 1, 2, 1, 1, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1],
-            [1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1],
-            [1, 1, 0, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1],
-            [1, 1, 1, 1, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 1],
-            [0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1],
-            [1, 1, 0, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 0, 0, 1],
-            [1, 0, 0, 1, 1, 0, 1, 1, 0, 1, 0, 0, 0, 0, 1, 1],
-            [3, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1]],
+            [[1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1],
+            [0, 1, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 0, 1, 0, 1],
+            [0, 1, 0, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1],
+            [0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
+            [0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0],
+            [1, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0],
+            [0, 1, 0, 1, 0, 0, 0, 1, 1, 1, 0, 0, 1, 0, 1, 1],
+            [0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1],
+            [0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 1],
+            [0, 1, 1, 1, 2, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 1],
+            [0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1],
+            [1, 1, 1, 0, 0, 1, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1],
+            [0, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 1, 1, 1],
+            [0, 1, 1, 0, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1],
+            [3, 1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1]],
 
-            [[0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 3],
-            [0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 1],
-            [0, 1, 1, 1, 0, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1],
-            [0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 1, 1],
-            [1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 2, 0, 1, 1, 1, 1],
-            [0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1],
-            [1, 1, 0, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1],
-            [0, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1],
-            [0, 1, 0, 1, 1, 0, 1, 1, 0, 0, 0, 1, 0, 1, 0, 0],
-            [0, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 0, 1, 1, 0],
-            [0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0],
-            [0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 0],
-            [0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1],
-            [1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]],
+            [[1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 3],
+            [1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1],
+            [1, 0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1],
+            [1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 0, 1, 2, 1, 0, 1],
+            [0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 1, 1, 0, 0, 0, 1],
+            [1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1],
+            [0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1],
+            [1, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 0, 1, 0, 1, 1],
+            [1, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 0, 1, 0, 1, 1],
+            [1, 0, 1, 0, 0, 1, 0, 0, 1, 1, 1, 0, 1, 0, 1, 0],
+            [1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0],
+            [1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 0, 0, 0, 0],
+            [1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0],
+            [1, 1, 1, 1, 0, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1],
+            [0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]],
 
-            [[0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 1],
-            [1, 1, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1],
-            [1, 1, 0, 0, 0, 1, 1, 1, 2, 1, 1, 1, 0, 1, 1, 1],
-            [1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1],
-            [1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 1, 1, 0, 0, 0, 1],
-            [1, 0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1],
-            [1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1],
-            [1, 0, 1, 1, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1],
-            [1, 0, 1, 1, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1],
-            [1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 1, 0, 1, 1],
-            [1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1],
-            [1, 0, 1, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1],
-            [1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0],
-            [1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0],
-            [1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 3]]
+            [[1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 0, 1],
+            [0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 0, 0, 1],
+            [0, 0, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1],
+            [0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 1],
+            [0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 0, 0, 1, 1, 1, 1],
+            [0, 1, 1, 1, 0, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1],
+            [0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 1],
+            [0, 1, 0, 0, 1, 1, 1, 0, 1, 0, 1, 1, 0, 1, 1, 1],
+            [0, 1, 0, 0, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1],
+            [0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 1, 0, 1],
+            [0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 2, 0, 1],
+            [0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1],
+            [0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0],
+            [0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0],
+            [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 3]]
 
         ];
     }
-    if (num == 3) { 
+    else if (num == 3) {
+
         var map1 = [//マップデータ
-            [[0, 1, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1],
-            [0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1],
-            [0, 1, 0, 0, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1],
-            [0, 0, 1, 0, 1, 0, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1],
-            [1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 1],
-            [0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 0, 1],
-            [1, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 1],
-            [1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 1],
-            [1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1],
-            [0, 1, 1, 0, 0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1],
-            [0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 1, 0, 0, 1],
-            [1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1],
-            [1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1],
-            [1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 2, 0, 3]],
-            [[0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 3],
-            [0, 1, 1, 1, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 0, 0],
-            [0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1],
-            [0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1],
-            [1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1],
-            [1, 0, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1],
-            [1, 0, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 0, 0, 0, 1],
-            [1, 1, 0, 0, 0, 0, 1, 0, 1, 0, 2, 0, 1, 1, 0, 1],
-            [1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1],
-            [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1],
-            [1, 0, 1, 1, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1],
-            [1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 0, 1],
-            [1, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1],
-            [1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 0, 0, 1]],
-            [[0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1],
-            [0, 1, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1],
-            [0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 0, 1],
-            [1, 1, 0, 1, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0],
-            [1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0, 1, 1, 1],
-            [1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1],
-            [1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1],
-            [0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1],
-            [1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0, 0, 1, 0, 0, 0],
-            [1, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0],
-            [1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0],
-            [1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0],
-            [1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 1, 0, 2, 0],
-            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 3]],
-            [[0, 0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 0, 0, 1],
-            [0, 1, 1, 1, 0, 0, 1, 1, 0, 0, 1, 3, 0, 1, 0, 1],
-            [0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1],
-            [0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1],
-            [0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 1],
-            [0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1],
-            [1, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1],
-            [1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1],
-            [1, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1],
-            [1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 1, 1, 0, 0, 1],
-            [1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 0, 0, 0, 1, 1],
-            [1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 1],
-            [1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1],
-            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]
+            [[1, 0, 1, 1, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1],
+            [1, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1],
+            [1, 1, 0, 1, 0, 1, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1],
+            [0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1],
+            [1, 1, 1, 1, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 1, 1],
+            [0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1],
+            [0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1],
+            [0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1],
+            [1, 0, 0, 1, 1, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1],
+            [1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 1, 0, 1, 1, 1],
+            [0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1],
+            [0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 1],
+            [0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 1],
+            [0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 2, 1, 3]],
 
+            [[1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 1, 3],
+            [1, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 1, 0, 0, 1, 0],
+            [1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 1, 1, 0, 1, 1],
+            [1, 1, 0, 0, 1, 0, 0, 1, 1, 1, 0, 0, 1, 0, 1, 1],
+            [0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1],
+            [0, 1, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 1],
+            [0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1],
+            [0, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 0, 1, 1],
+            [0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1],
+            [0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1],
+            [0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1],
+            [0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 1],
+            [0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1],
+            [0, 1, 0, 1, 0, 0, 1, 1, 0, 1, 1, 1, 0, 0, 0, 1],
+            [0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 1, 1, 1]],
+
+            [[1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1],
+            [1, 0, 0, 1, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1],
+            [1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 1, 1],
+            [0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0],
+            [0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 1, 1, 0, 0, 1],
+            [0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 1, 1, 0, 1],
+            [0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 1],
+            [1, 1, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 1, 0, 1],
+            [0, 1, 1, 0, 1, 0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 0],
+            [0, 0, 1, 0, 1, 0, 1, 1, 1, 2, 1, 0, 0, 0, 0, 0],
+            [0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0],
+            [0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0],
+            [0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 1, 0, 1, 1, 0],
+            [0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 3]],
+            [[1, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 1, 1, 3],
+            [1, 0, 0, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 0],
+            [1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0],
+            [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0],
+            [1, 0, 1, 0, 1, 0, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0],
+            [0, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0],
+            [0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0],
+            [0, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0],
+            [0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1],
+            [0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1],
+            [0, 1, 1, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1],
+            [0, 0, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1],
+            [0, 0, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]]
         ];
     }
-
     localStorage.setItem('map', JSON.stringify(map1[0]));
     if (JSON.parse(localStorage.getItem('map1')) == 0) {
         var map = JSON.parse(localStorage.getItem('map'));
     } else {
         var map = JSON.parse(localStorage.getItem('map1'));
     }
-    
+
     function initialize() {
         gc = document.getElementById("test").getContext("2d");
         document.onkeydown = keydown;
@@ -309,7 +321,7 @@ function game_map(num,domn) {
     }
     initialize()
 
-    function keydown(e,a) {
+    function keydown(e, a) {
         //イベント中は動かない
         let battle_now = JSON.parse(sessionStorage.getItem('battle_now'));
         let obstacle_now = JSON.parse(sessionStorage.getItem('obstacle_now'));
@@ -323,16 +335,16 @@ function game_map(num,domn) {
     }
 
     document.getElementById("button10").onclick = function () {
-        keydown(38,1)
+        keydown(38, 1)
     };
     document.getElementById("button11").onclick = function () {
-        keydown(37,1)
+        keydown(37, 1)
     };
     document.getElementById("button12").onclick = function () {
-        keydown(40,1)
+        keydown(40, 1)
     };
     document.getElementById("button13").onclick = function () {
-        keydown(39,1)
+        keydown(39, 1)
     };
 
     //キャラの移動
@@ -341,88 +353,88 @@ function game_map(num,domn) {
         let py = JSON.parse(sessionStorage.getItem('py'));
         let min = 0
         let max = 1
-        let n 
+        let n
         let hitx = px, hity = py;//当たり判定用の変数を作成
         let d = 0, c = 0
         let ch = 0
         let map_move = 0
-            switch (keyCode) {
-                case 39:
-                case 68:
-                    c = 0
-                    d = 32 * 2
-                    if ((map[hity][hitx + 1]) == 0) {
+        switch (keyCode) {
+            case 39:
+            case 68:
+                c = 0
+                d = 32 * 2
+                if ((map[hity][hitx + 1]) == 1) {
+                    n = Math.random(min, max)
+                    px++;//右移動
+                } else if ((map[hity][hitx + 1]) == 2) {
+                    map_move = 1
+                    map[hity][hitx + 1] = 1
+                    sessionStorage.setItem('obstacle_now', JSON.stringify(1));
+                    obstacle(map_move, hitx, hity, c, d)
+                } else if ((map[hity][hitx + 1]) == 3) {
+                    ch = 1
+                    sub(num)
+                }
+                break;
+            case 37:
+            case 65:
+                c = 0
+                d = 32
+                if ((map[hity][hitx - 1]) == 1) {
+                    n = Math.random(min, max)
+                    px--;//左移動
+                } else if ((map[hity][hitx - 1]) == 2) {
+                    map_move = 2
+                    map[hity][hitx - 1] = 1
+                    sessionStorage.setItem('obstacle_now', JSON.stringify(1));
+                    obstacle(map_move, hitx, hity, c, d)
+                } else if ((map[hity][hitx - 1]) == 3) {
+
+                    ch = 1
+                    sub(num)
+                }
+                break;
+            case 38:
+            case 87:
+                c = 0
+                d = 32 * 3
+                if (py > 0) {
+                    if ((map[hity - 1][hitx]) == 1) {
                         n = Math.random(min, max)
-                        px++;//右移動
-                    } else if ((map[hity][hitx + 1]) == 2) {
-                        map_move = 1
-                        map[hity][hitx + 1] = 0
+                        py--;//上移動
+                    } else if ((map[hity - 1][hitx]) == 2) {
+                        map_move = 3
+                        map[hity - 1][hitx] = 1
                         sessionStorage.setItem('obstacle_now', JSON.stringify(1));
                         obstacle(map_move, hitx, hity, c, d)
-                    } else if ((map[hity][hitx + 1]) == 3) {
+                    } else if ((map[hity - 1][hitx]) == 3) {
                         ch = 1
                         sub(num)
                     }
-                    break;
-                case 37:
-                case 65:
-                    c = 0
-                    d = 32
-                    if ((map[hity][hitx - 1]) == 0) {
+                }
+                break;
+            case 40:
+            case 83:
+                c = 0
+                d = 0
+                if (py < 14) {
+                    if ((map[hity + 1][hitx]) == 1) {
                         n = Math.random(min, max)
-                        px--;//左移動
-                    } else if ((map[hity][hitx - 1]) == 2) {
-                        map_move = 2
-                        map[hity][hitx - 1] = 0
+                        py++;//下移動
+                    } else if ((map[hity + 1][hitx]) == 2) {
+                        map_move = 4
+                        map[hity + 1][hitx] = 1
                         sessionStorage.setItem('obstacle_now', JSON.stringify(1));
                         obstacle(map_move, hitx, hity, c, d)
-                    } else if ((map[hity][hitx - 1]) == 3) {
-                       
+                    } else if ((map[hity + 1][hitx]) == 3) {
                         ch = 1
                         sub(num)
                     }
-                    break;
-                case 38:
-                case 87:
-                    c = 0
-                    d = 32 * 3
-                    if (py > 0) {
-                        if ((map[hity - 1][hitx]) == 0) {
-                            n = Math.random(min, max)
-                            py--;//上移動
-                        } else if ((map[hity - 1][hitx]) == 2) {
-                            map_move = 3
-                            map[hity - 1][hitx] = 0
-                            sessionStorage.setItem('obstacle_now', JSON.stringify(1));
-                            obstacle(map_move, hitx, hity, c, d)
-                        } else if ((map[hity - 1][hitx]) == 3) {
-                            ch = 1
-                            sub(num)
-                        }
-                    }
-                    break;
-                case 40:
-                case 83:
-                    c = 0
-                    d = 0
-                    if (py < 14) {
-                        if ((map[hity + 1][hitx]) == 0) {
-                            n = Math.random(min, max)
-                            py++;//下移動
-                        } else if ((map[hity + 1][hitx]) == 2) {
-                            map_move = 4
-                            map[hity + 1][hitx] = 0
-                            sessionStorage.setItem('obstacle_now', JSON.stringify(1));
-                            obstacle(map_move, hitx, hity, c, d)
-                        } else if ((map[hity + 1][hitx]) == 3) {
-                            ch = 1
-                            sub(num)
-                        }
-                    }
-                    break;
+                }
+                break;
         }
         console.log(px + "," + py)
-       
+
         if (n < 0.1) {
             //プレイヤーの位置を更新
             //localStorage.setItem('map1', JSON.stringify(map));
@@ -430,7 +442,6 @@ function game_map(num,domn) {
             game_battle(num)
             console.log("接敵")
         }
-            
         if (ch == 1) {
             sessionStorage.setItem('px', JSON.stringify(0));
             sessionStorage.setItem('py', JSON.stringify(0));
@@ -448,10 +459,11 @@ function game_map(num,domn) {
         for (var y = 0; y < map.length; y++) {
             for (var x = 0; x < map[y].length; x++) {
                 if (map[y][x] == 0) {
-                    gc.drawImage(map002, 0, 0, 32, 32, x * 32, y * 32, 32, 32);
+                    gc.drawImage(map002, 5 * 32, 32 * 40, 32, 32, x * 32, y * 32, 32, 32);
                 }
                 else if (map[y][x] == 1) {
-                    gc.drawImage(map002, 5 * 32, 32 * 40, 32, 32, x * 32, y * 32, 32, 32);
+                    gc.drawImage(map002, 0, 0, 32, 32, x * 32, y * 32, 32, 32);
+
 
                 } else if (map[y][x] == 2) {
                     gc.drawImage(map002, 4 * 32, 32 * 40, 32, 32, x * 32, y * 32, 32, 32);
@@ -461,15 +473,17 @@ function game_map(num,domn) {
                 }
             }
         }
+
         if (c == undefined && d == undefined) {
             c = 0
             d = 0
         }
+
         gc.drawImage(character1, c, d, 32, 32, px * 32, py * 32, 32, 32);
     }
 
     //ダンジョン切り替えとクリア判定
-    function sub(num) {
+    function sub() {
         let cun_num = JSON.parse(sessionStorage.getItem('cun_num'))
         cun_num = cun_num + 1
         console.log(num + 1)
@@ -480,9 +494,9 @@ function game_map(num,domn) {
             map = map1[cun_num]
             localStorage.setItem('map1', JSON.stringify(map));
             sessionStorage.setItem('cun_num', JSON.stringify(cun_num));
+            
         }
-        px = 0
-        py = 0
+       
     }
     function obstacle(map_move, hitx, hity, c, d) {
         document.querySelector("#game_map").style.display = "none";
@@ -507,39 +521,272 @@ function game_map(num,domn) {
         });
     }
 }
+//ゲームマップ切り替えなどの機能（無限）
+function game_random_map(num) {
+    document.querySelector("#choice").style.display = "none";//非表示
+    document.querySelector("#battle").style.display = "none";//非表示
+    document.querySelector("#map_ch").style.display = "none";//非表示
+    document.querySelector("#game_map").style.display = "block";//表示
+    let map_change = JSON.parse(sessionStorage.getItem('map_change'));
 
+    function initialize() {
+        gc = document.getElementById("test").getContext("2d");
+        document.onkeydown = keydown;
+        paint();
+    }
+    var map
+    console.log(map_change)
+    function map_change_load (){
+        var maze = new Maze();
+        maze.create({ algorithm: Maze.ALGO.STICK });
+        sessionStorage.setItem('px', JSON.stringify(1));
+        sessionStorage.setItem('py', JSON.stringify(1));
+        sessionStorage.setItem('map_change', JSON.stringify(1));
+        map = JSON.parse(localStorage.getItem('random_map_make'));
+        let max_map = 13
+        let min_map = 2
+        let num_random = Math.floor(Math.random() * (max_map + 1 - min_map)) + min_map
+        let num_random1 = Math.floor(Math.random() * (max_map + 1 - min_map)) + min_map
+        map[num_random][num_random1] = 3
+        console.log(111)
+        initialize()
+    }
+
+    if (map_change == 0) {
+        map_change_load()
+    }
+    function keydown(e, a) {
+        //イベント中は動かない
+        let battle_now = JSON.parse(sessionStorage.getItem('battle_now'));
+        let obstacle_now = JSON.parse(sessionStorage.getItem('obstacle_now'));
+        if (battle_now != 1 && obstacle_now != 1) {
+            if (a == 1) {
+                charactermove(e);
+            } else {
+                charactermove(e.keyCode);
+            }
+        }
+    }
+
+    document.getElementById("button10").onclick = function () {
+        keydown(38, 1)
+    };
+    document.getElementById("button11").onclick = function () {
+        keydown(37, 1)
+    };
+    document.getElementById("button12").onclick = function () {
+        keydown(40, 1)
+    };
+    document.getElementById("button13").onclick = function () {
+        keydown(39, 1)
+    };
+
+    //キャラの移動
+    function charactermove(keyCode) {
+        let px = JSON.parse(sessionStorage.getItem('px'))
+        let py = JSON.parse(sessionStorage.getItem('py'));
+        let min = 0
+        let max = 1
+        let n
+        let hitx = px, hity = py;//当たり判定用の変数を作成
+        let d = 0, c = 0
+        let ch = 0
+        let map_move = 0
+        switch (keyCode) {
+            case 39:
+            case 68:
+                c = 0
+                d = 32 * 2
+                if ((map[hity][hitx + 1]) == 1) {
+                    n = Math.random(min, max)
+                    px++;//右移動
+                } else if ((map[hity][hitx + 1]) == 2) {
+                    map_move = 1
+                    map[hity][hitx + 1] = 1
+                    sessionStorage.setItem('obstacle_now', JSON.stringify(1));
+                    obstacle(map_move, hitx, hity, c, d)
+                } else if ((map[hity][hitx + 1]) == 3) {
+                    ch = 1
+                    sub()
+                }
+                break;
+            case 37:
+            case 65:
+                c = 0
+                d = 32
+                if ((map[hity][hitx - 1]) == 1) {
+                    n = Math.random(min, max)
+                    px--;//左移動
+                } else if ((map[hity][hitx - 1]) == 2) {
+                    map_move = 2
+                    map[hity][hitx - 1] = 1
+                    sessionStorage.setItem('obstacle_now', JSON.stringify(1));
+                    obstacle(map_move, hitx, hity, c, d)
+                } else if ((map[hity][hitx - 1]) == 3) {
+
+                    ch = 1
+                    sub()
+                }
+                break;
+            case 38:
+            case 87:
+                c = 0
+                d = 32 * 3
+                if (py > 0) {
+                    if ((map[hity - 1][hitx]) == 1) {
+                        n = Math.random(min, max)
+                        py--;//上移動
+                    } else if ((map[hity - 1][hitx]) == 2) {
+                        map_move = 3
+                        map[hity - 1][hitx] = 1
+                        sessionStorage.setItem('obstacle_now', JSON.stringify(1));
+                        obstacle(map_move, hitx, hity, c, d)
+                    } else if ((map[hity - 1][hitx]) == 3) {
+                        ch = 1
+                        sub()
+                    }
+                }
+                break;
+            case 40:
+            case 83:
+                c = 0
+                d = 0
+                if (py < 14) {
+                    if ((map[hity + 1][hitx]) == 1) {
+                        n = Math.random(min, max)
+                        py++;//下移動
+                    } else if ((map[hity + 1][hitx]) == 2) {
+                        map_move = 4
+                        map[hity + 1][hitx] = 1
+                        sessionStorage.setItem('obstacle_now', JSON.stringify(1));
+                        obstacle(map_move, hitx, hity, c, d)
+                    } else if ((map[hity + 1][hitx]) == 3) {
+                        ch = 1
+                        sub()
+                    }
+                }
+                break;
+        }
+        console.log(px + "," + py)
+
+        if (n < 0.1) {
+            //プレイヤーの位置を更新
+            //localStorage.setItem('map1', JSON.stringify(map));
+            sessionStorage.setItem('battle_now', JSON.stringify(1));
+            game_battle(num)
+            console.log("接敵")
+        }
+        if (ch == 1) {
+            sessionStorage.setItem('px', JSON.stringify(1));
+            sessionStorage.setItem('py', JSON.stringify(1));
+            ch = 0
+        } else {
+            sessionStorage.setItem('px', JSON.stringify(px));
+            sessionStorage.setItem('py', JSON.stringify(py));
+        }
+        paint(c, d);
+    }
+
+    function paint(c, d) {
+        let px = JSON.parse(sessionStorage.getItem('px'))
+        let py = JSON.parse(sessionStorage.getItem('py'));
+        for (var y = 0; y < map.length; y++) {
+            for (var x = 0; x < map[y].length; x++) {
+                if (map[y][x] == 0) {
+                    gc.drawImage(map002, 5 * 32, 32 * 40, 32, 32, x * 32, y * 32, 32, 32);
+                }
+                else if (map[y][x] == 1) {
+                    gc.drawImage(map002, 0, 0, 32, 32, x * 32, y * 32, 32, 32);
+
+
+                } else if (map[y][x] == 2) {
+                    gc.drawImage(map002, 4 * 32, 32 * 40, 32, 32, x * 32, y * 32, 32, 32);
+
+                } else if (map[y][x] == 3) {
+                    gc.drawImage(map001, 0, 0, 32, 32, x * 32, y * 32, 32, 32);
+                }
+            }
+        }
+
+        if (c == undefined && d == undefined) {
+            c = 0
+            d = 0
+        }
+
+        gc.drawImage(character1, c, d, 32, 32, px * 32, py * 32, 32, 32);
+    }
+    //ダンジョン切り替え
+    function sub() {
+        sessionStorage.setItem('map_change', JSON.stringify(0))
+        map_change_load()
+    }
+
+    function obstacle(map_move, hitx, hity, c, d) {
+        document.querySelector("#game_map").style.display = "none";
+        document.querySelector("#map_ch").style.display = "block";//表示
+        let key = JSON.parse(localStorage.getItem('key'))
+        $('#patternLock_map').patternLock({
+            timeout: 1000,//表示時間(1000で1秒)
+            //showPatternLine: false,//ルートの非表示
+            drawEnd: function (data) {
+                if (data == key) {
+                    //マップの変更
+                    gc.drawImage(map002, 0, 0, 32, 32, hitx * 32, hity * 32, 32, 32);
+
+                    localStorage.setItem('map1', JSON.stringify(map));
+                    sessionStorage.setItem('obstacle_now', JSON.stringify(0));
+                    document.querySelector("#game_map").style.display = "block";//表示
+                    document.querySelector("#map_ch").style.display = "none";//表示
+                    paint(c, d)
+                }
+
+            }
+        });
+    }
+}
+//戦闘の処理
 function game_battle(dungeon_number) {
-
     let success = JSON.parse(sessionStorage.getItem('success'))
     let failure = JSON.parse(sessionStorage.getItem('failure'))
     let Mp = JSON.parse(localStorage.getItem('Mp'))
 
+    let img = document.getElementById("monster");
+    let min = 1;//乱数用
+    let max = 7;//乱数用
+    let enemy_number = Math.floor(Math.random() * (max + 1 - min)) + min;//乱数生成
+    let moster_random = Math.floor(Math.random() * (3 + 1 - 1)) + 1
+    console.log(dungeon_number)
+    if (dungeon_number!=4) {
+        img.src = "img/" + dungeon_number + "/monster" + dungeon_number + "-" + enemy_number + ".png";
+    } else {
+        console.log(moster_random)
+        img.src = "img/" + dungeon_number + "/monster" + moster_random + "-" + enemy_number + ".png";
+        
+    }
     let min1 = -5 * dungeon_number
     let max1 = 5 * dungeon_number
     let n = Math.floor(Math.random() * (max1 + 1 - min1)) + min1;
     //自分の体力
     let player_physical = JSON.parse(localStorage.getItem('hp'))
     let player_physical_max = JSON.parse(localStorage.getItem('hp_max'))
-            //敵体力
+    //敵体力
     let enemy_physical = 95 + n
     let enemy_physical_max = enemy_physical//敵体力の最大値を更新
     sessionStorage.setItem('enemy', JSON.stringify(enemy_physical));
-
-    let Defense_p = 25
-    let Offensive_p=0
-    let min = 1;//乱数用
-    let max = 7;//乱数用
-    let enemy_number = Math.floor(Math.random() * (max + 1 - min)) + min;//乱数生成
+   
+    let Defense_p = 20
+    let Offensive_p = 0
+    console.log(player_physical)
+    
     document.getElementById("pgss1").textContent = enemy_physical;
-    $("#pgss1").css({ 'width':100 + "%" });
-    $("#ph" + dungeon_number).css({ 'width': (player_physical / player_physical_max) * 100 + "%" });
-    //document.querySelector("h" + dungeon_number).textContent = "ダンジョン" + dungeon_number + "-" + n;
+    document.getElementById("ph1").textContent = player_physical;
+
+    $("#pgss1").css({ 'width': 100 + "%" });
+   $("#ph1").css({ 'width': (player_physical / player_physical_max) * 100 + "%" });
     document.querySelector("#game_map").style.display = "none";//非表示
     document.querySelector("#battle").style.display = "block";//表示
-    
-    console.log(enemy_physical)
-    let img = document.getElementById("monster");
-    img.src = "img/" + dungeon_number + "/monster" + dungeon_number + "-" + enemy_number + ".png";
+
+
     
     //jQueryからpatternLockを取得して、#patternLock1に表示する
     $('#patternLock1').patternLock({
@@ -548,12 +795,10 @@ function game_battle(dungeon_number) {
         //#patternLock1のvalueを取る
         drawEnd: function (data) {
             const loaddata = JSON.parse(localStorage.getItem('key'))
-            
             let enemy = JSON.parse(sessionStorage.getItem('enemy'))
             let hp = JSON.parse(localStorage.getItem('hp'))
             //patternLockの値の判定
             if (loaddata == data) {
-                
                 success = success + 1//認証の成功回数
                 console.log(enemy)
                 //防御力に対しての攻撃力の計算
@@ -565,59 +810,59 @@ function game_battle(dungeon_number) {
                     Offensive_p = (Mp * 100)
                 }
                 if (Offensive_p < 0) {
-                    player_physical = player_physical - 50//プレイヤーの体力を減らす
-                    $("#ph" + dungeon_number).css({ 'width': player_physical });
-                    if (player_physical < 0) {
-                        player_physical = 100
+                    hp = hp - 50 - ((Defense_p * dungeon_number) - Math.floor(Mp * 100))//プレイヤーの体力を減らす
+                    localStorage.setItem('hp', JSON.stringify(hp));//自分のHPの更新
+                    document.getElementById("ph1").textContent = hp;
+                    $("#ph1").css({ 'width': (hp / player_physical_max) * 100 + "%" });
+                    if (hp < 0 || hp == 0) {
                         game_over(dungeon_number)
                     }
+                } else {
+                    console.log(Math.floor(Offensive_p))
+                    enemy = enemy - Math.floor(Offensive_p)//敵の体力計算
+                    sessionStorage.setItem('enemy', JSON.stringify(enemy));//敵のHPの更新
+                    document.getElementById("pgss1").textContent = enemy;
+                    sessionStorage.setItem('success', JSON.stringify(success));
+                    //敵のHPゲージ
+                    $("#pgss1").css({ 'width': (enemy / enemy_physical_max) * 100 + "%" });
+                    console.log("成功" + enemy)
                 }
-                console.log(Math.floor(Offensive_p))
-                enemy = enemy - Math.floor(Offensive_p)//敵の体力計算
-                sessionStorage.setItem('enemy', JSON.stringify(enemy));//敵のHPの更新
-                document.getElementById("pgss1").textContent = enemy;
-                sessionStorage.setItem('success', JSON.stringify(success));
-                //敵のHPゲージ
-                $("#pgss1").css({ 'width': (enemy / enemy_physical_max)*100 +"%" });
-
-                console.log("成功" + enemy)
+                
                 //倒した時の処理
-                if (enemy < 0 || enemy==0) {
+                if (enemy < 0 || enemy == 0) {
                     const delay_processing = () => {
-                        
-                        
                         sessionStorage.setItem('battle_now', JSON.stringify(0));
-                        game_map(dungeon_number)
+                        if (dungeon_number == 4) {
+                            game_random_map(dungeon_number)
+                        } else {
+                            game_map(dungeon_number)
+                        }
+                        
                     }
                     setTimeout(delay_processing, 500);
-
                 }
-
             }
             else {
                 failure = failure + 1
                 sessionStorage.setItem('failure', JSON.stringify(failure));
                 hp = hp - 50//プレイヤーの体力を減らす
                 localStorage.setItem('hp', JSON.stringify(hp));//自分のHPの更新
-                $("#ph" + dungeon_number).css({ 'width': (hp / player_physical_max) * 100 + "%" });
-                if (hp < 0 || hp==0) {
+                document.getElementById("ph1").textContent = hp;
+                $("#ph1").css({ 'width': (hp / player_physical_max) * 100 + "%" });
+                if (hp < 0 || hp == 0) {
                     game_over(dungeon_number)
                 }
             }
-
-
-
         }
     });
-
 }
-
+//
 function game_clear(dungeon_number) {
     localStorage.setItem('map1', JSON.stringify(0));
     localStorage.setItem('map', JSON.stringify(0));
 
     let num = JSON.parse(localStorage.getItem('num'))
-    num=1+num
+    num = 1 + num
     localStorage.setItem('num', JSON.stringify(num));
 
     document.querySelector("#battle").style.display = "none";
@@ -627,7 +872,7 @@ function game_clear(dungeon_number) {
     dungeon_sevedata(dungeon_number)
 
 }
-
+//
 function game_over(dungeon_number) {
     localStorage.setItem('map1', JSON.stringify(0));
     localStorage.setItem('map', JSON.stringify(0));
@@ -638,7 +883,7 @@ function game_over(dungeon_number) {
 
     dungeon_sevedata(dungeon_number)
 }
-
+//
 function game_end() {
     document.querySelector("#battle").style.display = "none";//非表示
     document.querySelector("#choice").style.display = "none";//非表示
@@ -647,14 +892,12 @@ function game_end() {
     seve_data()
 
 }
-
+//
 function dungeon_sevedata(dungeon_number) {
-
     localStorage.setItem(dungeon_number, 1)
-    seve_data(1) 
-    console.log('ダンジョンクリア')
+    seve_data(1)
 }
-
+//パスワードの強度を計る
 function patten_strength(data, a, name) {
     let Lp = 0
     let Ip = 0
@@ -974,13 +1217,13 @@ function patten_strength(data, a, name) {
     output1.textContent = "パタンロックの強度は" + meter + "です"
     $("#pgss10").css({ 'width': Mp * 100 + "%" });
     $("#pgss9").css({ 'width': Mp * 100 + "%" });
-    console.log(Mp)  
+    console.log(Mp)
 
     if (!isFinite(Mp)) {
-        Mp=0
+        Mp = 0
     }
     return Mp
-    
+
 }
 //ここからは色々な処理
 function patternLockseve(data, a, name, Mp) {
@@ -992,9 +1235,9 @@ function patternLockseve(data, a, name, Mp) {
     localStorage.setItem('Mp', JSON.stringify(Mp))
     //初期登録の時だけ保存
     if (a == 1) {
-        
+
         localStorage.setItem('data', JSON.stringify(name))
-        
+
         console.log('登録完了')
 
         localStorage.setItem(1, 0)
@@ -1020,10 +1263,6 @@ function patternLockseve(data, a, name, Mp) {
 
 }
 
-function game_processing(data, dungeon_number) {
-
-}
-
 function seve_data(a) {
     //GAS WebアプリのURL
     //const END_POINT = "https://script.google.com/macros/s/AKfycbxY26C_z6TlaPzPI-cxNPZNbS0N36OPGb7m1W0oKoZRnS2wcnI4ttTW0dtDcDLqyPOk/exec";
@@ -1035,14 +1274,14 @@ function seve_data(a) {
     let failure = JSON.parse(sessionStorage.getItem('failure'))
     let password = JSON.parse(localStorage.getItem('key'))
     let end = new Date();
-    
+
     const Year = end.getFullYear();
     const Month = end.getMonth() + 1;
     const date = end.getDate();
 
     let play_time = end.getTime() - start.getTime()
 
-    
+
     if (Math.abs(play_time) / (60 * 60 * 1000) > 0) {
         var playtime_H = Math.floor(Math.abs(play_time) / (60 * 60 * 1000))
     } else {
@@ -1056,7 +1295,7 @@ function seve_data(a) {
     }
 
     let playtime_S = Math.floor(Math.abs(play_time) / 1000)
-    
+
     let play_time1 = playtime_H + "時間" + playtime_M + "分" + playtime_S + "秒"
     let today = Year + "/" + Month + "/" + date
 
@@ -1095,14 +1334,10 @@ function seve_data(a) {
             setTimeout('window.close()');
         });
     }
-    
-}
 
+}
 //ゲームリセット（デバックのための）
 function alldelete() {
     //ローカルストレージの全てのデータ削除
     localStorage.clear()
-}
-
-function ID_judge(data) {
 }
