@@ -370,7 +370,7 @@ function game_map(num) {
                     map_move = 1
                     map[hity][hitx + 1] = 1
                     sessionStorage.setItem('obstacle_now', JSON.stringify(1));
-                    obstacle(map_move, hitx, hity, c, d)
+                    obstacle1(map_move, hitx, hity, c, d)
                 } else if ((map[hity][hitx + 1]) == 3) {
                     ch = 1
                     sub(num)
@@ -387,7 +387,7 @@ function game_map(num) {
                     map_move = 2
                     map[hity][hitx - 1] = 1
                     sessionStorage.setItem('obstacle_now', JSON.stringify(1));
-                    obstacle(map_move, hitx, hity, c, d)
+                    obstacle1(map_move, hitx, hity, c, d)
                 } else if ((map[hity][hitx - 1]) == 3) {
 
                     ch = 1
@@ -406,7 +406,7 @@ function game_map(num) {
                         map_move = 3
                         map[hity - 1][hitx] = 1
                         sessionStorage.setItem('obstacle_now', JSON.stringify(1));
-                        obstacle(map_move, hitx, hity, c, d)
+                        obstacle1(map_move, hitx, hity, c, d)
                     } else if ((map[hity - 1][hitx]) == 3) {
                         ch = 1
                         sub(num)
@@ -425,7 +425,7 @@ function game_map(num) {
                         map_move = 4
                         map[hity + 1][hitx] = 1
                         sessionStorage.setItem('obstacle_now', JSON.stringify(1));
-                        obstacle(map_move, hitx, hity, c, d)
+                        obstacle1(map_move, hitx, hity, c, d)
                     } else if ((map[hity + 1][hitx]) == 3) {
                         ch = 1
                         sub(num)
@@ -498,27 +498,35 @@ function game_map(num) {
         }
        
     }
+    function obstacle1(map_move, hitx, hity, c, d) {
+        let yes_or_no = window.confirm('パスワードを使い、障害物を退かしますか？');
+        if (yes_or_no) {
+            obstacle(map_move, hitx, hity, c, d)
+        }
+    }
+
+
     function obstacle(map_move, hitx, hity, c, d) {
-        document.querySelector("#game_map").style.display = "none";
+            document.querySelector("#game_map").style.display = "none";
         document.querySelector("#map_ch").style.display = "block";//表示
-        let key = JSON.parse(localStorage.getItem('key'))
-        $('#patternLock_map').patternLock({
-            timeout: 1000,//表示時間(1000で1秒)
-            //showPatternLine: false,//ルートの非表示
-            drawEnd: function (data) {
-                if (data == key) {
-                    //マップの変更
-                    gc.drawImage(map002, 0, 0, 32, 32, hitx * 32, hity * 32, 32, 32);
+        document.getElementById("txet_co").textContent = "パスワードを使い、障害物を退かせ！";
+            let key = JSON.parse(localStorage.getItem('key'))
+            $('#patternLock_map').patternLock({
+                timeout: 1000,//表示時間(1000で1秒)
+                //showPatternLine: false,//ルートの非表示
+                drawEnd: function (data) {
+                    if (data == key) {
+                        //マップの変更
+                        gc.drawImage(map002, 0, 0, 32, 32, hitx * 32, hity * 32, 32, 32);
+                        localStorage.setItem('map1', JSON.stringify(map));
+                        sessionStorage.setItem('obstacle_now', JSON.stringify(0));
+                        document.querySelector("#game_map").style.display = "block";//表示
+                        document.querySelector("#map_ch").style.display = "none";//表示
+                        paint(c, d)
+                    }
 
-                    localStorage.setItem('map1', JSON.stringify(map));
-                    sessionStorage.setItem('obstacle_now', JSON.stringify(0));
-                    document.querySelector("#game_map").style.display = "block";//表示
-                    document.querySelector("#map_ch").style.display = "none";//表示
-                    paint(c, d)
                 }
-
-            }
-        });
+            });
     }
 }
 //ゲームマップ切り替えなどの機能（無限）
@@ -543,12 +551,22 @@ function game_random_map(num) {
         sessionStorage.setItem('py', JSON.stringify(1));
         sessionStorage.setItem('map_change', JSON.stringify(1));
         map = JSON.parse(localStorage.getItem('random_map_make'));
+
+        let aaa = Math.floor(Math.random() * (2 + 1 - 1)) + 1
+
+        for (let i = 0; i < aaa; i++) {
+            let max_ch_1=13
+            let min_ch_1=2
+            let num_random3 = Math.floor(Math.random() * (max_ch_1 + 1 - min_ch_1)) + min_ch_1
+            let num_random4 = Math.floor(Math.random() * (max_ch_1 + 1 - min_ch_1)) + min_ch_1
+            map[num_random3][num_random4] = 2
+        }
+
         let max_map = 13
         let min_map = 2
         let num_random = Math.floor(Math.random() * (max_map + 1 - min_map)) + min_map
         let num_random1 = Math.floor(Math.random() * (max_map + 1 - min_map)) + min_map
         map[num_random][num_random1] = 3
-        console.log(111)
         initialize()
     }
 
@@ -604,7 +622,7 @@ function game_random_map(num) {
                     map_move = 1
                     map[hity][hitx + 1] = 1
                     sessionStorage.setItem('obstacle_now', JSON.stringify(1));
-                    obstacle(map_move, hitx, hity, c, d)
+                    obstacle1(map_move, hitx, hity, c, d)
                 } else if ((map[hity][hitx + 1]) == 3) {
                     ch = 1
                     sub()
@@ -621,7 +639,7 @@ function game_random_map(num) {
                     map_move = 2
                     map[hity][hitx - 1] = 1
                     sessionStorage.setItem('obstacle_now', JSON.stringify(1));
-                    obstacle(map_move, hitx, hity, c, d)
+                    obstacle1(map_move, hitx, hity, c, d)
                 } else if ((map[hity][hitx - 1]) == 3) {
 
                     ch = 1
@@ -640,7 +658,7 @@ function game_random_map(num) {
                         map_move = 3
                         map[hity - 1][hitx] = 1
                         sessionStorage.setItem('obstacle_now', JSON.stringify(1));
-                        obstacle(map_move, hitx, hity, c, d)
+                        obstacle1(map_move, hitx, hity, c, d)
                     } else if ((map[hity - 1][hitx]) == 3) {
                         ch = 1
                         sub()
@@ -659,7 +677,7 @@ function game_random_map(num) {
                         map_move = 4
                         map[hity + 1][hitx] = 1
                         sessionStorage.setItem('obstacle_now', JSON.stringify(1));
-                        obstacle(map_move, hitx, hity, c, d)
+                        obstacle1(map_move, hitx, hity, c, d)
                     } else if ((map[hity + 1][hitx]) == 3) {
                         ch = 1
                         sub()
@@ -721,10 +739,18 @@ function game_random_map(num) {
         map_change_load()
     }
 
+    function obstacle1(map_move, hitx, hity, c, d) {
+        let yes_or_no = window.confirm('障害部をパスワードを使い除けますか？');
+        if (yes_or_no) {
+            obstacle(map_move, hitx, hity, c, d)
+        }
+    }
+
     function obstacle(map_move, hitx, hity, c, d) {
         document.querySelector("#game_map").style.display = "none";
         document.querySelector("#map_ch").style.display = "block";//表示
         let key = JSON.parse(localStorage.getItem('key'))
+        document.getElementById("txet_co").textContent = "パスワードを使い、障害物を退かせ！";
         $('#patternLock_map').patternLock({
             timeout: 1000,//表示時間(1000で1秒)
             //showPatternLine: false,//ルートの非表示
