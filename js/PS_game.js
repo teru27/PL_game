@@ -39,6 +39,8 @@ function game_Start() {
     }
     document.querySelector("#start").style.display = "none";//非表示
 }
+
+
 //初期登録
 function game_register(josn_data) {
     document.querySelector("#register").style.display = "block";//表示
@@ -48,40 +50,40 @@ function game_register(josn_data) {
     josn_data = (new Function("return" + josn_data))();
     console.log(josn_data)
 
-    //jQueryからpatternLockを取得して、#patternLock1に表示する
-    $('#patternLock_register').patternLock({
-        timeout: 100000,//表示時間(1000で1秒)
-        //showPatternLine: false,//ルートの非表示
-        drawEnd: function (data) {
+    newbutton1.onclick = function () {
+        let data = document.getElementsByClassName('passwd')[0].value
+        console.log(data)
+        if (data == " " * data.length) {
+            alert('文字を入力してください')
+        }
+        //ここで文字数制限をしている
+        else if (data.length > 36) {
+            alert('36文字以内にしてください')
+            document.getElementById('textbox').value = ""//ここでテキストボックスの中身を消す
+        } else {
             let Mp = patten_strength(data)
+            console.log(Mp)
+            name = document.getElementsByClassName('coment')[0].value
+            
+            console.log(data)
+            //二次元配列ならこれ
+            const result = josn_data.some(function (value) {
+                //配列内にnameが存在するかどうかを検索
+                return value == name;
 
-            newbutton1.onclick = function () {
+            });
+            if (result) {
+                // データが存在した時の処理
+                window.alert("同じIDのため登録できません")
+                document.getElementById('textbox').value = ""//ここでテキストボックスの中身を消す
+            } else {
 
-                name = document.getElementsByClassName('coment')[0].value
-
-                //二次元配列ならこれ
-                const result = josn_data.some(function (value) {
-                    //配列内にnameが存在するかどうかを検索
-                    return value == name;
-
-                });
-                if (result) {
-                    // データが存在した時の処理
-                    window.alert("同じIDのため登録できません")
-                    document.getElementById('textbox').value = ""//ここでテキストボックスの中身を消す
-                } else {
-
-                    if (Mp == null) {
-                        console.log("b")
-                        Mp = 0
-                    }
-                    // データが存在しなかった時の処理
-                    patternLockseve(data, 1, name, Mp)//ローカルストレージに保存//ローカルストレージに保存
-                }
+                // データが存在しなかった時の処理
+                 patternLockseve(data, 1, name, Mp)//ローカルストレージに保存//ローカルストレージに保存
             }
         }
-    });
-
+        
+    }
 }
 //再登録
 function game_re_register() {
@@ -89,23 +91,26 @@ function game_re_register() {
     document.querySelector("#choice").style.display = "none";//非表示
     const newbutton2 = document.getElementById('button2')//登録
     //jQueryからpatternLockを取得して、#patternLock1に表示する
-
-    $('#patternLock_re_register').patternLock({
-        timeout: 1000,//表示時間(1000で1秒)
-        //showPatternLine: false,//ルートの非表示
-        drawEnd: function (data) {
-            let Mp = patten_strength(data)
-            newbutton2.onclick = function () {
-                patternLockseve(data, 2, name, Mp)
-            }
+    newbutton2.onclick = function () {
+        let data = document.getElementsByClassName('passwd1')[0].value
+        if (data == " " * data.length) {
+            alert('文字を入力してください')
         }
-    });
-
+        //ここで文字数制限をしている
+        else if (data.length > 36) {
+            alert('36文字以内にしてください')
+            document.getElementById('textbox').value = ""//ここでテキストボックスの中身を消す
+        } else {
+            patternLockseve(data, 2, name, Mp)
+        }
+    }
 }
 
 //ダンジョン選択
 function game_choice() {
     $("#pgss10").css({ 'width': 0 + "%" });
+    document.getElementsByClassName('passwd1')[0].value = ""
+
     localStorage.setItem('map1', JSON.stringify(0));
     localStorage.setItem('map', JSON.stringify(0));
     sessionStorage.setItem('px', JSON.stringify(0));
@@ -926,330 +931,25 @@ function dungeon_sevedata(dungeon_number) {
 }
 //パスワードの強度を計る
 function patten_strength(data, a, name) {
-    let Lp = 0
-    let Ip = 0
-    let Np = 0
-    let Mp = 0
-    let x = 0
-    let y = 0
-    let Np_array = []
-    let Np_array_m = []
-    let x1 = 0
-    let y1 = 0
-    let x2 = 0
-    let y2 = 0
-    let x_result = 0
-    let b_result = 0
-    let x_b_result = []
-    let a1 = 0
-    let b1 = 0
-    let a2 = 0
-    let b2 = 0
-    let xp = 0
-    let yp = 0
-    let xp_r = 0
-    let yp_r = 0
-    let array = []
-    const dis = [
-        [0, 1, 2, 1, 1, 2, 2, 2, 2],
-        [1, 0, 1, 1, 1, 1, 2, 2, 2],
-        [2, 1, 0, 2, 1, 1, 2, 2, 2],
-        [1, 1, 2, 0, 1, 2, 1, 1, 2],
-        [1, 1, 1, 1, 0, 1, 1, 1, 1],
-        [2, 1, 1, 2, 1, 0, 2, 1, 1],
-        [2, 2, 2, 1, 1, 2, 0, 1, 2],
-        [2, 2, 2, 1, 1, 1, 1, 0, 1],
-        [2, 2, 2, 2, 1, 1, 2, 1, 0]
-    ]
-    //Pattern Lockの座標
-    const origin = [
-        { x: 0, y: 0 },//1
-        { x: 0, y: 1 },//2
-        { x: 0, y: 2 },//3
-        { x: 1, y: 0 },//4
-        { x: 1, y: 1 },//5
-        { x: 1, y: 2 },//6
-        { x: 2, y: 0 },//7
-        { x: 2, y: 1 },//8
-        { x: 2, y: 2 },//9
-    ]
-    data = data.replace(/,/g, '');//「,」を消す
-    let PL_array = Array.from(data)//配列化
-    for (i = 0; i < PL_array.length - 1; i++) {
-        Lp += dis[PL_array[i] - 1][PL_array[i + 1] - 1]
-    }
-    for (let i = 0; i < PL_array.length - 1; i++) {
-        x1 = origin[PL_array[i] - 1].x
-        y1 = origin[PL_array[i] - 1].y
-        x2 = origin[PL_array[i + 1] - 1].x
-        y2 = origin[PL_array[i + 1] - 1].y
-        if (PL_array[i + 1] - 1 > PL_array[i] - 1) {
-            array.push(x1 + "," + y1 + "," + x2 + "," + y2)
-        } else {
-            array.push(x2 + "," + y2 + "," + x1 + "," + y1)
-        }
-        x_result = (y2 - y1) / (x2 - x1)
-        b_result = ((x2 * y1) - (x1 * y2)) / (x2 - x1)
-        if (isNaN(x_result) || !isFinite(x_result)) {
-            x_result = 0
-        }
-        if (isNaN(b_result) || !isFinite(b_result)) {
-            b_result = 0
-        }
-        x_b_result.push({ x: x_result, b: b_result })
-    }
-    for (let i = 0; i < x_b_result.length; i++) {
-        a1 = x_b_result[i].x
-        b1 = x_b_result[i].b
-        for (let i = 0; i < x_b_result.length; i++) {
-            a2 = x_b_result[i].x
-            b2 = x_b_result[i].b
-            xp = (b2 - b1) / (a1 - a2)
-            yp = (a1 * xp) + b1
-            if (!isNaN(xp) && !isNaN(yp)) {
-                xp_r = Math.round(xp * 10) / 10
-                yp_r = Math.round(yp * 10) / 10
-                if (xp_r == 0.3 && yp_r == 0.7) {
-                    Ip++
-                } else if (xp_r == 0.7 && yp_r == 1.3) {
-                    Ip++
-                } else if (xp_r == 1.3 && yp_r == 0.7) {
-                    Ip++
-                } else if (xp_r == 1.7 && yp_r == 1.3) {
-                    Ip++
-                }
-                else if (xp_r == 0.7 && yp_r == 0.7) {
-                    Ip++
-                } else if (xp_r == 0.3 && yp_r == 1.3) {
-                    Ip++
-                } else if (xp_r == 1.7 && yp_r == 0.7) {
-                    Ip++
-                } else if (xp_r == 1.3 && yp_r == 1.3) {
-                    Ip++
-                }
-                else if (xp_r == 0.7 && yp_r == 0.3) {
-                    Ip++
-                } else if (xp_r == 1.3 && yp_r == 1.7) {
-                    Ip++
-                } else if (xp_r == 1.3 && yp_r == 0.3) {
-                    Ip++
-                } else if (xp_r == 0.7 && yp_r == 1.7) {
-                    Ip++
-                }
-            } else {
-                break
-            }
-        }
-    }
-    if (array.includes('0,2,2,1') && array.includes('1,1,1,2') || array.includes('1,0,1,2') && array.includes('0,2,2,1')) {
-        Ip = Ip + 2
-    }
-    else if (array.includes('0,1,2,0') && array.includes('1,0,1,1') || array.includes('1,0,1,2') && array.includes('0,1,2,0')) {
-        Ip = Ip + 2
-    }
-    else if (array.includes('0,0,2,1') && array.includes('1,0,1,1') || array.includes('1,0,1,2') && array.includes('0,0,2,1')) {
-        Ip = Ip + 2
-    }
-    else if (array.includes('0,1,2,2') && array.includes('1,1,1,2') || array.includes('1,0,1,2') && array.includes('0,1,2,2')) {
-        Ip = Ip + 2
-    }
-
-    if (array.includes('0,1,1,1') && array.includes('0,0,1,2') || array.includes('0,2,1,0') && array.includes('0,1,1,1')) {
-        Ip = Ip + 2
-    }
-    else if (array.includes('1,1,2,1') && array.includes('1,2,2,0') || array.includes('1,0,2,2') && array.includes('1,1,2,1')) {
-        Ip = Ip + 2
-    }
-
-    if (array.includes('0,0,1,1') && array.includes('0,1,1,0') || array.includes('0,0,2,2') && array.includes('0,1,1,0')) {
-        Ip = Ip + 2
-    } if (array.includes('0,1,1,2') && array.includes('0,2,1,1') || array.includes('0,2,2,0') && array.includes('1,0,2,1')) {
-        Ip = Ip + 2
-    } if (array.includes('1,0,2,1') && array.includes('1,1,2,0') || array.includes('0,2,2,0') && array.includes('0,1,1,2')) {
-        Ip = Ip + 2
-    } if (array.includes('1,1,2,2') && array.includes('1,2,2,1') || array.includes('0,0,2,2') && array.includes('1,2,2,1')) {
-        Ip = Ip + 2
-    }
-
-
-    console.log(Ip)
-    if (array.includes('0,0,1,1') && array.includes('0,2,2,1')) {
-        Ip = Ip - 2
-    } if (array.includes('0,2,1,1') && array.includes('0,0,2,1')) {
-        Ip = Ip - 2
-    } if (array.includes('1,1,2,2') && array.includes('0,1,2,0')) {
-        Ip = Ip - 2
-    } if (array.includes('1,1,2,0') && array.includes('0,1,2,2')) {
-        Ip = Ip - 2
-    }
-
-    if (array.includes('0,0,1,1') && array.includes('1,2,2,0')) {
-        Ip = Ip - 2
-    } if (array.includes('0,2,1,1') && array.includes('1,0,2,2')) {
-        Ip = Ip - 2
-    } if (array.includes('1,1,2,2') && array.includes('0,2,1,0')) {
-        Ip = Ip - 2
-    } if (array.includes('1,1,2,0') && array.includes('0,0,1,2')) {
-        Ip = Ip - 2
-    }
-
-    for (let i = 0; i < PL_array.length - 1; i++) {
-        if ([PL_array[i + 1] - 1] in origin) {
-            x = origin[PL_array[i + 1] - 1].x - origin[PL_array[i] - 1].x
-            y = origin[PL_array[i + 1] - 1].y - origin[PL_array[i] - 1].y
-            if (x == 0 && y == 1 || x == 0 && y == -1) {
-                Np_array.push('1');
-                Np_array_m.push('横');
-            }
-            else if (x == -1 && y == 0) {
-                Np_array.push('2');
-                Np_array_m.push('上');
-            }
-            else if (x == 1 && y == 0) {
-                Np_array.push('3');
-                Np_array_m.push('下');
-            }
-            else if (x == 1 && y == 1) {
-                Np_array.push('4');
-                Np_array_m.push('右下');
-            }
-            else if (x == -1 && y == 1) {
-                Np_array.push('5');
-                Np_array_m.push('右上');
-            }
-            else if (x == 1 && y == -1) {
-                Np_array.push('6');
-                Np_array_m.push('左下');
-            }
-            else if (x == -1 && y == -1) {
-                Np_array.push('7');
-                Np_array_m.push('左上');
-            }
-            else if (x == 0 && y == 2 || x == 0 && y == -2) {
-                Np_array.push('8');
-                Np_array_m.push('長い横');
-            }
-            else if (x == -2 && y == 0) {
-                Np_array.push('9');
-                Np_array_m.push('長い上');
-            }
-            else if (x == 2 && y == 0) {
-                Np_array.push('a');
-                Np_array_m.push('長い下');
-            }
-            else if (x == 2 && y == 2) {
-                Np_array.push('b');
-                Np_array_m.push('長い右下y');
-            }
-            else if (x == -2 && y == 2) {
-                Np_array.push('c');
-                Np_array_m.push('長い右上y');
-            }
-            else if (x == 2 && y == -2) {
-                Np_array.push('d');
-                Np_array_m.push('長い左下y');
-            }
-            else if (x == -2 && y == -2) {
-                Np_array.push('e');
-                Np_array_m.push('長い左上y');
-            }
-            else if (x == 2 && y == 1) {
-                Np_array.push('f');
-                Np_array_m.push('真ん中右下x');
-            }
-            else if (x == -2 && y == 1) {
-                Np_array.push('g');
-                Np_array_m.push('真ん中右上x');
-            }
-            else if (x == 2 && y == -1) {
-                Np_array.push('h');
-                Np_array_m.push('真ん中左下x');
-            }
-            else if (x == -2 && y == -1) {
-                Np_array.push('i');
-                Np_array_m.push('真ん中左上x');
-            }
-            else if (x == 1 && y == 2) {
-                Np_array.push('j');
-                Np_array_m.push('真ん中右下y');
-            }
-            else if (x == -1 && y == 2) {
-                Np_array.push('k');
-                Np_array_m.push('真ん中右上y');
-            }
-            else if (x == 1 && y == -2) {
-                Np_array.push('m');
-                Np_array_m.push('真ん中左下y');
-            }
-            else if (x == -1 && y == -2) {
-                Np_array.push('n');
-                Np_array_m.push('真ん中左上y');
-            }
-        }
-        else {
-            break
-        }
-    }
-    let p_lens = 0
-    let patterns = {}
-    let found = false
-    for (let p_len = Math.floor(Np_array.length / 2); p_len >= 2; p_len--) {
-        for (let ssp = 0; ssp < Np_array.length - p_len; ssp++) {
-            pattern = Np_array.slice(ssp, ssp + p_len)
-            others = Np_array.slice(ssp + p_len, Np_array.length)
-            let str_others = others.join(',');
-            let str_pattern = pattern.join(',');
-            if (patterns[pattern]) {
-                continue
-            }
-            if (pattern.length > others.length) {
-                break
-            }
-            patterns[pattern] = 1;
-
-            while (str_others.indexOf(str_pattern) > -1) {
-                patterns[pattern]++
-                found = true // foundは長さp_lenのパターンの繰り返しを発見したことを表すフラグでこのwhile文に入った瞬間にダブりがあったことが分かるのでtrueにする
-                let sp = str_others.indexOf(str_pattern)
-                others = others.slice(sp + p_len, others.length)
-                str_others = others.join(',');
-
-            }
-        }
-        //p_lenのダブルがあったら、Rpの定義よりそれより短いパターンのダブルを探す必要がないためここで探索終わる
-        if (found && p_lens < pattern.length * 2) {
-            p_lens = pattern.length * 2
-            break
-        }
-    }
-    PL_array.length = PL_array.length - 1
-    Np = (PL_array.length - p_lens) / PL_array.length
-
-    if (Ip >= 5) {
-        Ip = 5
-    }
-    let w = 1 / 3
+    let Mp = getPasswordLevel(data);
     let meter
-    const output = document.getElementById('register_Strength');
-    const output1 = document.getElementById('re_register_Strength');
-    Mp = w * (Lp / 15) + (w * Np) + w * (Ip / 5)
-    if (Mp >= 0.68) {
+
+    if (Mp >= 5) {
         meter = "強"
-    } else if (Mp >= 0.34) {
+    } else if (Mp >= 3) {
         meter = "中"
     } else {
         meter = "弱"
     }
+    const output = document.getElementById('register_Strength');
+    const output1 = document.getElementById('re_register_Strength');
     output.textContent = "パタンロックの強度は" + meter + "です"
     output1.textContent = "パタンロックの強度は" + meter + "です"
-    $("#pgss10").css({ 'width': Mp * 100 + "%" });
-    $("#pgss9").css({ 'width': Mp * 100 + "%" });
-    console.log(Mp)
+    $("#pgss10").css({ 'width': Mp*2 * 10 + "%" });
+    $("#pgss9").css({ 'width': Mp*2 * 10 + "%" });
+    console.log(Mp * 2 * 10)
 
-    if (!isFinite(Mp)) {
-        Mp = 0
-    }
-    return Mp
+    return Mp*2
 
 }
 //ここからは色々な処理
@@ -1363,6 +1063,11 @@ function seve_data(a) {
     }
 
 }
+function setPasswordLevel(password) {
+    patten_strength(password)
+}
+
+
 //ゲームリセット（デバックのための）
 function alldelete() {
     //ローカルストレージの全てのデータ削除
