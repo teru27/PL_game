@@ -5,11 +5,11 @@ let start = new Date();
 $(window).on('beforeunload', function (event) {
     seve_data()
 });
-//スマホなら縮尺を縮める
-$(function () {
-    
-});
+
 function game_Start() {
+    if (navigator.userAgent.match(/(iPhone|iPod|Android.*Mobile)/i)) {
+        $("body").css("zoom", "100%");
+    }
     let local_length = localStorage.length//ローカルストレージの内の個数
     sessionStorage.setItem('success', JSON.stringify(0));
     sessionStorage.setItem('failure', JSON.stringify(0));
@@ -44,6 +44,9 @@ function game_Start() {
 }
 //初期登録
 function game_register(josn_data) {
+    if (navigator.userAgent.match(/(iPhone|iPod|Android.*Mobile)/i)) {
+        $("body").css("zoom", "100%");
+    }
     document.querySelector("#register").style.display = "block";//表示
     const newbutton1 = document.getElementById('button1')//登録
     let name//空の箱を作る
@@ -88,6 +91,9 @@ function game_register(josn_data) {
 }
 //再登録
 function game_re_register() {
+    if (navigator.userAgent.match(/(iPhone|iPod|Android.*Mobile)/i)) {
+        $("body").css("zoom", "100%");
+    }
     document.querySelector("#re_register").style.display = "block";//表示
     document.querySelector("#choice").style.display = "none";//非表示
     const newbutton2 = document.getElementById('button2')//登録
@@ -108,6 +114,9 @@ function game_re_register() {
 
 //ダンジョン選択
 function game_choice() {
+    if (navigator.userAgent.match(/(iPhone|iPod|Android.*Mobile)/i)) {
+        $("body").css("zoom", "100%");
+    }
     $("#pgss10").css({ 'width': 0 + "%" });
     localStorage.setItem('map1', JSON.stringify(0));
     localStorage.setItem('map', JSON.stringify(0));
@@ -540,10 +549,9 @@ function game_map(num) {
 //ゲームマップ切り替えなどの機能（無限）
 function game_random_map(num) {
     if (navigator.userAgent.match(/(iPhone|iPod|Android.*Mobile)/i)) {
-        $("body").css("zoom", "50%");
-    } else {
-        console.log(11)
+        $("body").css("zoom", "70%");
     }
+        
     document.querySelector("#choice").style.display = "none";//非表示
     document.querySelector("#battle").style.display = "none";//非表示
     document.querySelector("#map_ch").style.display = "none";//非表示
@@ -785,6 +793,11 @@ function game_random_map(num) {
 }
 //戦闘の処理
 function game_battle(dungeon_number) {
+    if (navigator.userAgent.match(/(iPhone|iPod|Android.*Mobile)/i)) {
+        $("body").css("zoom", "100%");
+    } else {
+        console.log(11)
+    }
     let success = JSON.parse(sessionStorage.getItem('success'))
     let failure = JSON.parse(sessionStorage.getItem('failure'))
     let Mp = JSON.parse(localStorage.getItem('Mp'))
