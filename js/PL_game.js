@@ -5,7 +5,10 @@ let start = new Date();
 $(window).on('beforeunload', function (event) {
     seve_data()
 });
-
+//スマホなら縮尺を縮める
+$(function () {
+    
+});
 function game_Start() {
     let local_length = localStorage.length//ローカルストレージの内の個数
     sessionStorage.setItem('success', JSON.stringify(0));
@@ -146,7 +149,11 @@ function game_choice() {
 }
 //ゲームマップ切り替えなどの機能（1～3までの）
 function game_map(num) {
-
+    if (navigator.userAgent.match(/(iPhone|iPod|Android.*Mobile)/i)) {
+        $("body").css("zoom", "50%");
+    } else {
+        console.log(11)
+    }
     document.querySelector("#choice").style.display = "none";//非表示
     document.querySelector("#battle").style.display = "none";//非表示
     document.querySelector("#map_ch").style.display = "none";//非表示
@@ -532,6 +539,11 @@ function game_map(num) {
 }
 //ゲームマップ切り替えなどの機能（無限）
 function game_random_map(num) {
+    if (navigator.userAgent.match(/(iPhone|iPod|Android.*Mobile)/i)) {
+        $("body").css("zoom", "50%");
+    } else {
+        console.log(11)
+    }
     document.querySelector("#choice").style.display = "none";//非表示
     document.querySelector("#battle").style.display = "none";//非表示
     document.querySelector("#map_ch").style.display = "none";//非表示
