@@ -5,7 +5,7 @@
     <meta http-equiv="content-type" charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <link href='http://fonts.googleapis.com/css?family=Vidaloka' rel='stylesheet' type='text/css'>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
@@ -33,14 +33,15 @@
     <div id="register" style="text-align: center; display: none">
         <br> <br>
         <h10><span class="maintitle">初期登録</span></h10>
+
         <br> <br>
+        <div id="register_Strength">パタンロックの強度は</div>
+        <br><br>
         <div class="code" style="width: 50%;">
             <div class="progress">
                 <div class="progress-bar progress-bar-striped progress-bar-animated" id="pgss9" style="width: 0%;"></div>
             </div>
         </div>
-        <br><br>
-        <div id="register_Strength">パタンロックの強度は</div>
         <br><br>
         <div id="patternLock_register"></div>
         <br> <br>
@@ -52,14 +53,15 @@
     <div id="re_register" style="text-align: center; display: none">
         <br> <br>
         <h10><span class="maintitle">再登録</span></h10>
+        <br><br>
+        <div id="re_register_Strength">パタンロックの強度は</div>
+        <br><br>
         <div class="code" style="width: 50%;">
             <div class="progress">
                 <div class="progress-bar progress-bar-striped progress-bar-animated" id="pgss10" value="0" style="width: 0%;"></div>
             </div>
         </div>
-        <br><br>
-        <div id="re_register_Strength">パタンロックの強度は</div>
-        <br><br>
+
         <div id="patternLock_re_register"></div>
         <div class="btn-group btn-group-lg">
 
@@ -99,7 +101,7 @@
     <div id="game_map" style="text-align: center; display: none">
         <br> <br>
 
-        <canvas id="test" width="550" height="550" class="example"></canvas>
+        <canvas id="test" width="550" height="480" class="example"></canvas>
         <img id="map001" src="img/EDGE1.png" style="display:none" />
         <img id="map002" src="img/EDGE2.png" style="display:none" />
         <img id="character1" src="img/EDGE6.png" style="display:none" />

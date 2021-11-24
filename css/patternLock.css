@@ -2,6 +2,7 @@ html, body {
     height: 50%;
     font-family: "dotm";
     background-color: cadetblue;
+    -webkit-text-size-adjust: 150%;
 }
 
 h10 {
@@ -33,6 +34,17 @@ h10 {
         outline: 0; /*アウトラインのスタイルの指定*/
     }
 
+#passwd {
+    border-radius: 4px; /*枠線の角の曲がり具合*/
+    border: 2px solid #1d49aa; /*枠線の太さと色*/
+    font-size: 25px; /*文字の大きさ*/
+}
+    /*テキストボックスが選択されたら表示する*/
+    #passwd:focus {
+        border: 2px solid #ff9900; /*枠線の太さと色*/
+        z-index: 1; /*重なりの順番　0が基準*/
+        outline: 0; /*アウトラインのスタイルの指定*/
+    }
 .patternlock {
     border: 1px solid black;
     border-radius: 10px;
