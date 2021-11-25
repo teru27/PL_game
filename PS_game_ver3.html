@@ -64,7 +64,7 @@
         </div>
 
         <div class="form-group1">
-            パスワード　：<input type="password" class="passwd1" style="width: 200px; height: 30px;" onkeyup="setPasswordLevel(this.value);">
+            パスワード：<input type="password" class="passwd1" style="width: 200px; height: 30px;" onkeyup="setPasswordLevel(this.value);">
         </div>
         <div class="btn-group btn-group-lg">
             <button onclick="game_choice()" class="btn btn-primary">戻る</button>
@@ -128,7 +128,6 @@
 
     <div id="battle" style="text-align: center; display: none">
 
-        <br> <br>
         <div class="box" id="battle_screen1">
 
             <div class="code" style="width: 50%;">
@@ -139,22 +138,17 @@
 
                 </div>
             </div>
-
             <img id="monster">
-
         </div>
-        <div id="patternLock1">
-
+        <div class="form-group1">
+            パスワード：<input type="password" class="passwd3" style="width: 200px; height: 30px;" onkeyup="setPasswordLevel(this.value);">
         </div>
-        <br> <br>
-
+        <button id="button3" class="btn btn-warning">攻撃</button>
         <div class="code" style="width: 30%;">
             <div class="progress">
                 <div class="progress-bar progress-bar-danger" id="ph1" style="width: 100%;"></div>
             </div>
         </div>
-
-
     </div>
 
     <div id="clear" style="text-align: center; display: none">

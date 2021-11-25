@@ -43,9 +43,7 @@ function game_Start() {
 
 //初期登録
 function game_register(josn_data) {
-    if (navigator.userAgent.match(/(iPhone|iPod|Android.*Mobile)/i)) {
-        $("body").css("zoom", "100%");
-    } 
+    
     document.querySelector("#register").style.display = "block";//表示
     const newbutton1 = document.getElementById('button1')//登録
     let name//空の箱を作る
@@ -90,15 +88,15 @@ function game_register(josn_data) {
 }
 //再登録
 function game_re_register() {
-    if (navigator.userAgent.match(/(iPhone|iPod|Android.*Mobile)/i)) {
-        $("body").css("zoom", "100%");
-    } 
+    
     document.querySelector("#re_register").style.display = "block";//表示
     document.querySelector("#choice").style.display = "none";//非表示
     const newbutton2 = document.getElementById('button2')//登録
     //jQueryからpatternLockを取得して、#patternLock1に表示する
     newbutton2.onclick = function () {
+        
         let data = document.getElementsByClassName('passwd1')[0].value
+        let Mp = patten_strength(data)
         if (data == " " * data.length) {
             alert('文字を入力してください')
         }
@@ -114,9 +112,7 @@ function game_re_register() {
 
 //ダンジョン選択
 function game_choice() {
-    if (navigator.userAgent.match(/(iPhone|iPod|Android.*Mobile)/i)) {
-        $("body").css("zoom", "100%");
-    } 
+   
     $("#pgss10").css({ 'width': 0 + "%" });
     document.getElementsByClassName('passwd1')[0].value = ""
 
@@ -161,10 +157,8 @@ function game_choice() {
 //ゲームマップ切り替えなどの機能（1～3までの）
 function game_map(num) {
     if (navigator.userAgent.match(/(iPhone|iPod|Android.*Mobile)/i)) {
-        $("body").css("zoom", "75%");
-    } else {
-        console.log(11)
-    }
+        $("#game_map").css("zoom", "62%");
+    } 
     document.querySelector("#choice").style.display = "none";//非表示
     document.querySelector("#battle").style.display = "none";//非表示
     document.querySelector("#map_ch").style.display = "none";//非表示
@@ -551,10 +545,8 @@ function game_map(num) {
 //ゲームマップ切り替えなどの機能（無限）
 function game_random_map(num) {
     if (navigator.userAgent.match(/(iPhone|iPod|Android.*Mobile)/i)) {
-        $("body").css("zoom", "70%");
-    } else {
-        console.log(11)
-    }
+        $("#game_map").css("zoom", "62%");
+    } 
     document.querySelector("#choice").style.display = "none";//非表示
     document.querySelector("#battle").style.display = "none";//非表示
     document.querySelector("#map_ch").style.display = "none";//非表示
@@ -796,13 +788,11 @@ function game_random_map(num) {
 }
 //戦闘の処理
 function game_battle(dungeon_number) {
-    if (navigator.userAgent.match(/(iPhone|iPod|Android.*Mobile)/i)) {
-        $("body").css("zoom", "100%");
-    } 
+    
     let success = JSON.parse(sessionStorage.getItem('success'))
     let failure = JSON.parse(sessionStorage.getItem('failure'))
     let Mp = JSON.parse(localStorage.getItem('Mp'))
-
+    Mp=Mp*10
     let img = document.getElementById("monster");
     let min = 1;//乱数用
     let max = 7;//乱数用
@@ -839,75 +829,85 @@ function game_battle(dungeon_number) {
     document.querySelector("#game_map").style.display = "none";//非表示
     document.querySelector("#battle").style.display = "block";//表示
 
-
-    
+    const newbutton3 = document.getElementById('button3')//登録
     //jQueryからpatternLockを取得して、#patternLock1に表示する
-    $('#patternLock1').patternLock({
-        timeout: 800,//表示時間(1000で1秒)
-        //showPatternLine: false,//ルートの非表示
-        //#patternLock1のvalueを取る
-        drawEnd: function (data) {
-            const loaddata = JSON.parse(localStorage.getItem('key'))
-            let enemy = JSON.parse(sessionStorage.getItem('enemy'))
-            let hp = JSON.parse(localStorage.getItem('hp'))
-            //patternLockの値の判定
-            if (loaddata == data) {
-                success = success + 1//認証の成功回数
-                console.log(enemy)
-                //防御力に対しての攻撃力の計算
-                if ((Mp * 100) < (Defense_p * dungeon_number)) {
+    newbutton3.onclick = function () {
+        a()
+    }
+    window.document.onkeydown = function (event) {
+        if (event.key === 'Enter') {
+            a()
+        }
+    }
 
-                    Offensive_p = (Mp * 100) - (Defense_p * dungeon_number)
 
-                } else {
-                    Offensive_p = (Mp * 100)
-                }
-                if (Offensive_p < 0) {
-                    hp = hp - 50 - ((Defense_p * dungeon_number) - Math.floor(Mp * 100))//プレイヤーの体力を減らす
-                    localStorage.setItem('hp', JSON.stringify(hp));//自分のHPの更新
-                    document.getElementById("ph1").textContent = hp;
-                    $("#ph1").css({ 'width': (hp / player_physical_max) * 100 + "%" });
-                    if (hp < 0 || hp == 0) {
-                        game_over(dungeon_number)
-                    }
-                } else {
-                    console.log(Math.floor(Offensive_p))
-                    enemy = enemy - Math.floor(Offensive_p)//敵の体力計算
-                    sessionStorage.setItem('enemy', JSON.stringify(enemy));//敵のHPの更新
-                    document.getElementById("pgss1").textContent = enemy;
-                    sessionStorage.setItem('success', JSON.stringify(success));
-                    //敵のHPゲージ
-                    $("#pgss1").css({ 'width': (enemy / enemy_physical_max) * 100 + "%" });
-                    console.log("成功" + enemy)
-                }
-                
-                //倒した時の処理
-                if (enemy < 0 || enemy == 0) {
-                    const delay_processing = () => {
-                        sessionStorage.setItem('battle_now', JSON.stringify(0));
-                        if (dungeon_number == 4) {
-                            game_random_map(dungeon_number)
-                        } else {
-                            game_map(dungeon_number)
-                        }
-                        
-                    }
-                    setTimeout(delay_processing, 500);
-                }
+    function a() {
+        
+        let data = document.getElementsByClassName('passwd3')[0].value
+        const loaddata = JSON.parse(localStorage.getItem('key'))
+        let enemy = JSON.parse(sessionStorage.getItem('enemy'))
+        let hp = JSON.parse(localStorage.getItem('hp'))
+        document.getElementsByClassName('passwd3')[0].value = ""
+        //patternLockの値の判定
+        if (loaddata == data) {
+
+            success = success + 1//認証の成功回数
+            console.log(enemy)
+            //防御力に対しての攻撃力の計算
+            if ((Mp) < (Defense_p * dungeon_number)) {
+
+                Offensive_p = (Mp) - (Defense_p * dungeon_number)
+
+            } else {
+                Offensive_p = (Mp)
             }
-            else {
-                failure = failure + 1
-                sessionStorage.setItem('failure', JSON.stringify(failure));
-                hp = hp - 50//プレイヤーの体力を減らす
+            if (Offensive_p < 0) {
+                hp = hp - 50 - ((Defense_p * dungeon_number) - Math.floor(Mp * 100))//プレイヤーの体力を減らす
                 localStorage.setItem('hp', JSON.stringify(hp));//自分のHPの更新
                 document.getElementById("ph1").textContent = hp;
                 $("#ph1").css({ 'width': (hp / player_physical_max) * 100 + "%" });
                 if (hp < 0 || hp == 0) {
                     game_over(dungeon_number)
                 }
+            } else {
+                console.log(Math.floor(Offensive_p))
+                enemy = enemy - Math.floor(Offensive_p)//敵の体力計算
+                sessionStorage.setItem('enemy', JSON.stringify(enemy));//敵のHPの更新
+                document.getElementById("pgss1").textContent = enemy;
+                sessionStorage.setItem('success', JSON.stringify(success));
+                //敵のHPゲージ
+                $("#pgss1").css({ 'width': (enemy / enemy_physical_max) * 100 + "%" });
+                console.log("成功" + enemy)
+            }
+
+            //倒した時の処理
+            if (enemy < 0 || enemy == 0) {
+                const delay_processing = () => {
+                    sessionStorage.setItem('battle_now', JSON.stringify(0));
+                    if (dungeon_number == 4) {
+                        game_random_map(dungeon_number)
+                    } else {
+                        game_map(dungeon_number)
+                    }
+
+                }
+                setTimeout(delay_processing, 500);
             }
         }
-    });
+        else {
+            failure = failure + 1
+            sessionStorage.setItem('failure', JSON.stringify(failure));
+            hp = hp - 50//プレイヤーの体力を減らす
+            localStorage.setItem('hp', JSON.stringify(hp));//自分のHPの更新
+            document.getElementById("ph1").textContent = hp;
+            $("#ph1").css({ 'width': (hp / player_physical_max) * 100 + "%" });
+            if (hp < 0 || hp == 0) {
+                game_over(dungeon_number)
+            }
+        }
+    }
+
+
 }
 //
 function game_clear(dungeon_number) {
