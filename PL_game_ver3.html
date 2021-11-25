@@ -96,24 +96,27 @@
     </div>
 
     <div id="game_map" style="text-align: center; display: none">
-        <br> <br>
-
+        <div style="text-align: end">
+            <button class="btn btn-success"onclick="game_choice()">選択画面に戻る</button>
+        </div>
         <canvas id="test" width="550" height="480" class="example"></canvas>
         <img id="map001" src="img/EDGE1.png" style="display:none" />
         <img id="map002" src="img/EDGE2.png" style="display:none" />
         <img id="character1" src="img/EDGE6.png" style="display:none" />
         <div class="text-center">
-            <button class="btn btn-secondary btn-lg" id="button10">↑</button>
+            <button class="btn btn-secondary" id="button10">↑</button>
         </div>
         <div class="text-center mt-3">
-            <button class="btn btn-secondary btn-lg" id="button11">←</button>
-            <button class="btn btn-secondary btn-lg" id="button12">↓</button>
-            <button class="btn btn-secondary btn-lg" id="button13">→</button>
+            <button class="btn btn-secondary" id="button11">←</button>
+            <button class="btn btn-secondary" id="button12">↓</button>
+            <button class="btn btn-secondary" id="button13">→</button>
         </div>
     </div>
 
     <div id="map_ch" style="text-align: center; display: none">
-        <div id="txet_co"class="maintitle"></div>
+        <br> <br>
+        <h10><span class="maintitle" id="txet_co"></span></h10>
+        <br> <br>
         <div id="patternLock_map"></div>
     </div>
 

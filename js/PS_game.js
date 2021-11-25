@@ -1,4 +1,6 @@
-﻿const END_POINT = "https://script.google.com/macros/s/AKfycbyITmeqw_d-IdnAzsud5fzLHOt4A2wwOJ0CWa5Wxe7J-Fac6ZFOYRQuQbbzURLOc8hh/exec";
+﻿//その他のデータを保存
+const END_POINT = "https://script.google.com/macros/s/AKfycbz1V8AYiDD6EfNQGn4JniMZRcemAPQYRfn7_EaSKaYhGCki9XdR-am9aHe4z1_UWg3y/exec"
+//名前を保存
 const END_POINT1 = "https://script.google.com/macros/s/AKfycbwn8aLWcJLzGN4PmOFIZyLuw_vsr_WDqoOP-d4jnS_UDlzkxImLiTKQIHuSBOuPkI6g4w/exec"
 let start = new Date();
 //このウインドを閉じたときに動く
@@ -12,7 +14,6 @@ function game_Start() {
     sessionStorage.setItem('failure', JSON.stringify(0));
     let josn_data
     //GAS WebアプリのURL
-    //const END_POINT = "https://script.google.com/macros/s/AKfycbxY26C_z6TlaPzPI-cxNPZNbS0N36OPGb7m1W0oKoZRnS2wcnI4ttTW0dtDcDLqyPOk/exec";
     //読み書きするスプレッドシート（タブ）の番号
     const SHEET_NO = 1;
 
@@ -24,14 +25,16 @@ function game_Start() {
     }).done((result) => {        // 成功した時の処理
         josn_data = result//代入
     }).fail((error) => {  // 失敗した時の処理
-        alert('Error:' + JSON.stringify(error));
+        
     }).always((data) => {// 常にやる処理
         // do something
     });
     if (local_length < 4) {
         $(document).ajaxStop(function () {
 
+            console.log(josn_data)
             game_register(josn_data)
+
         });
     }
     else {
@@ -493,6 +496,7 @@ function game_map(num) {
         }
 
         gc.drawImage(character1, c, d, 32, 32, px * 32, py * 32, 32, 32);
+
     }
 
     //ダンジョン切り替えとクリア判定
@@ -523,23 +527,32 @@ function game_map(num) {
             document.querySelector("#game_map").style.display = "none";
         document.querySelector("#map_ch").style.display = "block";//表示
         document.getElementById("txet_co").textContent = "パスワードを使い、障害物を退かせ！";
-            let key = JSON.parse(localStorage.getItem('key'))
-            $('#patternLock_map').patternLock({
-                timeout: 1000,//表示時間(1000で1秒)
-                //showPatternLine: false,//ルートの非表示
-                drawEnd: function (data) {
-                    if (data == key) {
-                        //マップの変更
-                        gc.drawImage(map002, 0, 0, 32, 32, hitx * 32, hity * 32, 32, 32);
-                        localStorage.setItem('map1', JSON.stringify(map));
-                        sessionStorage.setItem('obstacle_now', JSON.stringify(0));
-                        document.querySelector("#game_map").style.display = "block";//表示
-                        document.querySelector("#map_ch").style.display = "none";//表示
-                        paint(c, d)
-                    }
+        const newbutton4 = document.getElementById('button4')//
+        newbutton4.onclick = function () {
+            a()
+        }
+        window.document.onkeydown = function (event) {
+            if (event.key === 'Enter') {
+                a()
+            }
+        }
 
-                }
-            });
+        function a() {
+            let data = document.getElementsByClassName('passwd4')[0].value
+            let key = JSON.parse(localStorage.getItem('key'))
+            document.getElementsByClassName('passwd4')[0].value = ""
+            if (data == key) {
+                //マップの変更
+                gc.drawImage(map002, 0, 0, 32, 32, hitx * 32, hity * 32, 32, 32);
+                localStorage.setItem('map1', JSON.stringify(map));
+                sessionStorage.setItem('obstacle_now', JSON.stringify(0));
+                document.querySelector("#game_map").style.display = "block";//表示
+                document.querySelector("#map_ch").style.display = "none";//表示
+                paint(c, d)
+                initialize()
+            }
+        }
+
     }
 }
 //ゲームマップ切り替えなどの機能（無限）
@@ -765,25 +778,32 @@ function game_random_map(num) {
     function obstacle(map_move, hitx, hity, c, d) {
         document.querySelector("#game_map").style.display = "none";
         document.querySelector("#map_ch").style.display = "block";//表示
-        let key = JSON.parse(localStorage.getItem('key'))
         document.getElementById("txet_co").textContent = "パスワードを使い、障害物を退かせ！";
-        $('#patternLock_map').patternLock({
-            timeout: 1000,//表示時間(1000で1秒)
-            //showPatternLine: false,//ルートの非表示
-            drawEnd: function (data) {
-                if (data == key) {
-                    //マップの変更
-                    gc.drawImage(map002, 0, 0, 32, 32, hitx * 32, hity * 32, 32, 32);
-
-                    localStorage.setItem('map1', JSON.stringify(map));
-                    sessionStorage.setItem('obstacle_now', JSON.stringify(0));
-                    document.querySelector("#game_map").style.display = "block";//表示
-                    document.querySelector("#map_ch").style.display = "none";//表示
-                    paint(c, d)
-                }
-
+        const newbutton4 = document.getElementById('button4')//
+        newbutton4.onclick = function () {
+            a()
+        }
+        window.document.onkeydown = function (event) {
+            if (event.key === 'Enter') {
+                a()
             }
-        });
+        }
+
+        function a() {
+            let data = document.getElementsByClassName('passwd4')[0].value
+            let key = JSON.parse(localStorage.getItem('key'))
+            document.getElementsByClassName('passwd4')[0].value = ""
+            if (data == key) {
+                //マップの変更
+                gc.drawImage(map002, 0, 0, 32, 32, hitx * 32, hity * 32, 32, 32);
+                localStorage.setItem('map1', JSON.stringify(map));
+                sessionStorage.setItem('obstacle_now', JSON.stringify(0));
+                document.querySelector("#game_map").style.display = "block";//表示
+                document.querySelector("#map_ch").style.display = "none";//表示
+                paint(c, d)
+                initialize()
+            }
+        }
     }
 }
 //戦闘の処理
@@ -1013,7 +1033,6 @@ function patternLockseve(data, a, name, Mp) {
 
 function seve_data(a) {
     //GAS WebアプリのURL
-    //const END_POINT = "https://script.google.com/macros/s/AKfycbxY26C_z6TlaPzPI-cxNPZNbS0N36OPGb7m1W0oKoZRnS2wcnI4ttTW0dtDcDLqyPOk/exec";
     //読み書きするスプレッドシート（タブ）の番号
     const SHEET_NO = 1;
     const loaddata = JSON.parse(localStorage.getItem('data'))
@@ -1065,7 +1084,6 @@ function seve_data(a) {
         }
     }
     catch (e) {
-        alert("error:" + e);
         return;
     }
     //POST送信
@@ -1079,7 +1097,7 @@ function seve_data(a) {
         //ajaxが終わると動く
         $(document).ajaxStop(function () {
 
-            setTimeout('window.close()');
+            //setTimeout('window.close()');
         });
     }
 

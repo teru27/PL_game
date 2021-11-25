@@ -1338,8 +1338,11 @@ function seve_data(a) {
     } else {
         var playtime_M = 0
     }
-
-    let playtime_S = Math.floor(Math.abs(play_time) / 1000)
+    if (Math.abs(play_time) / 1000 > 0) {
+        var playtime_S = Math.floor(Math.abs(play_time) / 1000)
+    } else {
+        var playtime_M = 0
+    }
 
     let play_time1 = playtime_H + "時間" + playtime_M + "分" + playtime_S + "秒"
     let today = Year + "/" + Month + "/" + date

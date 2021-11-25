@@ -101,8 +101,9 @@
     </div>
 
     <div id="game_map" style="text-align: center; display: none">
-        <br> <br>
-
+        <div style="text-align: end">
+            <button class="btn btn-success" onclick="game_choice()">選択画面に戻る</button>
+        </div>
         <canvas id="test" width="550" height="480" class="example"></canvas>
         <img id="map001" src="img/EDGE1.png" style="display:none" />
         <img id="map002" src="img/EDGE2.png" style="display:none" />
@@ -118,8 +119,13 @@
     </div>
 
     <div id="map_ch" style="text-align: center; display: none">
-        <div id="txet_co"class="maintitle"></div>
-        <div id="patternLock_map"></div>
+        <br> <br>
+        <h10><span class="maintitle" id="txet_co"></span></h10>
+        <br> <br>
+        <div class="form-group1">
+            パスワード：<input type="password" class="passwd4" style="width: 200px; height: 30px;" onkeyup="setPasswordLevel(this.value);">
+        </div>
+        <button id="button4" class="btn btn-warning">退かす</button>
     </div>
 
     <div id="map" style="text-align: center; display: none">
