@@ -1,0 +1,124 @@
+﻿ <!DOCTYPE html>
+<html lang="ja"onload="isSmartPhone()">
+
+<head>
+    <meta http-equiv="content-type" charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href='http://fonts.googleapis.com/css?family=Vidaloka' rel='stylesheet' type='text/css'>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <!-- jQueryの読込 -->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <!-- Pattern Lockの読込 ... （1） -->
+    <script src="js/jquery.patternlock.js"></script>
+    <script src="js/anime.min.js"></script>
+    <script src="js/random_map.js"></script>
+    <script src="js/PL.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/patternLock.css" />
+    <title>game</title>
+</head>
+
+<body>
+
+    <div id="start" style="text-align: center;">
+        <br> <br>
+        <h10><span class="maintitle">Pattern Lockアドベンチャー</span></h10>
+        <br> <br>
+        <button class="btn btn-primary btn-lg" onclick="game_Start()">スタート</button>
+        <button type="button" class="btn btn-primary" onclick="alldelete(); " id="button">全削除</button>
+
+    </div>
+
+    <div id="register" style="text-align: center; display: none">
+        <br> <br>
+        <h10><span class="maintitle">初期登録</span></h10>
+        <br> <br>
+        <div id="register_Strength">パタンロックの強度は</div>
+        <div class="code" style="width: 50%;">
+            <div class="progress">
+                <div class="progress-bar progress-bar-striped progress-bar-animated" id="pgss9" style="width: 0%;"></div>
+            </div>
+        </div>
+        <br><br>
+        <div id="patternLock_register"></div>
+        <br> <br>
+        <input class="coment" type="text" id="textbox" style="width: 510px;" placeholder="ゲーム内で使用する名前を入力してください">
+        <br> <br>
+        <button id="button1" class="btn btn-primary">登録完了</button>
+    </div>
+
+    <div id="re_register" style="text-align: center; display: none">
+        <br> <br>
+        <h10><span class="maintitle">再登録</span></h10>
+        <br><br>
+        <div id="re_register_Strength">パタンロックの強度は</div>
+        <div class="code" style="width: 50%;">
+            <div class="progress">
+                <div class="progress-bar progress-bar-striped progress-bar-animated" id="pgss10" value="0" style="width: 0%;"></div>
+            </div>
+        </div>
+
+        <div id="patternLock_re_register"></div>
+        <div class="btn-group btn-group-lg">
+
+            <button onclick="game_choice()" class="btn btn-primary">戻る</button>
+            <button id="button2" class="btn btn-primary">登録完了</button>
+        </div>
+    </div>
+
+    <div id="re_login" style="text-align: center; display: none">
+        <br> <br>
+        <h10><span class="maintitle">再登録</span></h10>
+        <br><br>
+        <div id="re_register_Strength">パタンロックの強度は</div>
+        <div class="code" style="width: 50%;">
+            <div class="progress">
+                <div class="progress-bar progress-bar-striped progress-bar-animated" id="pgss11" value="0" style="width: 0%;"></div>
+            </div>
+        </div>
+
+        <div id="patternLock_re_login"></div>
+
+        <button id="button3" class="btn btn-danger">再登録</button>
+    </div>
+
+    <div id="login" style="text-align: center; display: none">
+        <h10><span class="maintitle">ログイン画面</span></h10>
+        <div id="patternLock_login"></div>
+        <button onclick=" re_login()" class="btn btn-danger">再登録</button>
+    </div>
+
+    <div id="try_login" style="text-align: center; display: none">
+        <h10><span class="maintitle"></span></h10>
+        <div id="patternLock_try_login"></div>
+        <button onclick="game_choice()" class="btn btn-primary">戻る</button>
+    </div>
+
+    <div id="choice" style="text-align: center; display: none">
+        <br> <br>
+        <h10><span class="maintitle">選択画面</span></h10>
+        <br> <br>
+
+             <div class="btn-group-vertical">
+
+                 <br> <br>
+                 <button onclick="game_re_register()" class="btn btn-danger">再登録</button>
+                 <br> <br>
+                 <button onclick="try_login()" class="btn btn-danger">試す</button>
+                 <br> <br>
+                 <button onclick="game_end()" class="btn btn-success">ゲーム終了</button>
+             </div>
+
+    </div>
+
+
+    <div id="end" style="text-align: center; display: none">
+        <br> <br>
+        <h10><span class="maintitle">終了します</span></h10>
+        <br> <br>
+    </div>
+
+</body>
+</html>
+
