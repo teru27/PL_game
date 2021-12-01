@@ -130,8 +130,13 @@
                 }
             }
         }
-
+        let existence = JSON.parse(localStorage.getItem('random_map_make'))
         console.log(this.box)
+        if (existence !=0 ) {
+            let random_map_clear = JSON.parse(localStorage.getItem('random_map_clear'))
+            random_map_clear = random_map_clear + 1
+            localStorage.setItem('random_map_clear', JSON.stringify(random_map_clear));
+        }
         localStorage.setItem('random_map_make', JSON.stringify(this.box));
     }
 

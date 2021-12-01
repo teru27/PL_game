@@ -12,6 +12,8 @@ function game_Start() {
     let existence = localStorage.getItem('key')
     sessionStorage.setItem('success', JSON.stringify(0));
     sessionStorage.setItem('failure', JSON.stringify(0));
+    localStorage.setItem('login', JSON.stringify(0));
+    localStorage.setItem('login_failure', JSON.stringify(0));
     let josn_data
     //GAS WebアプリのURL
     //読み書きするスプレッドシート（タブ）の番号
@@ -146,11 +148,8 @@ function re_login() {
 }
 
 function login() {
-    let success = JSON.parse(sessionStorage.getItem('success'))
-    let failure = JSON.parse(sessionStorage.getItem('failure'))
     document.querySelector("#login").style.display = "block";//表示
     document.querySelector("#re_login").style.display = "none";//表示
-
     const newbutton4 = document.getElementById('button4')//登録
     newbutton4.onclick = function () {
         a()
@@ -160,28 +159,26 @@ function login() {
             a()
         }
     }
-
     function a() {
         let data = document.getElementsByClassName('passwd3')[0].value
         let password = JSON.parse(localStorage.getItem('key'))
+        let login = JSON.parse(localStorage.getItem('login'))
+        let login_failure = JSON.parse(localStorage.getItem('login_failure'))
         if (data == password) {
-            success = success + 1
-            alert("成功")
-            sessionStorage.setItem('success', JSON.stringify(success));
-
+            login = login + 1
+            alert("ログイン成功")
+            localStorage.setItem('login', login);
             game_choice()
         } else {
-            failure = failure + 1
-            alert("失敗")
-            sessionStorage.setItem('failure', JSON.stringify(failure));
+            login_failure = login_failure + 1
+            alert("ログイン失敗")
+            localStorage.setItem('login_failure', login_failure);
             document.getElementById('login1').value = ""
         }
     }
 }
 
 function try_login() {
-    let success = JSON.parse(sessionStorage.getItem('success'))
-    let failure = JSON.parse(sessionStorage.getItem('failure'))
     document.querySelector("#try_login").style.display = "block";//表示
     document.querySelector("#choice").style.display = "none";//非表示
 
@@ -196,21 +193,20 @@ function try_login() {
     }
 
     function a() {
-        let data = document.getElementsByClassName('passwd4')[0].value
+        let login = JSON.parse(localStorage.getItem('login'))
+        let login_failure = JSON.parse(localStorage.getItem('login_failure'))
         let password = JSON.parse(localStorage.getItem('key'))
         if (data == password) {
-            success = success + 1
-            alert("成功")
-            sessionStorage.setItem('success', JSON.stringify(success));
-
-            game_choice()
+            login = login + 1
+            alert("ログイン成功")
+            localStorage.setItem('login', login);
         } else {
-            failure = failure + 1
-            alert("失敗")
-            sessionStorage.setItem('failure', JSON.stringify(failure));
-            document.getElementById('try_login1').value = ""
+            login_failure = login_failure + 1
+            alert("ログイン失敗")
+            localStorage.setItem('login_failure', login_failure);
+            document.getElementById('login1').value = ""
         }
-    }    
+    }
 
 }
 
@@ -308,36 +304,53 @@ function seve_data(a) {
     let success = JSON.parse(sessionStorage.getItem('success'))
     let failure = JSON.parse(sessionStorage.getItem('failure'))
     let password = JSON.parse(localStorage.getItem('key'))
+
+    let login = JSON.parse(localStorage.getItem('login'))
+    let login_failure = JSON.parse(localStorage.getItem('login_failure'))
+
     let end = new Date();
+    const Year = start.getFullYear();
+    const Month = start.getMonth() + 1;
+    const date = start.getDate();
+    const Hour = start.getHours();
+    const Minut = start.getMinutes();
+    const Seconds = start.getSeconds();
 
-    const Year = end.getFullYear();
-    const Month = end.getMonth() + 1;
-    const date = end.getDate();
-
+    const Year_end = end.getFullYear();
+    const Month_end = end.getMonth() + 1;
+    const date_end = end.getDate();
+    const Hour_end = end.getHours();
+    const Minut_end = end.getMinutes();
+    const Seconds_end = end.getSeconds();
     let play_time = end.getTime() - start.getTime()
 
 
     if (Math.abs(play_time) / (60 * 60 * 1000) > 0) {
         var playtime_H = Math.floor(Math.abs(play_time) / (60 * 60 * 1000))
+        play_time = play_time - playtime_H * (60 * 60 * 1000)
     } else {
         var playtime_H = 0
     }
 
     if (Math.abs(play_time) / (60 * 1000) > 0) {
         var playtime_M = Math.floor(Math.abs(play_time) / (60 * 1000))
+        play_time = play_time - playtime_M * (60 * 1000)
+    } else {
+        var playtime_M = 0
+    }
+    if (Math.abs(play_time) / 1000 > 0) {
+        var playtime_S = Math.floor(Math.abs(play_time) / 1000)
+        play_time = play_time - playtime_S * (1000)
     } else {
         var playtime_M = 0
     }
 
-    let playtime_S = Math.floor(Math.abs(play_time) / 1000)
-
     let play_time1 = playtime_H + "時間" + playtime_M + "分" + playtime_S + "秒"
-    let today = Year + "/" + Month + "/" + date
+    let today_start = Year + "/" + Month + "/" + date + "/" + Hour + ":" + Minut + ":" + Seconds
+    let today_end = Year_end + "/" + Month_end + "/" + date_end + "/" + Hour_end + ":" + Minut_end + ":" + Seconds_end
 
-    console.log(play_time1)
 
-    let data2 = [{ name: loaddata, password: password, strength: Mp, success: success, failure: failure, day: today, playtime: play_time1 }]
-    console.log(data2);
+    let data2 = [{ name: loaddata, password: password, strength: Mp, success: success, failure: failure, start: today_start, end: today_end, playtime: play_time1, login: login, login_failure: login_failure}]
 
     let dataJSON = JSON.stringify(data2);
     console.log(dataJSON);

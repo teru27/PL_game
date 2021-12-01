@@ -5,12 +5,22 @@ let start = new Date();
 $(window).on('beforeunload', function (event) {
     seve_data()
 });
+//回転されたら動く
+window.addEventListener("orientationchange", () => {
+    let angle = screen && screen.orientation && screen.orientation.angle//端末の向きを取る縦なら0、横はOSによって変わる
+    if (angle !== 0) {
+        alert('本システムは横向きには対応していません');
+    }
+    
+});
 
 function game_Start() {
-    
-    let local_length = localStorage.length//ローカルストレージの内の個数
+    let existence = localStorage.getItem('key')
     sessionStorage.setItem('success', JSON.stringify(0));
     sessionStorage.setItem('failure', JSON.stringify(0));
+    localStorage.setItem('login', JSON.stringify(0));
+    localStorage.setItem('login_failure', JSON.stringify(0));
+    localStorage.setItem('random_map_clear', JSON.stringify(0));
     let josn_data
     //GAS WebアプリのURL
     //const END_POINT = "https://script.google.com/macros/s/AKfycbxY26C_z6TlaPzPI-cxNPZNbS0N36OPGb7m1W0oKoZRnS2wcnI4ttTW0dtDcDLqyPOk/exec";
@@ -29,14 +39,14 @@ function game_Start() {
     }).always((data) => {// 常にやる処理
         // do something
     });
-    if (local_length < 4) {
+    if (existence == null) {
         $(document).ajaxStop(function () {
 
             game_register(josn_data)
         });
     }
     else {
-        game_choice()
+        login()
     }
     document.querySelector("#start").style.display = "none";//非表示
 }
@@ -105,6 +115,76 @@ function game_re_register() {
     });
 
 }
+//パスワードを忘れた時の登録
+function re_login() {
+    document.querySelector("#re_login").style.display = "block";//表示
+    document.querySelector("#login").style.display = "none";//非表示
+    const newbutton3 = document.getElementById('button3')//登録
+    $('#patternLock_re_login').patternLock({
+        timeout: 1000,//表示時間(1000で1秒)
+        //showPatternLine: false,//ルートの非表示
+        drawEnd: function (data) {
+            let Mp = patten_strength(data)
+            newbutton3.onclick = function () {
+                localStorage.setItem('key', JSON.stringify(data))
+                localStorage.setItem('Mp', JSON.stringify(Mp))
+                login()
+            }
+        }
+    });
+}
+//ログインシステム
+function login() {
+    document.querySelector("#login").style.display = "block";//表示
+    document.querySelector("#re_login").style.display = "none";//表示
+    const login_button = document.getElementById('login_button')//登録
+    $('#patternLock_login').patternLock({
+        timeout: 1000,//表示時間(1000で1秒)
+        //showPatternLine: false,//ルートの非表示
+        drawEnd: function (data) {
+            login_button.onclick = function () {
+                let login = JSON.parse(localStorage.getItem('login'))
+                let login_failure = JSON.parse(localStorage.getItem('login_failure'))
+                let password = JSON.parse(localStorage.getItem('key'))
+                if (data == password) {
+                    login = login + 1
+                    alert("ログイン成功")
+                    localStorage.setItem('login', login);
+                    game_choice()
+                } else {
+                    login_failure = login_failure + 1
+                    alert("ログイン失敗")
+                    localStorage.setItem('login_failure', login_failure);
+                }
+            }
+            
+        }
+    });
+}
+//
+function try_login() {
+    document.querySelector("#try_login").style.display = "block";//表示
+    document.querySelector("#choice").style.display = "none";//非表示
+    $('#patternLock_try_login').patternLock({
+        timeout: 1000,//表示時間(1000で1秒)
+        //showPatternLine: false,//ルートの非表示
+        drawEnd: function (data) {
+            let login = JSON.parse(localStorage.getItem('login'))
+            let login_failure = JSON.parse(localStorage.getItem('login_failure'))
+            let password = JSON.parse(localStorage.getItem('key'))
+            if (data == password) {
+                login = login + 1
+                alert("ログイン成功")
+                localStorage.setItem('login', login);
+                game_choice()
+            } else {
+                login_failure = login_failure + 1
+                alert("ログイン失敗")
+                localStorage.setItem('login_failure', login_failure);
+            }
+        }
+    });
+}
 
 //ダンジョン選択
 function game_choice() {
@@ -139,7 +219,9 @@ function game_choice() {
         }
     }
     //document.querySelector("h11").textContent = "クリア"
-
+    document.querySelector("#re_register").style.display = "none";//非表示
+    document.querySelector("#try_login").style.display = "none";//表示
+    document.querySelector("#login").style.display = "none";//非表示
     document.querySelector("#register").style.display = "none";//非表示
     document.querySelector("#battle").style.display = "none";//非表示
     document.querySelector("#game_map").style.display = "none"//非表示
@@ -185,7 +267,7 @@ function game_map(num) {
             [0, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 1, 1, 0],
             [0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0],
             [1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0],
-            [1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0],
+            [1, 0, 2, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0],
             [0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1],
             [0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 1],
             [0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0],
@@ -269,10 +351,10 @@ function game_map(num) {
             [0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 1],
             [0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 2, 1, 3]],
 
-            [[1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 1, 3],
-            [1, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 1, 0, 0, 1, 0],
+            [[1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 2, 1, 0, 0, 1, 3],
+            [1, 0, 0, 0, 0, 1, 1, 2, 0, 1, 0, 1, 0, 0, 1, 0],
             [1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 1, 1, 0, 1, 1],
-            [1, 1, 0, 0, 1, 0, 0, 1, 1, 1, 0, 0, 1, 0, 1, 1],
+            [1, 1, 0, 0, 1, 0, 0, 1, 1, 1, 0, 0, 1, 2, 1, 1],
             [0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1],
             [0, 1, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 1],
             [0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1],
@@ -443,8 +525,6 @@ function game_map(num) {
                 }
                 break;
         }
-        console.log(px + "," + py)
-
         if (n < 0.1) {
             //プレイヤーの位置を更新
             //localStorage.setItem('map1', JSON.stringify(map));
@@ -469,14 +549,16 @@ function game_map(num) {
         for (var y = 0; y < map.length; y++) {
             for (var x = 0; x < map[y].length; x++) {
                 if (map[y][x] == 0) {
-                    gc.drawImage(map002, 5 * 32, 32 * 40, 32, 32, x * 32, y * 32, 32, 32);
+                    gc.drawImage(map002, 0, 0, 32, 32, x * 32, y * 32, 32, 32);
+                    gc.drawImage(map003, 0, 0, 32, 32, x * 32, y * 32, 32, 32);
                 }
                 else if (map[y][x] == 1) {
                     gc.drawImage(map002, 0, 0, 32, 32, x * 32, y * 32, 32, 32);
 
 
                 } else if (map[y][x] == 2) {
-                    gc.drawImage(map002, 4 * 32, 32 * 40, 32, 32, x * 32, y * 32, 32, 32);
+                    gc.drawImage(map002, 0, 0, 32, 32, x * 32, y * 32, 32, 32);
+                    gc.drawImage(map004, 0, 0, 32, 32, x * 32, y * 32, 32, 32);
 
                 } else if (map[y][x] == 3) {
                     gc.drawImage(map001, 0, 0, 32, 32, x * 32, y * 32, 32, 32);
@@ -557,7 +639,6 @@ function game_random_map(num) {
         paint();
     }
     var map
-    console.log(map_change)
     function map_change_load (){
         var maze = new Maze();
         maze.create({ algorithm: Maze.ALGO.STICK });
@@ -699,14 +780,12 @@ function game_random_map(num) {
                 }
                 break;
         }
-        console.log(px + "," + py)
-
         if (n < 0.1) {
             //プレイヤーの位置を更新
             //localStorage.setItem('map1', JSON.stringify(map));
             sessionStorage.setItem('battle_now', JSON.stringify(1));
             game_battle(num)
-            console.log("接敵")
+
         }
         if (ch == 1) {
             sessionStorage.setItem('px', JSON.stringify(1));
@@ -730,9 +809,9 @@ function game_random_map(num) {
                 else if (map[y][x] == 1) {
                     gc.drawImage(map002, 0, 0, 32, 32, x * 32, y * 32, 32, 32);
 
-
                 } else if (map[y][x] == 2) {
-                    gc.drawImage(map002, 4 * 32, 32 * 40, 32, 32, x * 32, y * 32, 32, 32);
+                    gc.drawImage(map002, 0, 0, 32, 32, x * 32, y * 32, 32, 32);
+                    gc.drawImage(map004, 0, 0, 32, 32, x * 32, y * 32, 32, 32);
 
                 } else if (map[y][x] == 3) {
                     gc.drawImage(map001, 0, 0, 32, 32, x * 32, y * 32, 32, 32);
@@ -1117,91 +1196,69 @@ function patten_strength(data, a, name) {
             y = origin[PL_array[i + 1] - 1].y - origin[PL_array[i] - 1].y
             if (x == 0 && y == 1 || x == 0 && y == -1) {
                 Np_array.push('1');
-                Np_array_m.push('横');
             }
             else if (x == -1 && y == 0) {
                 Np_array.push('2');
-                Np_array_m.push('上');
             }
             else if (x == 1 && y == 0) {
                 Np_array.push('3');
-                Np_array_m.push('下');
             }
             else if (x == 1 && y == 1) {
                 Np_array.push('4');
-                Np_array_m.push('右下');
             }
             else if (x == -1 && y == 1) {
                 Np_array.push('5');
-                Np_array_m.push('右上');
             }
             else if (x == 1 && y == -1) {
                 Np_array.push('6');
-                Np_array_m.push('左下');
             }
             else if (x == -1 && y == -1) {
                 Np_array.push('7');
-                Np_array_m.push('左上');
             }
             else if (x == 0 && y == 2 || x == 0 && y == -2) {
                 Np_array.push('8');
-                Np_array_m.push('長い横');
             }
             else if (x == -2 && y == 0) {
                 Np_array.push('9');
-                Np_array_m.push('長い上');
             }
             else if (x == 2 && y == 0) {
                 Np_array.push('a');
-                Np_array_m.push('長い下');
             }
             else if (x == 2 && y == 2) {
                 Np_array.push('b');
-                Np_array_m.push('長い右下y');
             }
             else if (x == -2 && y == 2) {
                 Np_array.push('c');
-                Np_array_m.push('長い右上y');
             }
             else if (x == 2 && y == -2) {
                 Np_array.push('d');
-                Np_array_m.push('長い左下y');
             }
             else if (x == -2 && y == -2) {
                 Np_array.push('e');
-                Np_array_m.push('長い左上y');
             }
             else if (x == 2 && y == 1) {
                 Np_array.push('f');
-                Np_array_m.push('真ん中右下x');
             }
             else if (x == -2 && y == 1) {
                 Np_array.push('g');
-                Np_array_m.push('真ん中右上x');
             }
             else if (x == 2 && y == -1) {
                 Np_array.push('h');
-                Np_array_m.push('真ん中左下x');
             }
             else if (x == -2 && y == -1) {
                 Np_array.push('i');
-                Np_array_m.push('真ん中左上x');
             }
             else if (x == 1 && y == 2) {
                 Np_array.push('j');
-                Np_array_m.push('真ん中右下y');
             }
             else if (x == -1 && y == 2) {
                 Np_array.push('k');
-                Np_array_m.push('真ん中右上y');
             }
             else if (x == 1 && y == -2) {
                 Np_array.push('m');
-                Np_array_m.push('真ん中左下y');
             }
             else if (x == -1 && y == -2) {
                 Np_array.push('n');
-                Np_array_m.push('真ん中左上y');
             }
         }
         else {
@@ -1262,6 +1319,7 @@ function patten_strength(data, a, name) {
     output1.textContent = "パタンロックの強度は" + meter + "です"
     $("#pgss10").css({ 'width': Mp * 100 + "%" });
     $("#pgss9").css({ 'width': Mp * 100 + "%" });
+    $("#pgss11").css({ 'width': Mp * 100 + "%" });
     console.log(Mp)
 
     if (!isFinite(Mp)) {
@@ -1305,7 +1363,6 @@ function patternLockseve(data, a, name, Mp) {
         game_choice();
 
     }
-
 }
 
 function seve_data(a) {
@@ -1318,43 +1375,57 @@ function seve_data(a) {
     let success = JSON.parse(sessionStorage.getItem('success'))
     let failure = JSON.parse(sessionStorage.getItem('failure'))
     let password = JSON.parse(localStorage.getItem('key'))
+
+    let login = JSON.parse(localStorage.getItem('login'))
+    let login_failure = JSON.parse(localStorage.getItem('login_failure'))
+    let game_clear = JSON.parse(localStorage.getItem('num'))
+    let random_map_clear = JSON.parse(localStorage.getItem('random_map_clear'))
+
     let end = new Date();
+    const Year = start.getFullYear();
+    const Month = start.getMonth() + 1;
+    const date = start.getDate();
+    const Hour = start.getHours();
+    const Minut = start.getMinutes();
+    const Seconds = start.getSeconds();
 
-    const Year = end.getFullYear();
-    const Month = end.getMonth() + 1;
-    const date = end.getDate();
-
+    const Year_end = end.getFullYear();
+    const Month_end = end.getMonth() + 1;
+    const date_end = end.getDate();
+    const Hour_end = end.getHours();
+    const Minut_end = end.getMinutes();
+    const Seconds_end = end.getSeconds();
     let play_time = end.getTime() - start.getTime()
 
 
     if (Math.abs(play_time) / (60 * 60 * 1000) > 0) {
         var playtime_H = Math.floor(Math.abs(play_time) / (60 * 60 * 1000))
+        play_time = play_time - playtime_H * (60 * 60 * 1000)
     } else {
         var playtime_H = 0
     }
 
     if (Math.abs(play_time) / (60 * 1000) > 0) {
         var playtime_M = Math.floor(Math.abs(play_time) / (60 * 1000))
+        play_time = play_time - playtime_M * (60 * 1000)
     } else {
         var playtime_M = 0
     }
     if (Math.abs(play_time) / 1000 > 0) {
         var playtime_S = Math.floor(Math.abs(play_time) / 1000)
+        play_time = play_time - playtime_S * (1000)
     } else {
         var playtime_M = 0
     }
 
     let play_time1 = playtime_H + "時間" + playtime_M + "分" + playtime_S + "秒"
-    let today = Year + "/" + Month + "/" + date
+    let today_start = Year + "/" + Month + "/" + date + "/" + Hour + ":" + Minut + ":" + Seconds
+    let today_end = Year_end + "/" + Month_end + "/" + date_end + "/" + Hour_end + ":" + Minut_end + ":" + Seconds_end
 
-    console.log(play_time1)
 
-    let data2 = [{ name: loaddata, password: password, strength: Mp, success: success, failure: failure, day: today, playtime: play_time1 }]
-    console.log(data2);
+    let data2 = [{ name: loaddata, password: password, strength: Mp, success: success, failure: failure, start: today_start, end: today_end, playtime: play_time1, login: login, login_failure: login_failure, game_clear: game_clear, random_map_clear: random_map_clear}]
 
     let dataJSON = JSON.stringify(data2);
-    console.log(dataJSON);
-
     //データがJSONかどうかのチェック
     try {
         const checkJSON = JSON.parse(dataJSON);

@@ -9,9 +9,11 @@ $(window).on('beforeunload', function (event) {
 });
 
 function game_Start() {
-    let local_length = localStorage.length//ローカルストレージの内の個数
+    let existence = localStorage.getItem('key')
     sessionStorage.setItem('success', JSON.stringify(0));
     sessionStorage.setItem('failure', JSON.stringify(0));
+    localStorage.setItem('login', JSON.stringify(0));
+    localStorage.setItem('login_failure', JSON.stringify(0));
     let josn_data
     //GAS WebアプリのURL
     //読み書きするスプレッドシート（タブ）の番号
@@ -29,16 +31,14 @@ function game_Start() {
     }).always((data) => {// 常にやる処理
         // do something
     });
-    if (local_length < 4) {
+    if (existence == null) {
         $(document).ajaxStop(function () {
 
-            console.log(josn_data)
             game_register(josn_data)
-
         });
     }
     else {
-        game_choice()
+        login()
     }
     document.querySelector("#start").style.display = "none";//非表示
 }
@@ -113,6 +113,102 @@ function game_re_register() {
     }
 }
 
+function re_login() {
+    document.querySelector("#re_login").style.display = "block";//表示
+    document.querySelector("#login").style.display = "none";//非表示
+    const newbutton3 = document.getElementById('button3')//登録
+    newbutton3.onclick = function () {
+        a()
+    }
+
+    window.document.onkeydown = function (event) {
+        if (event.key === 'Enter') {
+            a()
+        }
+    }
+
+    function a() {
+        let data = document.getElementsByClassName('passwd2')[0].value
+        let Mp = patten_strength(data)
+        if (data == " " * data.length) {
+            alert('文字を入力してください')
+        }
+        //ここで文字数制限をしている
+        else if (data.length > 36) {
+            alert('36文字以内にしてください')
+            document.getElementById('textbox').value = ""//ここでテキストボックスの中身を消す
+        } else {
+            localStorage.setItem('key', JSON.stringify(data))
+            localStorage.setItem('Mp', JSON.stringify(Mp))
+            login()
+        }
+    }
+}
+
+function login() {
+    document.querySelector("#login").style.display = "block";//表示
+    document.querySelector("#re_login").style.display = "none";//表示
+    const newbutton4 = document.getElementById('button4')//登録
+    newbutton4.onclick = function () {
+        a()
+    }
+    window.document.onkeydown = function (event) {
+        if (event.key === 'Enter') {
+            a()
+        }
+    }
+    function a() {
+        let data = document.getElementsByClassName('passwd3')[0].value
+        let password = JSON.parse(localStorage.getItem('key'))
+        let login = JSON.parse(localStorage.getItem('login'))
+        let login_failure = JSON.parse(localStorage.getItem('login_failure'))
+        if (data == password) {
+            login = login + 1
+            alert("ログイン成功")
+            localStorage.setItem('login', login);
+            game_choice()
+        } else {
+            login_failure = login_failure + 1
+            alert("ログイン失敗")
+            localStorage.setItem('login_failure', login_failure);
+            document.getElementById('login1').value = ""
+        }
+    }
+}
+
+function try_login() {
+    document.querySelector("#try_login").style.display = "block";//表示
+    document.querySelector("#choice").style.display = "none";//非表示
+
+    const newbutton5 = document.getElementById('button3')//登録
+    newbutton5.onclick = function () {
+        a()
+    }
+    window.document.onkeydown = function (event) {
+        if (event.key === 'Enter') {
+            a()
+        }
+    }
+
+    function a() {
+        let login = JSON.parse(localStorage.getItem('login'))
+        let login_failure = JSON.parse(localStorage.getItem('login_failure'))
+        let password = JSON.parse(localStorage.getItem('key'))
+        if (data == password) {
+            login = login + 1
+            alert("ログイン成功")
+            localStorage.setItem('login', login);
+            game_choice()
+        } else {
+            login_failure = login_failure + 1
+            alert("ログイン失敗")
+            localStorage.setItem('login_failure', login_failure);
+            document.getElementById('login1').value = ""
+        }
+    }
+
+}
+
 //ダンジョン選択
 function game_choice() {
    
@@ -146,7 +242,8 @@ function game_choice() {
         }
     }
     //document.querySelector("h11").textContent = "クリア"
-
+    document.querySelector("#try_login").style.display = "none";//表示
+    document.querySelector("#login").style.display = "none";//非表示
     document.querySelector("#register").style.display = "none";//非表示
     document.querySelector("#battle").style.display = "none";//非表示
     document.querySelector("#game_map").style.display = "none"//非表示
@@ -1040,36 +1137,54 @@ function seve_data(a) {
     let success = JSON.parse(sessionStorage.getItem('success'))
     let failure = JSON.parse(sessionStorage.getItem('failure'))
     let password = JSON.parse(localStorage.getItem('key'))
+
+    let login = JSON.parse(localStorage.getItem('login'))
+    let login_failure = JSON.parse(localStorage.getItem('login_failure'))
+    let game_clear = JSON.parse(localStorage.getItem('num'))
+
     let end = new Date();
+    const Year = start.getFullYear();
+    const Month = start.getMonth() + 1;
+    const date = start.getDate();
+    const Hour = start.getHours();
+    const Minut = start.getMinutes();
+    const Seconds = start.getSeconds();
 
-    const Year = end.getFullYear();
-    const Month = end.getMonth() + 1;
-    const date = end.getDate();
-
+    const Year_end = end.getFullYear();
+    const Month_end = end.getMonth() + 1;
+    const date_end = end.getDate();
+    const Hour_end = end.getHours();
+    const Minut_end = end.getMinutes();
+    const Seconds_end = end.getSeconds();
     let play_time = end.getTime() - start.getTime()
 
 
     if (Math.abs(play_time) / (60 * 60 * 1000) > 0) {
         var playtime_H = Math.floor(Math.abs(play_time) / (60 * 60 * 1000))
+        play_time = play_time - playtime_H * (60 * 60 * 1000)
     } else {
         var playtime_H = 0
     }
 
     if (Math.abs(play_time) / (60 * 1000) > 0) {
         var playtime_M = Math.floor(Math.abs(play_time) / (60 * 1000))
+        play_time = play_time - playtime_M * (60 * 1000)
+    } else {
+        var playtime_M = 0
+    }
+    if (Math.abs(play_time) / 1000 > 0) {
+        var playtime_S = Math.floor(Math.abs(play_time) / 1000)
+        play_time = play_time - playtime_S * (1000)
     } else {
         var playtime_M = 0
     }
 
-    let playtime_S = Math.floor(Math.abs(play_time) / 1000)
-
     let play_time1 = playtime_H + "時間" + playtime_M + "分" + playtime_S + "秒"
-    let today = Year + "/" + Month + "/" + date
+    let today_start = Year + "/" + Month + "/" + date + "/" + Hour + ":" + Minut + ":" + Seconds
+    let today_end = Year_end + "/" + Month_end + "/" + date_end + "/" + Hour_end + ":" + Minut_end + ":" + Seconds_end
 
-    console.log(play_time1)
 
-    let data2 = [{ name: loaddata, password: password, strength: Mp, success: success, failure: failure, day: today, playtime: play_time1 }]
-    console.log(data2);
+    let data2 = [{ name: loaddata, password: password, strength: Mp, success: success, failure: failure, start: today_start, end: today_end, playtime: play_time1, login: login, login_failure: login_failure, game_clear: game_clear, random_map_clear: random_map_clear }]
 
     let dataJSON = JSON.stringify(data2);
     console.log(dataJSON);

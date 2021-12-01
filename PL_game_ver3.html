@@ -68,49 +68,82 @@
 
 
     </div>
+    <div id="re_login" style="text-align: center; display: none">
+        <br> <br>
+        <h10><span class="maintitle">再登録</span></h10>
+        <br><br>
+        <div id="re_register_Strength">パタンロックの強度は</div>
+        <div class="code" style="width: 50%;">
+            <div class="progress">
+                <div class="progress-bar progress-bar-striped progress-bar-animated" id="pgss11" value="0" style="width: 0%;"></div>
+            </div>
+        </div>
 
+        <div id="patternLock_re_login"></div>
+
+        <button id="button3" class="btn btn-danger">再登録</button>
+    </div>
+
+    <div id="login" style="text-align: center; display: none">
+        <h10><span class="maintitle">ログイン画面</span></h10>
+        <div id="patternLock_login"></div>
+        <button class="btn btn-primary"id="login_button">ログイン</button>
+        <button onclick=" re_login()" class="btn btn-danger">忘れた</button>
+    </div>
+
+    <div id="try_login" style="text-align: center; display: none">
+        <h10><span class="maintitle"></span></h10>
+        <div id="patternLock_try_login"></div>
+        <button onclick="game_choice()" class="btn btn-primary">戻る</button>
+    </div>
     <div id="choice" style="text-align: center; display: none">
         <br> <br>
         <h10><span class="maintitle">ダンジョン選択</span></h10>
         <br> <br>
 
-             <div class="btn-group-vertical">
+        <div class="btn-group-vertical">
 
-                 <br> <br>
-                 <button onclick="game_re_register()" class="btn btn-danger">再登録</button>
-                 <br> <br>
-                 <button type="button" onclick="game_map(1)" class="btn btn-primary">ステージ1</button>
+            <br> <br>
+            <button onclick="game_re_register()" class="btn btn-danger">再登録</button>
+            <br> <br>
+            <button type="button" onclick="game_map(1)" class="btn btn-primary">ステージ1</button>
 
-                 <h11 class="btn"></h11>
+            <h11 class="btn"></h11>
 
-                 <button onclick="game_map(2)" class="btn btn-primary">ステージ2</button>
-                 <h12 class="btn"></h12>
+            <button onclick="game_map(2)" class="btn btn-primary">ステージ2</button>
+            <h12 class="btn"></h12>
 
-                 <button onclick="game_map(3)" class="btn btn-primary">ステージ3</button>
-                 <h13 class="btn"></h13>
-                 <button onclick="game_random_map(4)" class="btn btn-primary">無限</button>
-                 <h14 class="btn"></h14>
-                 <button onclick="game_end()" class="btn btn-success">ゲーム終了</button>
-             </div>
+            <button onclick="game_map(3)" class="btn btn-primary">ステージ3</button>
+            <h13 class="btn"></h13>
+            <button onclick="game_random_map(4)" class="btn btn-primary">無限</button>
+            <h14 class="btn"></h14>
+            <button onclick="game_end()" class="btn btn-success">ゲーム終了</button>
+        </div>
 
     </div>
 
     <div id="game_map" style="text-align: center; display: none">
         <div style="text-align: end">
-            <button class="btn btn-success"onclick="game_choice()">選択画面に戻る</button>
+            <button class="btn btn-success" onclick="game_choice()">選択画面に戻る</button>
         </div>
         <canvas id="test" width="550" height="480" class="example"></canvas>
         <img id="map001" src="img/EDGE1.png" style="display:none" />
         <img id="map002" src="img/EDGE2.png" style="display:none" />
+        <img id="map003" src="img/EDGE3.png" style="display:none" />
+        <img id="map004" src="img/EDGE8.png" style="display:none" />
         <img id="character1" src="img/EDGE6.png" style="display:none" />
         <div class="text-center">
-            <button class="btn btn-secondary" id="button10">↑</button>
+            <button class="btn btn-secondary btn-lg" id="button10">↑</button>
         </div>
-        <div class="text-center mt-3">
-            <button class="btn btn-secondary" id="button11">←</button>
-            <button class="btn btn-secondary" id="button12">↓</button>
-            <button class="btn btn-secondary" id="button13">→</button>
+        <div class="text-center mt-2 ">
+            <button class="btn btn-secondary mx-3 btn-lg" id="button11">←</button>
+            ・
+            <button class="btn btn-secondary mx-3 btn-lg" id="button13">→</button>
         </div>
+        <div class="text-center">
+            <button class="btn btn-secondary my-2 btn-lg" id="button12">↓</button>
+        </div>
+
     </div>
 
     <div id="map_ch" style="text-align: center; display: none">
