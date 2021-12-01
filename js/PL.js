@@ -7,10 +7,15 @@ $(window).on('beforeunload', function (event) {
 });
 window.addEventListener("orientationchange", () => {
     let angle = screen && screen.orientation && screen.orientation.angle//端末の向きを取る縦なら0、横はOSによって変わる
-    if (angle !== 0) {
-        alert('本システムは横向きには対応していません');
-    } else {
+    if (angle === 0) {
         break
+    }
+    else {
+        alert('本システムは横向きには対応していません');
+        const delay = () => {
+            break
+        }
+        setTimeout(delay, 1000);
     }
 
 });
