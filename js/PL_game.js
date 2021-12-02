@@ -803,7 +803,8 @@ function game_random_map(num) {
         for (var y = 0; y < map.length; y++) {
             for (var x = 0; x < map[y].length; x++) {
                 if (map[y][x] == 0) {
-                    gc.drawImage(map002, 5 * 32, 32 * 40, 32, 32, x * 32, y * 32, 32, 32);
+                    gc.drawImage(map002, 0, 0, 32, 32, x * 32, y * 32, 32, 32);
+                    gc.drawImage(map003, 0, 0, 32, 32, x * 32, y * 32, 32, 32);
                 }
                 else if (map[y][x] == 1) {
                     gc.drawImage(map002, 0, 0, 32, 32, x * 32, y * 32, 32, 32);

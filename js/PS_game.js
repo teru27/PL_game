@@ -1,7 +1,9 @@
-﻿//その他のデータを保存
+﻿
+//その他のデータを保存
 const END_POINT = "https://script.google.com/macros/s/AKfycbz1V8AYiDD6EfNQGn4JniMZRcemAPQYRfn7_EaSKaYhGCki9XdR-am9aHe4z1_UWg3y/exec"
 //名前を保存
 const END_POINT1 = "https://script.google.com/macros/s/AKfycbwn8aLWcJLzGN4PmOFIZyLuw_vsr_WDqoOP-d4jnS_UDlzkxImLiTKQIHuSBOuPkI6g4w/exec"
+
 let start = new Date();
 //このウインドを閉じたときに動く
 $(window).on('beforeunload', function (event) {
@@ -577,14 +579,17 @@ function game_map(num) {
         for (var y = 0; y < map.length; y++) {
             for (var x = 0; x < map[y].length; x++) {
                 if (map[y][x] == 0) {
-                    gc.drawImage(map002, 5 * 32, 32 * 40, 32, 32, x * 32, y * 32, 32, 32);
+                    gc.drawImage(map002, 0, 0, 32, 32, x * 32, y * 32, 32, 32);
+                    gc.drawImage(map003, 0, 0, 32, 32, x * 32, y * 32, 32, 32);
+
                 }
                 else if (map[y][x] == 1) {
                     gc.drawImage(map002, 0, 0, 32, 32, x * 32, y * 32, 32, 32);
 
 
                 } else if (map[y][x] == 2) {
-                    gc.drawImage(map002, 4 * 32, 32 * 40, 32, 32, x * 32, y * 32, 32, 32);
+                    gc.drawImage(map002, 0, 0, 32, 32, x * 32, y * 32, 32, 32);
+                    gc.drawImage(map004, 0, 0, 32, 32, x * 32, y * 32, 32, 32);
 
                 } else if (map[y][x] == 3) {
                     gc.drawImage(map001, 0, 0, 32, 32, x * 32, y * 32, 32, 32);
@@ -842,14 +847,16 @@ function game_random_map(num) {
         for (var y = 0; y < map.length; y++) {
             for (var x = 0; x < map[y].length; x++) {
                 if (map[y][x] == 0) {
-                    gc.drawImage(map002, 5 * 32, 32 * 40, 32, 32, x * 32, y * 32, 32, 32);
+                    gc.drawImage(map002, 0, 0, 32, 32, x * 32, y * 32, 32, 32);
+                    gc.drawImage(map003, 0, 0, 32, 32, x * 32, y * 32, 32, 32);
                 }
                 else if (map[y][x] == 1) {
                     gc.drawImage(map002, 0, 0, 32, 32, x * 32, y * 32, 32, 32);
 
 
                 } else if (map[y][x] == 2) {
-                    gc.drawImage(map002, 4 * 32, 32 * 40, 32, 32, x * 32, y * 32, 32, 32);
+                    gc.drawImage(map002, 0, 0, 32, 32, x * 32, y * 32, 32, 32);
+                    gc.drawImage(map004, 0, 0, 32, 32, x * 32, y * 32, 32, 32);
 
                 } else if (map[y][x] == 3) {
                     gc.drawImage(map001, 0, 0, 32, 32, x * 32, y * 32, 32, 32);
@@ -1146,7 +1153,7 @@ function seve_data(a) {
     let login = JSON.parse(localStorage.getItem('login'))
     let login_failure = JSON.parse(localStorage.getItem('login_failure'))
     let game_clear = JSON.parse(localStorage.getItem('num'))
-
+    let random_map_clear = JSON.parse(localStorage.getItem('random_map_clear'))
     let end = new Date();
     const Year = start.getFullYear();
     const Month = start.getMonth() + 1;
