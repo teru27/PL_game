@@ -1224,7 +1224,7 @@ function seve_data(a) {
         //ajaxが終わると動く
         $(document).ajaxStop(function () {
 
-            //setTimeout('window.close()');
+            setTimeout('window.close()');
         });
     }
 
