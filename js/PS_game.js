@@ -15,45 +15,56 @@ window.addEventListener("orientationchange", () => {
         alert('本システムは横向きには対応していません');
     }
 });
+window.onload = function () {
+    document.body.onpaste = function () { return false; }
+}
 function game_Start() {
     let existence = localStorage.getItem('key')
     sessionStorage.setItem('success', JSON.stringify(0));
     sessionStorage.setItem('failure', JSON.stringify(0));
     localStorage.setItem('login', JSON.stringify(0));
     localStorage.setItem('login_failure', JSON.stringify(0));
-    let josn_data
-    //GAS WebアプリのURL
-    //読み書きするスプレッドシート（タブ）の番号
-    const SHEET_NO = 1;
 
-    //ここでスプレッドシートからデータを受け取る
-    $.ajax({
-        type: "GET",
-        url: END_POINT1,
-        data: { sheetNo: SHEET_NO }
-    }).done((result) => {        // 成功した時の処理
-        josn_data = result//代入
-    }).fail((error) => {  // 失敗した時の処理
-        
-    }).always((data) => {// 常にやる処理
-        // do something
-    });
+
     if (existence == null) {
-        $(document).ajaxStop(function () {
-
-            game_register(josn_data)
-        });
+        game_commentary()
     }
     else {
         login()
     }
     document.querySelector("#start").style.display = "none";//非表示
 }
+function game_commentary() {
 
+    document.querySelector("#commentary").style.display = "block";//表示
+    const newbutton1 = document.getElementById('button_commentary')//登録
+    newbutton1.onclick = function () {
+        let josn_data//データを受け取るための箱
+        //読み書きするスプレッドシート（タブ）の番号
+        const SHEET_NO = 1;
+        //ここでスプレッドシートからデータを受け取る
+        $.ajax({
+            type: "GET",
+            url: END_POINT1,
+            data: { sheetNo: SHEET_NO }
+        }).done((result) => {        // 成功した時の処理
+            josn_data = result//代入
+        }).fail((error) => {  // 失敗した時の処理
+            alert('Error:' + JSON.stringify(error));
+        }).always((data) => {// 常にやる処理
+            // do something
+        });
+        $(document).ajaxStop(function () {
+            game_register(josn_data)
+        });
+
+    }
+
+}
 
 //初期登録
 function game_register(josn_data) {
-    
+    document.querySelector("#commentary").style.display = "none";//非表示
     document.querySelector("#register").style.display = "block";//表示
     const newbutton1 = document.getElementById('button1')//登録
     let name//空の箱を作る
@@ -218,10 +229,10 @@ function try_login() {
 
 //ダンジョン選択
 function game_choice() {
-   
+    if (navigator.userAgent.match(/(iPhone|iPod|Android.*Mobile)/i)) {
+        $("body").css("zoom", "100%");
+    }
     $("#pgss10").css({ 'width': 0 + "%" });
-    document.getElementsByClassName('passwd1')[0].value = ""
-
     localStorage.setItem('map1', JSON.stringify(0));
     localStorage.setItem('map', JSON.stringify(0));
     sessionStorage.setItem('px', JSON.stringify(0));
@@ -249,6 +260,7 @@ function game_choice() {
         }
     }
     //document.querySelector("h11").textContent = "クリア"
+    document.querySelector("#re_register").style.display = "none";//非表示
     document.querySelector("#try_login").style.display = "none";//表示
     document.querySelector("#login").style.display = "none";//非表示
     document.querySelector("#register").style.display = "none";//非表示
@@ -258,7 +270,18 @@ function game_choice() {
     document.querySelector("#clear").style.display = "none";//表示
     document.querySelector("#over").style.display = "none";//表示
     document.querySelector("#map_ch").style.display = "none";//非表示
+    document.querySelector("#game_rule").style.display = "none";//非表示
     document.querySelector("#choice").style.display = "block";//表示
+
+}
+
+function game_rule() {
+    document.querySelector("#game_rule").style.display = "block";//非表示
+    document.querySelector("#choice").style.display = "none";//表示
+    const button = document.getElementById('button_rule')//登録
+    button.onclick = function () {
+        game_choice()
+    }
 
 }
 //ゲームマップ切り替えなどの機能（1～3までの）
@@ -1095,6 +1118,7 @@ function patten_strength(data, a, name) {
     const output1 = document.getElementById('re_register_Strength');
     output.textContent = "パタンロックの強度は" + meter + "です"
     output1.textContent = "パタンロックの強度は" + meter + "です"
+    $("#pgss11").css({ 'width': Mp * 2 * 10 + "%" });
     $("#pgss10").css({ 'width': Mp*2 * 10 + "%" });
     $("#pgss9").css({ 'width': Mp*2 * 10 + "%" });
     console.log(Mp * 2 * 10)

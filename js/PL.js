@@ -17,45 +17,53 @@ function game_Start() {
     sessionStorage.setItem('failure', JSON.stringify(0));
     localStorage.setItem('login', JSON.stringify(0));
     localStorage.setItem('login_failure', JSON.stringify(0));
-    let josn_data
-    //GAS WebアプリのURL
-    //読み書きするスプレッドシート（タブ）の番号
-    const SHEET_NO = 1;
+    
 
-    //ここでスプレッドシートからデータを受け取る
-    $.ajax({
-        type: "GET",
-        url: END_POINT1,
-        data: { sheetNo: SHEET_NO }
-    }).done((result) => {        // 成功した時の処理
-        josn_data = result//代入
-    }).fail((error) => {  // 失敗した時の処理
-        alert('Error:' + JSON.stringify(error));
-    }).always((data) => {// 常にやる処理
-        // do something
-    });
-    console.log()
-
-    if (existence==null) {
-        $(document).ajaxStop(function () {
-
-            game_register(josn_data)
-        });
+    if (existence == null) {
+        game_rule()
     }
     else {
         login()
     }
     document.querySelector("#start").style.display = "none";//非表示
 }
+function game_rule() {
+   
+    document.querySelector("#commentary").style.display = "block";//表示
+    const newbutton1 = document.getElementById('button_commentary')//登録
+    newbutton1.onclick = function () {
+        let josn_data//データを受け取るための箱
+        //読み書きするスプレッドシート（タブ）の番号
+        const SHEET_NO = 1;
+        //ここでスプレッドシートからデータを受け取る
+        $.ajax({
+            type: "GET",
+            url: END_POINT1,
+            data: { sheetNo: SHEET_NO }
+        }).done((result) => {        // 成功した時の処理
+            josn_data = result//代入
+        }).fail((error) => {  // 失敗した時の処理
+            alert('Error:' + JSON.stringify(error));
+        }).always((data) => {// 常にやる処理
+            // do something
+        });
+        $(document).ajaxStop(function () {
+            game_register(josn_data)
+        });
+        
+    }
+   
+}
+
+
 //初期登録
 function game_register(josn_data) {
-    
+    document.querySelector("#commentary").style.display = "none";//非表示
     document.querySelector("#register").style.display = "block";//表示
     const newbutton1 = document.getElementById('button1')//登録
     let name//空の箱を作る
     //string型なのでオブジェクト型にする
-    josn_data = (new Function("return" + josn_data))();
-    console.log(josn_data)
+    
 
     //jQueryからpatternLockを取得して、#patternLock1に表示する
     $('#patternLock_register').patternLock({
@@ -65,9 +73,10 @@ function game_register(josn_data) {
             let Mp = patten_strength(data)
 
             newbutton1.onclick = function () {
-
+                
+                josn_data = (new Function("return" + josn_data))();
+                console.log(josn_data)
                 name = document.getElementsByClassName('coment')[0].value
-
                 //二次元配列ならこれ
                 const result = josn_data.some(function (value) {
                     //配列内にnameが存在するかどうかを検索
@@ -87,11 +96,17 @@ function game_register(josn_data) {
                     // データが存在しなかった時の処理
                     patternLockseve(data, 1, name, Mp)//ローカルストレージに保存//ローカルストレージに保存
                 }
+                
+                
+                
             }
         }
     });
 
 }
+
+
+
 //再登録
 function game_re_register() {
     
@@ -132,6 +147,7 @@ function re_login() {
 }
 //ログインシステム
 function login() {
+
     document.querySelector("#login").style.display = "block";//表示
     document.querySelector("#re_login").style.display = "none";//表示
     const login_button = document.getElementById('login_button')//登録
