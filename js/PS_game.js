@@ -9,16 +9,36 @@ let start = new Date();
 $(window).on('beforeunload', function (event) {
     seve_data()
 });
+
 window.addEventListener("orientationchange", () => {
     let angle = screen && screen.orientation && screen.orientation.angle//端末の向きを取る縦なら0、横はOSによって変わる
     if (angle === -90 || angle === 270 || angle === 90) {
         alert('本システムは横向きには対応していません');
     }
 });
+
 window.onload = function () {
     document.body.onpaste = function () { return false; }
 }
+
+$(window).on('load', function () {
+    let existence = localStorage.getItem('key')
+    const newbutton1 = document.getElementById('button_commentary')//登録
+    if (existence == null) {
+        document.querySelector("#commentary").style.display = "block";//表示
+        newbutton1.onclick = function () {
+            document.querySelector("#commentary").style.display = "none";//表示
+            document.querySelector("#start").style.display = "block";
+        }
+    }
+    else {
+        document.querySelector("#start").style.display = "block";
+    }
+});
+
 function game_Start() {
+    document.querySelector("#commentary").style.display = "none";//表示
+
     let existence = localStorage.getItem('key')
     sessionStorage.setItem('success', JSON.stringify(0));
     sessionStorage.setItem('failure', JSON.stringify(0));
@@ -34,32 +54,26 @@ function game_Start() {
     }
     document.querySelector("#start").style.display = "none";//非表示
 }
+
 function game_commentary() {
-
-    document.querySelector("#commentary").style.display = "block";//表示
-    const newbutton1 = document.getElementById('button_commentary')//登録
-    newbutton1.onclick = function () {
-        let josn_data//データを受け取るための箱
-        //読み書きするスプレッドシート（タブ）の番号
-        const SHEET_NO = 1;
-        //ここでスプレッドシートからデータを受け取る
-        $.ajax({
-            type: "GET",
-            url: END_POINT1,
-            data: { sheetNo: SHEET_NO }
-        }).done((result) => {        // 成功した時の処理
-            josn_data = result//代入
-        }).fail((error) => {  // 失敗した時の処理
-            alert('Error:' + JSON.stringify(error));
-        }).always((data) => {// 常にやる処理
-            // do something
-        });
-        $(document).ajaxStop(function () {
-            game_register(josn_data)
-        });
-
-    }
-
+    let josn_data//データを受け取るための箱
+    //読み書きするスプレッドシート（タブ）の番号
+    const SHEET_NO = 1;
+    //ここでスプレッドシートからデータを受け取る
+    $.ajax({
+        type: "GET",
+        url: END_POINT1,
+        data: { sheetNo: SHEET_NO }
+    }).done((result) => {        // 成功した時の処理
+        josn_data = result//代入
+    }).fail((error) => {  // 失敗した時の処理
+        alert('Error:' + JSON.stringify(error));
+    }).always((data) => {// 常にやる処理
+        // do something
+    });
+    $(document).ajaxStop(function () {
+        game_register(josn_data)
+    });
 }
 
 //初期登録

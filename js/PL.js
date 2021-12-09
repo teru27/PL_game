@@ -11,7 +11,24 @@ window.addEventListener("orientationchange", () => {
         alert('本システムは横向きには対応していません');
     }
 });
+$(window).on('load', function () {
+    let existence = localStorage.getItem('key')
+    const newbutton1 = document.getElementById('button_commentary')//登録
+    if (existence == null) {
+        document.querySelector("#commentary").style.display = "block";//表示
+        newbutton1.onclick = function () {
+            document.querySelector("#commentary").style.display = "none";//表示
+            document.querySelector("#start").style.display = "block";
+        }
+    }
+    else {
+        document.querySelector("#start").style.display = "block";
+    }
+});
+
 function game_Start() {
+    document.querySelector("#commentary").style.display = "none";//表示
+
     let existence =localStorage.getItem('key')
     sessionStorage.setItem('success', JSON.stringify(0));
     sessionStorage.setItem('failure', JSON.stringify(0));
@@ -20,18 +37,15 @@ function game_Start() {
     
 
     if (existence == null) {
-        game_rule()
+        game_commentary()
     }
     else {
         login()
     }
     document.querySelector("#start").style.display = "none";//非表示
 }
-function game_rule() {
-   
-    document.querySelector("#commentary").style.display = "block";//表示
-    const newbutton1 = document.getElementById('button_commentary')//登録
-    newbutton1.onclick = function () {
+
+function game_commentary() {
         let josn_data//データを受け取るための箱
         //読み書きするスプレッドシート（タブ）の番号
         const SHEET_NO = 1;
@@ -50,9 +64,6 @@ function game_rule() {
         $(document).ajaxStop(function () {
             game_register(josn_data)
         });
-        
-    }
-   
 }
 
 

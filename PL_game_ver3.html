@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html lang="ja"onload="isSmartPhone()">
+<html lang="ja" onload="isSmartPhone()">
 
 <head>
     <meta http-equiv="content-type" charset="UTF-8">
@@ -20,7 +20,7 @@
 
 <body>
 
-    <div id="start" style="text-align: center;">
+    <div id="start" style="text-align: center;display: none">
         <br> <br>
         <h10><span class="maintitle">Pattern Lockアドベンチャー</span></h10>
         <br> <br>
@@ -45,7 +45,7 @@
             </ol>
 
         </p>
-
+        <p><font size="6" color="red">本実験で登録するパスワードは<br>実際に使っていない物をご使用ください</font></p>
         <p> 本実験で取得した実験結果につきましては，<br class="visible-xs-block">研究目的以外には使用しません．<br class="visible-xs-block">また，個人情報につきましても厳重に管理し，<br>研究発表・論文等で調査結果を公表する際には，<br class="visible-xs-block">統計処理を施すなど，プライバシーに特段配慮いたします．</p>
         <p> 以上に同意し，ご協力いただけましたら，以下の「同意する」ボタンを押していただき，<br class="visible-xs-block">指示に従って操作してください．<br>なお，途中で実験を中断されても構いません．</p>
 
@@ -125,44 +125,56 @@
         <h10><span class="maintitle">ダンジョン選択</span></h10>
         <br> <br>
 
-             <div class="btn-group-vertical">
+        <div class="btn-group-vertical">
 
-                 <br> <br>
-                 <button onclick="game_re_register()" class="btn btn-danger">再登録</button>
-                 <br> <br>
-                 <button onclick="game_rule()" class="btn btn-success">ゲーム説明</button>
-                 <br> <br>
-                 <button type="button" onclick="game_map(1)" class="btn btn-primary">ステージ1</button>
+            <br> <br>
+            <button onclick="game_re_register()" class="btn btn-danger">再登録</button>
+            <br> <br>
+            <button onclick="game_rule()" class="btn btn-success">ゲーム説明</button>
+            <br> <br>
+            <button type="button" onclick="game_map(1)" class="btn btn-primary">ダンジョン1</button>
 
-                 <h11 class="btn"></h11>
+            <h11 class="btn"></h11>
 
-                 <button onclick="game_map(2)" class="btn btn-primary">ステージ2</button>
-                 <h12 class="btn"></h12>
+            <button onclick="game_map(2)" class="btn btn-primary">ダンジョン2</button>
+            <h12 class="btn"></h12>
 
-                 <button onclick="game_map(3)" class="btn btn-primary">ステージ3</button>
-                 <h13 class="btn"></h13>
-                 <button onclick="game_random_map(4)" class="btn btn-primary">無限</button>
-                 <h14 class="btn"></h14>
+            <button onclick="game_map(3)" class="btn btn-primary">ダンジョン3</button>
+            <h13 class="btn"></h13>
+            <button onclick="game_random_map(4)" class="btn btn-primary">無限ダンジョン</button>
+            <h14 class="btn"></h14>
 
-                 <button onclick="game_end()" class="btn btn-success">ゲーム終了</button>
+            <button onclick="game_end()" class="btn btn-success">ゲーム終了</button>
 
-             </div>
+        </div>
 
     </div>
 
     <div id="game_rule" style="text-align: center; display: none">
         <div class="section">
-            <div class="title dottext">ゲーム説明</div>
-            <div class="box1">
-                <div class="catch">パターンロック解除で冒険を進めよう</div>
-                このゲームはあなたがパターンロックを解除するごとにゲームが進行します．
-            </div>
-            <div class="box1">
-                <div class="catch">「パターンの強度」＝「攻撃のの強さ」</div>
-            </div>
+            <div class="title ">ゲーム説明</div>
             <div class="box1">
                 <div class="catch">ゲームの流れ</div>
+                
+                <p>
+                    <font class="text_rule">
+                        まず冒険先を決めるためにダンジョンを選択するとゲームマップが出現するのでマップ上にある<img id="map001" src="img/EDGE1.png" />（ゴール）を目指して勇者を操作しよう。また、マップを移動中はモンスターと戦闘が発生するので、設定したパスワードを使い敵に倒されないようにゴールを目指そう！
+                    </font>
+                </p>
             </div>
+            <div class="box1">
+                <div class="catch">ゲームの操作方法</div>
+                <p>
+                    <font class="text_rule">
+                        操作方法はゲームマップ下にある矢印ボタン、キーボードの矢印キーで操作できる。またマップ上にある<img id="map004" src="img/EDGE8.png"  />に触れると、パスワードの入力が成功した時に除去できるのでゴール近道ができるぞ。
+                    </font>
+                </p>
+            </div>
+            <div class="box1">
+                <div class="catch">「パターンの強度」＝「攻撃の強さ」</div>
+                <p><font class="text_rule">モンスターを攻撃する時は、あなたが設定したパスワードの強度に比例して強くなります。また、パスワード忘れたときやパスワードを変えたいときは再登録から<br>何度でも変えることができるので、強度の高いパスワードを発見し<br>どんどん敵を倒していこう。</font></p>
+            </div>
+
         </div>
         <button type="button" class="btn btn-primary" id="button_rule">戻る</button>
     </div>

@@ -20,34 +20,23 @@
 </head>
 
 <body>
-
-    <div id="start" style="text-align: center;">
-        <br> <br>
-        <h10><span class="maintitle">Pattern Lock</span></h10>
-        <br> <br>
-        <button class="btn btn-primary btn-lg" onclick="game_Start()">スタート</button>
-        <button type="button" class="btn btn-primary" onclick="alldelete(); " id="button">全削除</button>
-
-    </div>
-
     <div id="commentary" style="text-align: center;display: none">
 
         <h3>はじめに</h3>
         <br>
 
-        <p>本実験のRPGゲーム内でパスワードを<br class="visible-xs-block">使用することで，強度の高いパスワードの記憶の<br class="visible-xs-block">モチベーションを高かく，維持できるか。<br>また，対象のパスワードが変わると，<br class="visible-xs-block">ゲーミフィケーションの効果がどのような影響が<br class="visible-xs-block">出るか検証することを目的として行います。</p>
-        <p></p>
+        <p>本研究は、日常的にパスワードを作成することで<br>強度の高いパスワードを設定し覚えることが出来るのかを<br>調査することを目的として行います。</p><p></p>
         <p>
             本実験は以下の4つのフェーズに分かれています。
             <ol class="list-group list-group-numbered">
                 <li class="list-group-itemlist-group-item-success">アカウント登録</li>
-                <li class="list-group-itemlist-group-item-success"></li>
-                <li class="list-group-itemlist-group-item-success">アカウント登録から一週間後に再度</li>
+                <li class="list-group-itemlist-group-item-success">本システムを使い練習</li>
+                <li class="list-group-itemlist-group-item-success">アカウント登録から一週間後に再度最終ログイン</li>
                 <li class="list-group-itemlist-group-item-success">その後、アンケート</li>
             </ol>
 
         </p>
-
+        <p><font size="6" color="red">本実験で登録するパスワードは<br>実際に使っていない物をご使用ください</font></p>
         <p> 本実験で取得した実験結果につきましては，<br class="visible-xs-block">研究目的以外には使用しません．<br class="visible-xs-block">また，個人情報につきましても厳重に管理し，<br>研究発表・論文等で調査結果を公表する際には，<br class="visible-xs-block">統計処理を施すなど，プライバシーに特段配慮いたします．</p>
         <p> 以上に同意し，ご協力いただけましたら，以下の「同意する」ボタンを押していただき，<br class="visible-xs-block">指示に従って操作してください．<br>なお，途中で実験を中断されても構いません．</p>
 
@@ -55,6 +44,14 @@
         <button type="button" class="btn btn-primary" id="button_commentary">同意する</button>
     </div>
 
+    <div id="start" style="text-align: center; display: none">
+        <br> <br>
+        <h10><span class="maintitle">Pattern Lock</span></h10>
+        <br> <br>
+        <button class="btn btn-primary btn-lg" onclick="game_Start()">スタート</button>
+        <button type="button" class="btn btn-primary" onclick="alldelete(); " id="button">全削除</button>
+
+    </div>
 
     <div id="register" style="text-align: center; display: none">
         <br> <br>

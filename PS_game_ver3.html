@@ -21,7 +21,7 @@
 
 <body onpaste="return false">
 
-    <div id="start" style="text-align: center;">
+    <div id="start" style="text-align: center;display: none">
         <br> <br>
         <h10><span class="maintitle">パスワードアドベンチャー</span></h10>
         <br> <br>
@@ -46,7 +46,7 @@
             </ol>
 
         </p>
-
+        <p><font size="6" color="red">本実験で登録するパスワードは<br>実際に使っていない物をご使用ください</font></p>
         <p> 本実験で取得した実験結果につきましては，<br>研究目的以外には使用しません．<br>また，個人情報につきましても厳重に管理し，<br>研究発表・論文等で調査結果を公表する際には，<br>統計処理を施すなど，プライバシーに特段配慮いたします．</p>
         <p> 以上に同意し，ご協力いただけましたら，以下の「同意する」ボタンを押していただき，<br>指示に従って操作してください．<br>なお，途中で実験を中断されても構いません．</p>
 
@@ -168,17 +168,29 @@
 
     <div id="game_rule" style="text-align: center; display: none">
         <div class="section">
-            <div class="title dottext">ゲーム説明</div>
-            <div class="box1">
-                <div class="catch">パターンロック解除で冒険を進めよう</div>
-                このゲームはあなたがパターンロックを解除するごとにゲームが進行します．
-            </div>
-            <div class="box1">
-                <div class="catch">「パターンの強度」＝「攻撃のの強さ」</div>
-            </div>
+            <div class="title ">ゲーム説明</div>
             <div class="box1">
                 <div class="catch">ゲームの流れ</div>
+
+                <p>
+                    <font class="text_rule">
+                        まず冒険先を決めるためにダンジョンを選択するとゲームマップが出現するのでマップ上にある<img id="map001" src="img/EDGE1.png" />（ゴール）を目指して勇者を操作しよう。また、マップを移動中はモンスターと戦闘が発生するので、設定したパスワードを使い敵に倒されないようにゴールを目指そう！
+                    </font>
+                </p>
             </div>
+            <div class="box1">
+                <div class="catch">ゲームの操作方法</div>
+                <p>
+                    <font class="text_rule">
+                        操作方法はゲームマップ下にある矢印ボタン、キーボードの矢印キーで操作できる。またマップ上にある<img id="map004" src="img/EDGE8.png" />に触れると、パスワードの入力が成功した時に除去できるのでゴール近道ができるぞ。
+                    </font>
+                </p>
+            </div>
+            <div class="box1">
+                <div class="catch">「パターンの強度」＝「攻撃の強さ」</div>
+                <p><font class="text_rule">モンスターを攻撃する時は、あなたが設定したパスワードの強度に比例して強くなります。また、パスワード忘れたときやパスワードを変えたいときは再登録から<br>何度でも変えることができるので、強度の高いパスワードを発見し<br>どんどん敵を倒していこう。</font></p>
+            </div>
+
         </div>
         <button type="button" class="btn btn-primary" id="button_rule">戻る</button>
     </div>
