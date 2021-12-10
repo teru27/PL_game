@@ -76,7 +76,8 @@ function game_register(josn_data) {
     const newbutton1 = document.getElementById('button1')//登録
     let name//空の箱を作る
     //string型なのでオブジェクト型にする
-
+    josn_data = (new Function("return" + josn_data))();
+    console.log(josn_data)
 
     //jQueryからpatternLockを取得して、#patternLock1に表示する
     $('#patternLock_register').patternLock({
@@ -87,8 +88,7 @@ function game_register(josn_data) {
 
             newbutton1.onclick = function () {
 
-                josn_data = (new Function("return" + josn_data))();
-                console.log(josn_data)
+                
                 name = document.getElementsByClassName('coment')[0].value
                 //二次元配列ならこれ
                 const result = josn_data.some(function (value) {
@@ -157,6 +157,9 @@ function re_login() {
 }
 //ログインシステム
 function login() {
+    document.querySelector("#try_login").style.display = "none";//表示
+    document.querySelector("#register").style.display = "none";//非表示
+    document.querySelector("#re_register").style.display = "none";//非表示
     document.querySelector("#commentary").style.display = "none";//非表示
     document.querySelector("#login").style.display = "block";//表示
     document.querySelector("#re_login").style.display = "none";//表示
@@ -1394,7 +1397,7 @@ function patternLockseve(data, a, name, Mp) {
             data: { sheetNo: SHEET_NO, data: dataJSON1 }
         })//ajaxが終わると動く
         $(document).ajaxStop(function () {
-            game_choice();
+            login()
         });
     } else {
         game_choice();

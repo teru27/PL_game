@@ -126,8 +126,17 @@ function game_re_register() {
     document.querySelector("#choice").style.display = "none";//非表示
     const newbutton2 = document.getElementById('button2')//登録
     //jQueryからpatternLockを取得して、#patternLock1に表示する
+
+    window.document.onkeydown = function (event) {
+        if (event.key === 'Enter') {
+            a()
+        }
+    }
+
     newbutton2.onclick = function () {
-        
+        a()
+    }
+    function a() {
         let data = document.getElementsByClassName('passwd1')[0].value
         let Mp = patten_strength(data)
         if (data == " " * data.length) {
@@ -138,6 +147,7 @@ function game_re_register() {
             alert('36文字以内にしてください')
             document.getElementById('textbox').value = ""//ここでテキストボックスの中身を消す
         } else {
+            alert("登録完了")
             patternLockseve(data, 2, name, Mp)
         }
     }
@@ -168,6 +178,7 @@ function re_login() {
             alert('36文字以内にしてください')
             document.getElementById('textbox').value = ""//ここでテキストボックスの中身を消す
         } else {
+            
             localStorage.setItem('key', JSON.stringify(data))
             localStorage.setItem('Mp', JSON.stringify(Mp))
             login()
@@ -176,10 +187,14 @@ function re_login() {
 }
 
 function login() {
+    document.querySelector("#try_login").style.display = "none";//表示
+    document.querySelector("#register").style.display = "none";//非表示
+    document.querySelector("#re_register").style.display = "none";//非表示
     document.querySelector("#commentary").style.display = "none";//非表示
     document.querySelector("#login").style.display = "block";//表示
     document.querySelector("#re_login").style.display = "none";//表示
     const newbutton4 = document.getElementById('button4')//登録
+
     newbutton4.onclick = function () {
         a()
     }
@@ -211,7 +226,7 @@ function try_login() {
     document.querySelector("#try_login").style.display = "block";//表示
     document.querySelector("#choice").style.display = "none";//非表示
 
-    const newbutton5 = document.getElementById('button3')//登録
+    const newbutton5 = document.getElementById('button_try_login')//登録
     newbutton5.onclick = function () {
         a()
     }
@@ -222,6 +237,7 @@ function try_login() {
     }
 
     function a() {
+        let data = document.getElementsByClassName('passwd4')[0].value
         let login = JSON.parse(localStorage.getItem('login'))
         let login_failure = JSON.parse(localStorage.getItem('login_failure'))
         let password = JSON.parse(localStorage.getItem('key'))
@@ -241,6 +257,7 @@ function try_login() {
 
 //ダンジョン選択
 function game_choice() {
+    document.getElementById('text_re_register').value = ""//ここでテキストボックスの中身を消す
    
     if (navigator.userAgent.match(/(iPhone|iPod|Android.*Mobile)/i)) {
         $("body").css("zoom", "100%");
@@ -316,7 +333,7 @@ function patternLockseve(data, a, name, Mp) {
             data: { sheetNo: SHEET_NO, data: dataJSON1 }
         })//ajaxが終わると動く
         $(document).ajaxStop(function () {
-            game_choice();
+            login()
         });
     } else {
         game_choice();
