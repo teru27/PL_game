@@ -581,26 +581,27 @@ function game_map(num) {
         }
         paint(c, d);
     }
-
+    
     function paint(c, d) {
         let px = JSON.parse(sessionStorage.getItem('px'))
         let py = JSON.parse(sessionStorage.getItem('py'));
         for (var y = 0; y < map.length; y++) {
             for (var x = 0; x < map[y].length; x++) {
                 if (map[y][x] == 0) {
-                    gc.drawImage(map002, 0, 0, 32, 32, x * 32, y * 32, 32, 32);
-                    gc.drawImage(map003, 0, 0, 32, 32, x * 32, y * 32, 32, 32);
+                    gc.drawImage(map002, 0, 0, 32, 32, x * 32, y * 32, 32, 32);//芝生
+                    gc.drawImage(map002, 0, 32, 32, 32, x * 32, y * 32, 32, 32);//山
+
                 }
                 else if (map[y][x] == 1) {
-                    gc.drawImage(map002, 0, 0, 32, 32, x * 32, y * 32, 32, 32);
+                    gc.drawImage(map002, 0, 0, 32, 32, x * 32, y * 32, 32, 32);//芝生
 
 
                 } else if (map[y][x] == 2) {
-                    gc.drawImage(map002, 0, 0, 32, 32, x * 32, y * 32, 32, 32);
-                    gc.drawImage(map004, 0, 0, 32, 32, x * 32, y * 32, 32, 32);
+                    gc.drawImage(map002, 0, 0, 32, 32, x * 32, y * 32, 32, 32);//芝生
+                    gc.drawImage(map002, 0, 64, 32, 32, x * 32, y * 32, 32, 32);
 
                 } else if (map[y][x] == 3) {
-                    gc.drawImage(map001, 0, 0, 32, 32, x * 32, y * 32, 32, 32);
+                    gc.drawImage(map002, 0, 96, 32, 32, x * 32, y * 32, 32, 32);
                 }
             }
         }
@@ -612,7 +613,6 @@ function game_map(num) {
 
         gc.drawImage(character1, c, d, 32, 32, px * 32, py * 32, 32, 32);
     }
-
     //ダンジョン切り替えとクリア判定
     function sub() {
         let cun_num = JSON.parse(sessionStorage.getItem('cun_num'))
@@ -701,6 +701,7 @@ function game_random_map(num) {
         let num_random = Math.floor(Math.random() * (max_map + 1 - min_map)) + min_map
         let num_random1 = Math.floor(Math.random() * (max_map + 1 - min_map)) + min_map
         map[num_random][num_random1] = 3
+        console.log(map)
         initialize()
     }
 
@@ -843,18 +844,20 @@ function game_random_map(num) {
         for (var y = 0; y < map.length; y++) {
             for (var x = 0; x < map[y].length; x++) {
                 if (map[y][x] == 0) {
-                    gc.drawImage(map002, 0, 0, 32, 32, x * 32, y * 32, 32, 32);
-                    gc.drawImage(map003, 0, 0, 32, 32, x * 32, y * 32, 32, 32);
+                    gc.drawImage(map002, 0, 0, 32, 32, x * 32, y * 32, 32, 32);//芝生
+                    gc.drawImage(map002, 0, 32, 32, 32, x * 32, y * 32, 32, 32);//山
+
                 }
                 else if (map[y][x] == 1) {
-                    gc.drawImage(map002, 0, 0, 32, 32, x * 32, y * 32, 32, 32);
+                    gc.drawImage(map002, 0, 0, 32, 32, x * 32, y * 32, 32, 32);//芝生
+
 
                 } else if (map[y][x] == 2) {
-                    gc.drawImage(map002, 0, 0, 32, 32, x * 32, y * 32, 32, 32);
-                    gc.drawImage(map004, 0, 0, 32, 32, x * 32, y * 32, 32, 32);
+                    gc.drawImage(map002, 0, 0, 32, 32, x * 32, y * 32, 32, 32);//芝生
+                    gc.drawImage(map002, 0, 64, 32, 32, x * 32, y * 32, 32, 32);
 
                 } else if (map[y][x] == 3) {
-                    gc.drawImage(map001, 0, 0, 32, 32, x * 32, y * 32, 32, 32);
+                    gc.drawImage(map002, 0, 96, 32, 32, x * 32, y * 32, 32, 32);
                 }
             }
         }

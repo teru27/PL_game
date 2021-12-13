@@ -200,10 +200,7 @@
             <button class="btn btn-success" onclick="game_choice()">選択画面に戻る</button>
         </div>
         <canvas id="test" width="550" height="480" class="example"></canvas>
-        <img id="map001" src="img/EDGE1.png" style="display:none" />
-        <img id="map002" src="img/EDGE2.png" style="display:none" />
-        <img id="map003" src="img/EDGE3.png" style="display:none" />
-        <img id="map004" src="img/EDGE8.png" style="display:none" />
+        <img id="map002" src="img/a.png" style="display:none" />
         <img id="character1" src="img/EDGE6.png" style="display:none" />
         <div class="text-center">
             <button class="btn btn-secondary btn-lg" id="button10">↑</button>
@@ -229,9 +226,9 @@
         <h10><span class="maintitle" id="txet_co"></span></h10>
         <br> <br>
         <div class="form-group1">
-            パスワード：<input type="password" class="passwd4" style="width: 200px; height: 30px;" onkeyup="setPasswordLevel(this.value);">
+            パスワード：<input type="password" id="map_ch_text" class="passwd_map_ch" style="width: 200px; height: 30px;" onkeyup="setPasswordLevel(this.value);">
         </div>
-        <button id="button4" class="btn btn-warning">退かす</button>
+        <button id="button_ch" class="btn btn-warning">退かす</button>
     </div>
 
     <div id="map" style="text-align: center; display: none">
@@ -253,9 +250,9 @@
             <img id="monster">
         </div>
         <div class="form-group1">
-            パスワード：<input type="password" class="passwd3" style="width: 200px; height: 30px;" onkeyup="setPasswordLevel(this.value);">
+            パスワード：<input type="password" id="game_battle_text" class="battle_passwd" style="width: 200px; height: 30px;" onkeyup="setPasswordLevel(this.value);">
         </div>
-        <button id="button3" class="btn btn-warning">攻撃</button>
+        <button id="battle_button" class="btn btn-warning">攻撃</button>
         <div class="code" style="width: 30%;">
             <div class="progress">
                 <div class="progress-bar progress-bar-danger" id="ph1" style="width: 100%;"></div>

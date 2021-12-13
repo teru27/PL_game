@@ -630,20 +630,20 @@ function game_map(num) {
         for (var y = 0; y < map.length; y++) {
             for (var x = 0; x < map[y].length; x++) {
                 if (map[y][x] == 0) {
-                    gc.drawImage(map002, 0, 0, 32, 32, x * 32, y * 32, 32, 32);
-                    gc.drawImage(map003, 0, 0, 32, 32, x * 32, y * 32, 32, 32);
+                    gc.drawImage(map002, 0, 0, 32, 32, x * 32, y * 32, 32, 32);//芝生
+                    gc.drawImage(map002, 0, 32, 32, 32, x * 32, y * 32, 32, 32);//山
 
                 }
                 else if (map[y][x] == 1) {
-                    gc.drawImage(map002, 0, 0, 32, 32, x * 32, y * 32, 32, 32);
+                    gc.drawImage(map002, 0, 0, 32, 32, x * 32, y * 32, 32, 32);//芝生
 
 
                 } else if (map[y][x] == 2) {
-                    gc.drawImage(map002, 0, 0, 32, 32, x * 32, y * 32, 32, 32);
-                    gc.drawImage(map004, 0, 0, 32, 32, x * 32, y * 32, 32, 32);
+                    gc.drawImage(map002, 0, 0, 32, 32, x * 32, y * 32, 32, 32);//芝生
+                    gc.drawImage(map002, 0, 64, 32, 32, x * 32, y * 32, 32, 32);
 
                 } else if (map[y][x] == 3) {
-                    gc.drawImage(map001, 0, 0, 32, 32, x * 32, y * 32, 32, 32);
+                    gc.drawImage(map002, 0, 96, 32, 32, x * 32, y * 32, 32, 32);
                 }
             }
         }
@@ -654,7 +654,6 @@ function game_map(num) {
         }
 
         gc.drawImage(character1, c, d, 32, 32, px * 32, py * 32, 32, 32);
-
     }
 
     //ダンジョン切り替えとクリア判定
@@ -685,8 +684,10 @@ function game_map(num) {
             document.querySelector("#game_map").style.display = "none";
         document.querySelector("#map_ch").style.display = "block";//表示
         document.getElementById("txet_co").textContent = "パスワードを使い、障害物を退かせ！";
-        const newbutton4 = document.getElementById('button4')//
+        const newbutton4 = document.getElementById('button_ch')//
+        
         newbutton4.onclick = function () {
+            
             a()
         }
         window.document.onkeydown = function (event) {
@@ -696,10 +697,13 @@ function game_map(num) {
         }
 
         function a() {
-            let data = document.getElementsByClassName('passwd4')[0].value
+           
+            let data = document.getElementsByClassName('passwd_map_ch')[0].value
+            console.log(data)
             let key = JSON.parse(localStorage.getItem('key'))
-            document.getElementsByClassName('passwd4')[0].value = ""
+            document.getElementById('map_ch_text').value = ""
             if (data == key) {
+                console.log("aa")
                 //マップの変更
                 gc.drawImage(map002, 0, 0, 32, 32, hitx * 32, hity * 32, 32, 32);
                 localStorage.setItem('map1', JSON.stringify(map));
@@ -898,19 +902,20 @@ function game_random_map(num) {
         for (var y = 0; y < map.length; y++) {
             for (var x = 0; x < map[y].length; x++) {
                 if (map[y][x] == 0) {
-                    gc.drawImage(map002, 0, 0, 32, 32, x * 32, y * 32, 32, 32);
-                    gc.drawImage(map003, 0, 0, 32, 32, x * 32, y * 32, 32, 32);
+                    gc.drawImage(map002, 0, 0, 32, 32, x * 32, y * 32, 32, 32);//芝生
+                    gc.drawImage(map002, 0, 32, 32, 32, x * 32, y * 32, 32, 32);//山
+
                 }
                 else if (map[y][x] == 1) {
-                    gc.drawImage(map002, 0, 0, 32, 32, x * 32, y * 32, 32, 32);
+                    gc.drawImage(map002, 0, 0, 32, 32, x * 32, y * 32, 32, 32);//芝生
 
 
                 } else if (map[y][x] == 2) {
-                    gc.drawImage(map002, 0, 0, 32, 32, x * 32, y * 32, 32, 32);
-                    gc.drawImage(map004, 0, 0, 32, 32, x * 32, y * 32, 32, 32);
+                    gc.drawImage(map002, 0, 0, 32, 32, x * 32, y * 32, 32, 32);//芝生
+                    gc.drawImage(map002, 0, 64, 32, 32, x * 32, y * 32, 32, 32);
 
                 } else if (map[y][x] == 3) {
-                    gc.drawImage(map001, 0, 0, 32, 32, x * 32, y * 32, 32, 32);
+                    gc.drawImage(map002, 0, 96, 32, 32, x * 32, y * 32, 32, 32);
                 }
             }
         }
@@ -939,8 +944,10 @@ function game_random_map(num) {
         document.querySelector("#game_map").style.display = "none";
         document.querySelector("#map_ch").style.display = "block";//表示
         document.getElementById("txet_co").textContent = "パスワードを使い、障害物を退かせ！";
-        const newbutton4 = document.getElementById('button4')//
+        const newbutton4 = document.getElementById('button_ch')//
+
         newbutton4.onclick = function () {
+
             a()
         }
         window.document.onkeydown = function (event) {
@@ -950,10 +957,13 @@ function game_random_map(num) {
         }
 
         function a() {
-            let data = document.getElementsByClassName('passwd4')[0].value
+
+            let data = document.getElementsByClassName('passwd_map_ch')[0].value
+            console.log(data)
             let key = JSON.parse(localStorage.getItem('key'))
-            document.getElementsByClassName('passwd4')[0].value = ""
+            document.getElementById('map_ch_text').value = ""
             if (data == key) {
+                console.log("aa")
                 //マップの変更
                 gc.drawImage(map002, 0, 0, 32, 32, hitx * 32, hity * 32, 32, 32);
                 localStorage.setItem('map1', JSON.stringify(map));
@@ -964,6 +974,7 @@ function game_random_map(num) {
                 initialize()
             }
         }
+
     }
 }
 //戦闘の処理
@@ -997,7 +1008,7 @@ function game_battle(dungeon_number) {
     let enemy_physical_max = enemy_physical//敵体力の最大値を更新
     sessionStorage.setItem('enemy', JSON.stringify(enemy_physical));
    
-    let Defense_p = 20
+    let Defense_p = 22
     let Offensive_p = 0
     console.log(player_physical)
     
@@ -1009,7 +1020,7 @@ function game_battle(dungeon_number) {
     document.querySelector("#game_map").style.display = "none";//非表示
     document.querySelector("#battle").style.display = "block";//表示
 
-    const newbutton3 = document.getElementById('button3')//登録
+    const newbutton3 = document.getElementById('battle_button')//登録
     //jQueryからpatternLockを取得して、#patternLock1に表示する
     newbutton3.onclick = function () {
         a()
@@ -1022,12 +1033,13 @@ function game_battle(dungeon_number) {
 
 
     function a() {
-        
-        let data = document.getElementsByClassName('passwd3')[0].value
+        console.log(Mp)
+        console.log(Defense_p * dungeon_number)
+        let data = document.getElementsByClassName('battle_passwd')[0].value
         const loaddata = JSON.parse(localStorage.getItem('key'))
         let enemy = JSON.parse(sessionStorage.getItem('enemy'))
         let hp = JSON.parse(localStorage.getItem('hp'))
-        document.getElementsByClassName('passwd3')[0].value = ""
+        document.getElementsByClassName('battle_passwd')[0].value = ""
         //patternLockの値の判定
         if (loaddata == data) {
 
@@ -1035,7 +1047,7 @@ function game_battle(dungeon_number) {
             console.log(enemy)
             //防御力に対しての攻撃力の計算
             if ((Mp) < (Defense_p * dungeon_number)) {
-
+                
                 Offensive_p = (Mp) - (Defense_p * dungeon_number)
 
             } else {
@@ -1085,6 +1097,7 @@ function game_battle(dungeon_number) {
                 game_over(dungeon_number)
             }
         }
+
     }
 
 
@@ -1148,8 +1161,9 @@ function patten_strength(data, a, name) {
     output1.textContent = "パタンロックの強度は" + meter + "です"
     $("#pgss11").css({ 'width': Mp * 2 * 10 + "%" });
     $("#pgss10").css({ 'width': Mp*2 * 10 + "%" });
-    $("#pgss9").css({ 'width': Mp*2 * 10 + "%" });
-    console.log(Mp * 2 * 10)
+    $("#pgss9").css({ 'width': Mp * 2 * 10 + "%" });
+
+    console.log(Mp)
 
     return Mp*2
 

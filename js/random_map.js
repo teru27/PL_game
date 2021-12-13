@@ -131,7 +131,6 @@
             }
         }
         let existence = JSON.parse(localStorage.getItem('random_map_make'))
-        console.log(this.box)
         if (existence !=0 ) {
             let random_map_clear = JSON.parse(localStorage.getItem('random_map_clear'))
             random_map_clear = random_map_clear + 1
