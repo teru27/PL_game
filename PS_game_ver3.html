@@ -30,12 +30,12 @@
 
     </div>
 
-    <div id="commentary" style="text-align: center;display: none">
+    <div id="commentary" style="display: none">
 
         <h3>はじめに</h3>
         <br>
 
-        <p>本実験のRPGゲーム内でパスワードを<br class="visible-xs-block">使用することで，強度の高いパスワードの記憶の<br class="visible-xs-block">モチベーションを高かく，維持できるか。<br>また，対象のパスワードが変わると，<br class="visible-xs-block">ゲーミフィケーションの効果がどのような影響が<br class="visible-xs-block">出るか検証することを目的として行います。</p>
+        <p>本研究は、日常的にパスワードを作成することで強度の高いパスワードを設定し<br>覚えることが出来るのかを調査することを目的として行います。</p>
         <p>
             本実験は以下の4つのフェーズに分かれています。
             <ol class="list-group list-group-numbered">
@@ -47,9 +47,9 @@
 
         </p>
         <p><font size="6" color="red">本実験で登録するパスワードは<br>実際に使っていない物をご使用ください</font></p>
-        <p> 本実験で取得した実験結果につきましては，<br>研究目的以外には使用しません．<br>また，個人情報につきましても厳重に管理し，<br>研究発表・論文等で調査結果を公表する際には，<br>統計処理を施すなど，プライバシーに特段配慮いたします．</p>
-        <p> 以上に同意し，ご協力いただけましたら，以下の「同意する」ボタンを押していただき，<br>指示に従って操作してください．<br>なお，途中で実験を中断されても構いません．</p>
-
+        <p> 本実験で取得した実験結果につきましては，研究目的以外には使用しません．また，個人情報につきましても厳重に管理し，<br>研究発表・論文等で調査結果を公表する際には，統計処理を施すなど，プライバシーに特段配慮いたします．</p>
+        <p> 以上に同意し，ご協力いただけましたら，以下の「同意する」ボタンを押していただき，<br class="visible-xs-block">指示に従って操作してください．</p>
+        <p>なお，本実験は自由意志であり、意にそぐわない場合は途中で実験を中断されても構いません．</p>
         <p><small>北海道情報大学情報メディア学部・学科　篠原輝久</small></p>
         <button type="button" class="btn btn-primary" id="button_commentary">同意する</button>
     </div>
@@ -88,7 +88,7 @@
         </div>
 
         <div class="form-group1">
-            パスワード：<input type="password" class="passwd1" id="text_re_register"style="width: 200px; height: 30px;" onkeyup="setPasswordLevel(this.value);">
+            パスワード：<input type="password" class="passwd1" id="text_re_register" style="width: 200px; height: 30px;" onkeyup="setPasswordLevel(this.value);">
         </div>
         <div class="btn-group btn-group-lg">
             <button onclick="game_choice()" class="btn btn-primary">戻る</button>
@@ -143,26 +143,26 @@
         <h10><span class="maintitle">ダンジョン選択</span></h10>
         <br> <br>
 
-             <div class="btn-group-vertical">
+        <div class="btn-group-vertical">
 
-                 <br> <br>
-                 <button onclick="game_re_register()" class="btn btn-danger">再登録</button>
-                 <br> <br>
-                 <button onclick="game_rule()" class="btn btn-success">ゲーム説明</button>
-                 <br> <br>
-                 <button type="button" onclick="game_map(1)" class="btn btn-primary">ステージ1</button>
+            <br> <br>
+            <button onclick="game_re_register()" class="btn btn-danger">再登録</button>
+            <br> <br>
+            <button onclick="game_rule()" class="btn btn-success">ゲーム説明</button>
+            <br> <br>
+            <button type="button" onclick="game_map(1)" class="btn btn-primary">ステージ1</button>
 
-                 <h11 class="btn"></h11>
+            <h11 class="btn"></h11>
 
-                 <button onclick="game_map(2)" class="btn btn-primary">ステージ2</button>
-                 <h12 class="btn"></h12>
+            <button onclick="game_map(2)" class="btn btn-primary">ステージ2</button>
+            <h12 class="btn"></h12>
 
-                 <button onclick="game_map(3)" class="btn btn-primary">ステージ3</button>
-                 <h13 class="btn"></h13>
-                 <button onclick="game_random_map(4)" class="btn btn-primary">無限</button>
-                 <h14 class="btn"></h14>
-                 <button onclick="game_end()" class="btn btn-success">ゲーム終了</button>
-             </div>
+            <button onclick="game_map(3)" class="btn btn-primary">ステージ3</button>
+            <h13 class="btn"></h13>
+            <button onclick="game_random_map(4)" class="btn btn-primary">無限</button>
+            <h14 class="btn"></h14>
+            <button onclick="game_end()" class="btn btn-success">ゲーム終了</button>
+        </div>
 
     </div>
 
