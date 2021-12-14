@@ -81,8 +81,18 @@ function game_register(josn_data) {
     const newbutton1 = document.getElementById('button1')//登録
     let name//空の箱を作る
     //string型なのでオブジェクト型にする
+
     josn_data = (new Function("return" + josn_data))();
     console.log(josn_data)
+    const pwd = document.getElementById('register_text');
+    const pwdCheck = document.getElementById('register_check');
+    pwdCheck.addEventListener('change', function () {
+        if (pwdCheck.checked) {
+            pwd.setAttribute('type', 'text');
+        } else {
+            pwd.setAttribute('type', 'password');
+        }
+    }, false);
 
     newbutton1.onclick = function () {
         let data = document.getElementsByClassName('passwd')[0].value
@@ -93,7 +103,7 @@ function game_register(josn_data) {
         //ここで文字数制限をしている
         else if (data.length > 36) {
             alert('36文字以内にしてください')
-            document.getElementById('textbox').value = ""//ここでテキストボックスの中身を消す
+            document.getElementById('register_text').value = ""//ここでテキストボックスの中身を消す
         } else {
             let Mp = patten_strength(data)
             console.log(Mp)
@@ -109,7 +119,7 @@ function game_register(josn_data) {
             if (result) {
                 // データが存在した時の処理
                 window.alert("同じIDのため登録できません")
-                document.getElementById('textbox').value = ""//ここでテキストボックスの中身を消す
+                document.getElementById('register_text').value = ""//ここでテキストボックスの中身を消す
             } else {
 
                 // データが存在しなかった時の処理
@@ -126,6 +136,16 @@ function game_re_register() {
     document.querySelector("#choice").style.display = "none";//非表示
     const newbutton2 = document.getElementById('button2')//登録
     //jQueryからpatternLockを取得して、#patternLock1に表示する
+
+    const pwd = document.getElementById('text_re_register');
+    const pwdCheck = document.getElementById('re_register_check');
+    pwdCheck.addEventListener('change', function () {
+        if (pwdCheck.checked) {
+            pwd.setAttribute('type', 'text');
+        } else {
+            pwd.setAttribute('type', 'password');
+        }
+    }, false);
 
     window.document.onkeydown = function (event) {
         if (event.key === 'Enter') {
@@ -145,7 +165,7 @@ function game_re_register() {
         //ここで文字数制限をしている
         else if (data.length > 36) {
             alert('36文字以内にしてください')
-            document.getElementById('textbox').value = ""//ここでテキストボックスの中身を消す
+            document.getElementById('text_re_register').value = ""//ここでテキストボックスの中身を消す
         } else {
             alert("登録完了")
             patternLockseve(data, 2, name, Mp)
@@ -157,6 +177,17 @@ function re_login() {
     document.querySelector("#re_login").style.display = "block";//表示
     document.querySelector("#login").style.display = "none";//非表示
     const newbutton3 = document.getElementById('button3')//登録
+
+    const pwd = document.getElementById('re_login_text');
+    const pwdCheck = document.getElementById('re_login_check');
+    pwdCheck.addEventListener('change', function () {
+        if (pwdCheck.checked) {
+            pwd.setAttribute('type', 'text');
+        } else {
+            pwd.setAttribute('type', 'password');
+        }
+    }, false);
+
     newbutton3.onclick = function () {
         a()
     }
@@ -176,7 +207,7 @@ function re_login() {
         //ここで文字数制限をしている
         else if (data.length > 36) {
             alert('36文字以内にしてください')
-            document.getElementById('textbox').value = ""//ここでテキストボックスの中身を消す
+            document.getElementById('re_login_text').value = ""//ここでテキストボックスの中身を消す
         } else {
             
             localStorage.setItem('key', JSON.stringify(data))
@@ -194,6 +225,16 @@ function login() {
     document.querySelector("#login").style.display = "block";//表示
     document.querySelector("#re_login").style.display = "none";//表示
     const newbutton4 = document.getElementById('button4')//登録
+
+    const pwd = document.getElementById('login1');
+    const pwdCheck = document.getElementById('login_check');
+    pwdCheck.addEventListener('change', function () {
+        if (pwdCheck.checked) {
+            pwd.setAttribute('type', 'text');
+        } else {
+            pwd.setAttribute('type', 'password');
+        }
+    }, false);
 
     newbutton4.onclick = function () {
         a()
@@ -225,6 +266,16 @@ function login() {
 function try_login() {
     document.querySelector("#try_login").style.display = "block";//表示
     document.querySelector("#choice").style.display = "none";//非表示
+
+    const pwd = document.getElementById('try_login1');
+    const pwdCheck = document.getElementById('try_login_check');
+    pwdCheck.addEventListener('change', function () {
+        if (pwdCheck.checked) {
+            pwd.setAttribute('type', 'text');
+        } else {
+            pwd.setAttribute('type', 'password');
+        }
+    }, false);
 
     const newbutton5 = document.getElementById('button_try_login')//登録
     newbutton5.onclick = function () {

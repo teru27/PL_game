@@ -85,6 +85,16 @@ function game_register(josn_data) {
     //string型なのでオブジェクト型にする
     josn_data = (new Function("return" + josn_data))();
     console.log(josn_data)
+    const pwd = document.getElementById('register_text');
+    const pwdCheck = document.getElementById('register_check');
+    pwdCheck.addEventListener('change', function () {
+        if (pwdCheck.checked) {
+            pwd.setAttribute('type', 'text');
+        } else {
+            pwd.setAttribute('type', 'password');
+        }
+    }, false);
+
 
     newbutton1.onclick = function () {
         let data = document.getElementsByClassName('passwd')[0].value
@@ -129,6 +139,16 @@ function game_re_register() {
     const newbutton2 = document.getElementById('button2')//登録
     //jQueryからpatternLockを取得して、#patternLock1に表示する
 
+    const pwd = document.getElementById('text_re_register');
+    const pwdCheck = document.getElementById('re_register_check');
+    pwdCheck.addEventListener('change', function () {
+        if (pwdCheck.checked) {
+            pwd.setAttribute('type', 'text');
+        } else {
+            pwd.setAttribute('type', 'password');
+        }
+    }, false);
+
     window.document.onkeydown = function (event) {
         if (event.key === 'Enter') {
             a()
@@ -159,6 +179,17 @@ function re_login() {
     document.querySelector("#re_login").style.display = "block";//表示
     document.querySelector("#login").style.display = "none";//非表示
     const newbutton3 = document.getElementById('button3')//登録
+
+    const pwd = document.getElementById('re_login_text');
+    const pwdCheck = document.getElementById('re_login_check');
+    pwdCheck.addEventListener('change', function () {
+        if (pwdCheck.checked) {
+            pwd.setAttribute('type', 'text');
+        } else {
+            pwd.setAttribute('type', 'password');
+        }
+    }, false);
+
     newbutton3.onclick = function () {
         a()
     }
@@ -194,6 +225,17 @@ function login() {
     document.querySelector("#login").style.display = "block";//表示
     document.querySelector("#re_login").style.display = "none";//表示
     const newbutton4 = document.getElementById('button4')//登録
+
+    const pwd = document.getElementById('login1');
+    const pwdCheck = document.getElementById('login_check');
+    pwdCheck.addEventListener('change', function () {
+        if (pwdCheck.checked) {
+            pwd.setAttribute('type', 'text');
+        } else {
+            pwd.setAttribute('type', 'password');
+        }
+    }, false);
+
     newbutton4.onclick = function () {
         a()
     }
@@ -224,6 +266,16 @@ function login() {
 function try_login() {
     document.querySelector("#try_login").style.display = "block";//表示
     document.querySelector("#choice").style.display = "none";//非表示
+
+    const pwd = document.getElementById('try_login1');
+    const pwdCheck = document.getElementById('try_login_check');
+    pwdCheck.addEventListener('change', function () {
+        if (pwdCheck.checked) {
+            pwd.setAttribute('type', 'text');
+        } else {
+            pwd.setAttribute('type', 'password');
+        }
+    }, false);
 
     const newbutton5 = document.getElementById('button_try_login')//登録
     newbutton5.onclick = function () {
@@ -979,7 +1031,17 @@ function game_random_map(num) {
 }
 //戦闘の処理
 function game_battle(dungeon_number) {
-    
+    const pwd = document.getElementById('game_battle_text');
+    const pwdCheck = document.getElementById('battle_check');
+    pwdCheck.addEventListener('change', function () {
+        if (pwdCheck.checked) {
+            pwd.setAttribute('type', 'text');
+        } else {
+            pwd.setAttribute('type', 'password');
+        }
+    }, false);
+
+
     let success = JSON.parse(sessionStorage.getItem('success'))
     let failure = JSON.parse(sessionStorage.getItem('failure'))
     let Mp = JSON.parse(localStorage.getItem('Mp'))
@@ -1054,7 +1116,10 @@ function game_battle(dungeon_number) {
                 Offensive_p = (Mp)
             }
             if (Offensive_p < 0) {
-                hp = hp - 50 - ((Defense_p * dungeon_number) - Math.floor(Mp * 100))//プレイヤーの体力を減らす
+                //プレイヤーの体力を減らす
+                let hp_doum = (Math.abs((Defense_p * dungeon_number) - Math.floor(Mp)))
+                hp = hp - 50 - hp_doum
+
                 localStorage.setItem('hp', JSON.stringify(hp));//自分のHPの更新
                 document.getElementById("ph1").textContent = hp;
                 $("#ph1").css({ 'width': (hp / player_physical_max) * 100 + "%" });
