@@ -119,7 +119,10 @@ function game_register(josn_data) {
 }
 //再登録
 function game_re_register() {
-    
+
+    const output1 = document.getElementById('re_register_Strength');
+    output1.textContent = "パタンロックの強度は"
+
     document.querySelector("#re_register").style.display = "block";//表示
     document.querySelector("#choice").style.display = "none";//非表示
     const newbutton2 = document.getElementById('button2')//登録
@@ -139,6 +142,9 @@ function game_re_register() {
 }
 //パスワードを忘れた時の登録
 function re_login() {
+    const output2 = document.getElementById('re_login_Strength');
+    output2.textContent = "パタンロックの強度は"
+    $("#pgss11").css({ 'width': 0 + "%" });
     document.querySelector("#re_login").style.display = "block";//表示
     document.querySelector("#login").style.display = "none";//非表示
     const newbutton3 = document.getElementById('button3')//登録
@@ -218,6 +224,9 @@ function game_choice() {
     if (navigator.userAgent.match(/(iPhone|iPod|Android.*Mobile)/i)) {
         $("body").css("zoom", "100%");
     }
+    const loaddata = JSON.parse(localStorage.getItem('data'))
+    const output1 = document.getElementById("game_name");//ここでoutputする場所に変数名を付けるここで<input class="coment" type="text" placeholder="タスクを入力" >を追加 textcomet1 に追加
+    output1.textContent = "おかえりなさい" + `${loaddata}` + "様"
     $("#pgss10").css({ 'width': 0 + "%" });
     localStorage.setItem('map1', JSON.stringify(0));
     localStorage.setItem('map', JSON.stringify(0));
@@ -1350,6 +1359,7 @@ function patten_strength(data, a, name) {
     let meter
     const output = document.getElementById('register_Strength');
     const output1 = document.getElementById('re_register_Strength');
+    const output2 = document.getElementById('re_login_Strength');
     Mp = w * (Lp / 15) + (w * Np) + w * (Ip / 5)
     if (Mp >= 0.68) {
         meter = "強"
@@ -1360,6 +1370,7 @@ function patten_strength(data, a, name) {
     }
     output.textContent = "パタンロックの強度は" + meter + "です"
     output1.textContent = "パタンロックの強度は" + meter + "です"
+    output2.textContent = "パタンロックの強度は" + meter + "です"
     $("#pgss10").css({ 'width': Mp * 100 + "%" });
     $("#pgss9").css({ 'width': Mp * 100 + "%" });
     $("#pgss11").css({ 'width': Mp * 100 + "%" });

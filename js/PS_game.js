@@ -134,6 +134,9 @@ function game_register(josn_data) {
 //再登録
 function game_re_register() {
 
+    const output1 = document.getElementById('re_register_Strength');
+    output1.textContent = "パタンロックの強度は"
+
     document.querySelector("#re_register").style.display = "block";//表示
     document.querySelector("#choice").style.display = "none";//非表示
     const newbutton2 = document.getElementById('button2')//登録
@@ -176,6 +179,10 @@ function game_re_register() {
 }
 
 function re_login() {
+    const output2 = document.getElementById('re_login_Strength');
+    output2.textContent = "パタンロックの強度は"
+    $("#pgss11").css({ 'width': 0 + "%" });
+    document.getElementById('re_login_text').value = ""
     document.querySelector("#re_login").style.display = "block";//表示
     document.querySelector("#login").style.display = "none";//非表示
     const newbutton3 = document.getElementById('button3')//登録
@@ -219,6 +226,8 @@ function re_login() {
 }
 
 function login() {
+    const pwd = document.getElementById('login1');
+    document.getElementById('login1').value = ""
     document.querySelector("#try_login").style.display = "none";//表示
     document.querySelector("#register").style.display = "none";//非表示
     document.querySelector("#re_register").style.display = "none";//非表示
@@ -226,7 +235,9 @@ function login() {
     document.querySelector("#re_login").style.display = "none";//表示
     const newbutton4 = document.getElementById('button4')//登録
 
-    const pwd = document.getElementById('login1');
+    
+
+   
     const pwdCheck = document.getElementById('login_check');
     pwdCheck.addEventListener('change', function () {
         if (pwdCheck.checked) {
@@ -312,6 +323,7 @@ function game_choice() {
     if (navigator.userAgent.match(/(iPhone|iPod|Android.*Mobile)/i)) {
         $("body").css("zoom", "100%");
     }
+    
     $("#pgss10").css({ 'width': 0 + "%" });
     localStorage.setItem('map1', JSON.stringify(0));
     localStorage.setItem('map', JSON.stringify(0));
@@ -325,6 +337,10 @@ function game_choice() {
     sessionStorage.setItem('button_down_num', JSON.stringify(0));
     sessionStorage.setItem('map_change', JSON.stringify(0));
 
+
+    const loaddata = JSON.parse(localStorage.getItem('data'))
+    const output1 = document.getElementById("game_name");//ここでoutputする場所に変数名を付けるここで<input class="coment" type="text" placeholder="タスクを入力" >を追加 textcomet1 に追加
+    output1.textContent = "おかえりなさい" + `${loaddata}` + "様"
     let num = JSON.parse(localStorage.getItem('num'))
     localStorage.setItem('hp', JSON.stringify(150 + (num * 15)));
     localStorage.setItem('hp_max', JSON.stringify(150 + (num * 15)));
@@ -1222,8 +1238,11 @@ function patten_strength(data, a, name) {
     }
     const output = document.getElementById('register_Strength');
     const output1 = document.getElementById('re_register_Strength');
+    const output2 = document.getElementById('re_login_Strength');
     output.textContent = "パタンロックの強度は" + meter + "です"
     output1.textContent = "パタンロックの強度は" + meter + "です"
+    output2.textContent = "パタンロックの強度は" + meter + "です"
+
     $("#pgss11").css({ 'width': Mp * 2 * 10 + "%" });
     $("#pgss10").css({ 'width': Mp*2 * 10 + "%" });
     $("#pgss9").css({ 'width': Mp * 2 * 10 + "%" });
