@@ -324,7 +324,7 @@ function game_choice() {
 }
 
 function game_end() {
-    document.querySelector("#battle").style.display = "none";//非表示
+    
     document.querySelector("#choice").style.display = "none";//非表示
     document.querySelector("#end").style.display = "block";//表示
 
