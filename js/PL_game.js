@@ -226,7 +226,7 @@ function game_choice() {
     }
     const loaddata = JSON.parse(localStorage.getItem('data'))
     const output1 = document.getElementById("game_name");//ここでoutputする場所に変数名を付けるここで<input class="coment" type="text" placeholder="タスクを入力" >を追加 textcomet1 に追加
-    output1.textContent = "おかえりなさい" + `${loaddata}` + "様"
+    output1.textContent = "おかえりなさい" + `${loaddata}` + "さん"
     $("#pgss10").css({ 'width': 0 + "%" });
     localStorage.setItem('map1', JSON.stringify(0));
     localStorage.setItem('map', JSON.stringify(0));
@@ -1481,6 +1481,9 @@ function seve_data(a) {
 
     let dataJSON = JSON.stringify(data2);
     //データがJSONかどうかのチェック
+    let output1 = document.getElementById("game_end");
+    output1.textContent = "データを送信しています閉じないで下さい。"
+
     try {
         const checkJSON = JSON.parse(dataJSON);
         if (checkJSON.length > 0 && Object.keys(checkJSON).length > 0) {
@@ -1504,7 +1507,7 @@ function seve_data(a) {
         //ajaxが終わると動く
         $(document).ajaxStop(function () {
 
-            setTimeout('window.close()');
+            output1.textContent = "データの送信が完了しましたので閉じて大丈夫です。"
         });
     }
 

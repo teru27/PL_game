@@ -322,7 +322,7 @@ function game_choice() {
     document.getElementById('text_re_register').value = ""//ここでテキストボックスの中身を消す
     const loaddata = JSON.parse(localStorage.getItem('data'))
     const output1 = document.getElementById("game_name");//ここでoutputする場所に変数名を付けるここで<input class="coment" type="text" placeholder="タスクを入力" >を追加 textcomet1 に追加
-    output1.textContent = "おかえりなさい" + `${loaddata}` + "様"
+    output1.textContent = "おかえりなさい" + `${loaddata}` + "さん"
     if (navigator.userAgent.match(/(iPhone|iPod|Android.*Mobile)/i)) {
         $("body").css("zoom", "100%");
     }
@@ -469,7 +469,8 @@ function seve_data(a) {
 
     let dataJSON = JSON.stringify(data2);
     console.log(dataJSON);
-
+    let output1 = document.getElementById("game_end");
+    output1.textContent = "データを送信しています閉じないで下さい。"
     //データがJSONかどうかのチェック
     try {
         const checkJSON = JSON.parse(dataJSON);
@@ -492,8 +493,7 @@ function seve_data(a) {
     if (a != 1) {
         //ajaxが終わると動く
         $(document).ajaxStop(function () {
-
-            //setTimeout('window.close()');
+            output1.textContent = "データの送信が完了しましたので閉じて大丈夫です。"
         });
     }
 
