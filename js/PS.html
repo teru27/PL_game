@@ -1,0 +1,177 @@
+﻿﻿
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta http-equiv="content-type" charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href='http://fonts.googleapis.com/css?family=Vidaloka' rel='stylesheet' type='text/css'>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <!-- jQueryの読込 -->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <!-- Pattern Lockの読込 ... （1） -->
+
+    <script src="js/passwordchecker.js"></script>
+    <script src="js/random_map.js"></script>
+    <script src="js/PS.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/patternLock.css" />
+    <title>パスワード</title>
+</head>
+
+<body onpaste="return false">
+
+    <div id="start" style="text-align: center;display: none">
+        <br> <br>
+        <h10><span class="maintitle">パスワード</span></h10>
+        <br> <br>
+        <button class="btn btn-primary btn-lg" onclick="game_Start()">スタート</button>
+        <button type="button" class="btn btn-primary" onclick="alldelete(); " id="button">全削除</button>
+
+    </div>
+
+    <div id="commentary" style="display: none">
+
+        <h3>はじめに</h3>
+        <br>
+
+        <p>本研究は、日常的にパスワードを作成することで強度の高いパスワードを設定し<br>覚えることが出来るのかを調査することを目的として行います。</p>
+        <p>
+            本実験は以下の4つのフェーズに分かれています。
+            <ol class="list-group list-group-numbered">
+                <li class="list-group-itemlist-group-item-success">アカウント登録</li>
+                <li class="list-group-itemlist-group-item-success">本システムを使い練習</li>
+                <li class="list-group-itemlist-group-item-success">アカウント登録から一週間後に再度最終ログイン</li>
+                <li class="list-group-itemlist-group-item-success">その後、アンケート</li>
+            </ol>
+
+        </p>
+        <p>
+            <font size="6" color="red">
+                本実験で登録するパスワードは<br>実際に使っていない物をご使用ください<br>また、本実験で使用したパスワードを他のサイトで使用しないでください
+            </font>
+        </p>
+        <p> 本実験で取得した実験結果につきましては，研究目的以外には使用しません．また，個人情報につきましても厳重に管理し，<br>研究発表・論文等で調査結果を公表する際には，統計処理を施すなど，プライバシーに特段配慮いたします．</p>
+        <p> 以上に同意し，ご協力いただけましたら，以下の「同意する」ボタンを押していただき，<br class="visible-xs-block">指示に従って操作してください．</p>
+        <p>なお，本実験は自由意志であり、意にそぐわない場合は途中で実験を中断されても構いません．</p>
+        <p><small>北海道情報大学情報メディア学部・学科　篠原輝久</small></p>
+        <button type="button" class="btn btn-primary" id="button_commentary">同意する</button>
+    </div>
+
+    <div id="register" style="text-align: center; display: none">
+        <br> <br>
+        <h10><span class="maintitle">初期登録</span></h10>
+        <br> <br>
+        <div id="register_Strength">パタンロックの強度は</div>
+        <div class="code" style="width: 50%;">
+            <div class="progress">
+                <div class="progress-bar progress-bar-striped progress-bar-animated" id="pgss9" style="width: 0%;"></div>
+            </div>
+        </div>
+        <br><br>
+
+        <div class="form-group">
+            アカウント名：<input class="coment" type="text" style="width: 200px; height: 30px;">
+        </div>
+        <div class="form-group1">
+            パスワード　：<input type="password" class="passwd" id="register_text" style="width: 200px; height: 30px;" onkeyup="setPasswordLevel(this.value);">
+        </div>
+        <input type="checkbox" id="register_check">パスワードを表示する
+        <br><br>
+        <button id="button1" class="btn btn-primary">登録完了</button>
+    </div>
+
+    <div id="re_register" style="text-align: center; display: none">
+        <br> <br>
+        <h10><span class="maintitle">再登録</span></h10>
+        <br><br>
+        <div id="re_register_Strength">パタンロックの強度は</div>
+        <div class="code" style="width: 50%;">
+            <div class="progress">
+                <div class="progress-bar progress-bar-striped progress-bar-animated" id="pgss10" value="0" style="width: 0%;"></div>
+            </div>
+        </div>
+
+        <div class="form-group1">
+            パスワード：<input type="password" class="passwd1" id="text_re_register" style="width: 200px; height: 30px;" onkeyup="setPasswordLevel(this.value);">
+        </div>
+        <input type="checkbox" id="re_register_check">パスワードを表示する
+        <br><br>
+        <div class="btn-group btn-group-lg">
+            <button onclick="game_choice()" class="btn btn-primary">戻る</button>
+            <button id="button2" class="btn btn-primary">登録完了</button>
+        </div>
+
+
+    </div>
+
+    <div id="re_login" style="text-align: center; display: none">
+        <br> <br>
+        <h10><span class="maintitle">再登録</span></h10>
+        <br><br>
+        <div id="re_login_Strength">パタンロックの強度は</div>
+        <div class="code" style="width: 50%;">
+            <div class="progress">
+                <div class="progress-bar progress-bar-striped progress-bar-animated" id="pgss11" value="0" style="width: 0%;"></div>
+            </div>
+        </div>
+
+        <div class="form-group1">
+            パスワード：<input type="password" id="re_login_text" class="passwd2" style="width: 200px; height: 30px;" onkeyup="setPasswordLevel(this.value);">
+        </div>
+        <input type="checkbox" id="re_login_check">パスワードを表示する
+        <br><br>
+        <button id="button3" class="btn btn-danger">再登録</button>
+    </div>
+
+
+    <div id="login" style="text-align: center; display: none">
+        <h10><span class="maintitle">ログイン画面</span></h10>
+        <div class="form-group1">
+            パスワード：<input type="password" id="login1" class="passwd3" style="width: 200px; height: 30px;" onkeyup="setPasswordLevel(this.value);">
+        </div>
+        <input type="checkbox" id="login_check">パスワードを表示する
+        <br><br>
+        <button id="button4" class="btn btn-primary">ログイン</button>
+        <button onclick=" re_login()" class="btn btn-danger">忘れた</button>
+    </div>
+
+
+    <div id="try_login" style="text-align: center; display: none">
+        <h10><span class="maintitle"></span></h10>
+        <div class="form-group1">
+            パスワード：<input type="password" id="try_login1" class="passwd4" style="width: 200px; height: 30px;" onkeyup="setPasswordLevel(this.value);">
+        </div>
+        <input type="checkbox" id="try_login_check">パスワードを表示する
+        <br><br>
+        <button id="button_try_login" class="btn btn-primary">ログイン</button>
+        <button onclick="game_choice()" class="btn btn-primary">戻る</button>
+    </div>
+
+    <div id="choice" style="text-align: center; display: none">
+        <br> <br>
+        <h10><span class="maintitle">ダンジョン選択</span></h10>
+        <br> <br>
+             <div id="game_name">おかえりなさい</div>
+        <div class="btn-group-vertical">
+
+            <br> <br>
+            <button onclick="game_re_register()" class="btn btn-danger">再登録</button>
+            <br> <br>
+            <button onclick="try_login()" class="btn btn-danger">試す</button>
+            <br> <br>
+            <button onclick="game_end()" class="btn btn-success">ゲーム終了</button>
+        </div>
+
+    </div>
+
+    <div id="end" style="text-align: center; display: none">
+        <br> <br>
+        <h10><span class="maintitle">終了します</span></h10>
+        <br> <br>
+    </div>
+
+</body>
+</html>
+

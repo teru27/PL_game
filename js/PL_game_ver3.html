@@ -1,0 +1,271 @@
+﻿﻿
+<!DOCTYPE html>
+<html lang="ja" onload="isSmartPhone()">
+
+<head>
+    <meta http-equiv="content-type" charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href='http://fonts.googleapis.com/css?family=Vidaloka' rel='stylesheet' type='text/css'>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <!-- jQueryの読込 -->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <!-- Pattern Lockの読込 ... （1） -->
+    <script src="js/jquery.patternlock.js"></script>
+    <script src="js/anime.min.js"></script>
+    <script src="js/random_map.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/patternLock.css" />
+    <title>パターンロックゲーム</title>
+</head>
+
+<body>
+
+    <div id="start" style="text-align: center;display: none">
+        <br> <br>
+        <h10><span class="maintitle">Pattern Lockアドベンチャー</span></h10>
+        <br> <br>
+        <button class="btn btn-primary btn-lg" onclick="game_Start()">スタート</button>
+        <button type="button" class="btn btn-primary" onclick="alldelete(); " id="button">全削除</button>
+
+    </div>
+
+    <div id="commentary" style="display: none">
+
+        <h3>はじめに</h3>
+        <br>
+
+        <p>本研究は、日常的にパスワードを作成することで強度の高いパスワードを設定し<br>覚えることが出来るのかを調査することを目的として行います。</p>
+        <p>
+            本実験は以下の4つのフェーズに分かれています。
+            <ol class="list-group list-group-numbered">
+                <li class="list-group-itemlist-group-item-success">アカウント登録</li>
+                <li class="list-group-itemlist-group-item-success">本システムを使い練習</li>
+                <li class="list-group-itemlist-group-item-success">アカウント登録から一週間後に再度最終ログイン</li>
+                <li class="list-group-itemlist-group-item-success">その後、アンケート</li>
+            </ol>
+
+        </p>
+        <p>
+            <font size="6" color="red">
+                本実験で登録するパスワードは<br>実際に使っていない物をご使用ください<br>また、本実験で使用したパスワードを他のサイトで使用しないでください
+            </font>
+        </p>
+        <p> 本実験で取得した実験結果につきましては，研究目的以外には使用しません．また，個人情報につきましても厳重に管理し，<br>研究発表・論文等で調査結果を公表する際には，統計処理を施すなど，プライバシーに特段配慮いたします．</p>
+        <p> 以上に同意し，ご協力いただけましたら，以下の「同意する」ボタンを押していただき，<br class="visible-xs-block">指示に従って操作してください．</p>
+        <p>なお，本実験は自由意志であり、意にそぐわない場合は途中で実験を中断されても構いません．</p>
+        <p><small>北海道情報大学情報メディア学部・学科　篠原輝久</small></p>
+        <button type="button" class="btn btn-primary" id="button_commentary">同意する</button>
+    </div>
+
+    <div id="register" style="text-align: center; display: none">
+        <br> <br>
+        <h10><span class="maintitle">初期登録</span></h10>
+
+        <br> <br>
+        <div id="register_Strength">パタンロックの強度は</div>
+        <div class="code" style="width: 50%;">
+            <div class="progress">
+                <div class="progress-bar progress-bar-striped progress-bar-animated" id="pgss9" style="width: 0%;"></div>
+            </div>
+        </div>
+        <br><br>
+        <div id="patternLock_register"></div>
+        <br> <br>
+        <input class="coment" type="text" id="textbox" style="width: 510px;" placeholder="ゲーム内で使用する名前を入力してください">
+        <br> <br>
+        <button id="button1" class="btn btn-primary">登録完了</button>
+    </div>
+
+    <div id="re_register" style="text-align: center; display: none">
+        <br> <br>
+        <h10><span class="maintitle">再登録</span></h10>
+        <br><br>
+        <div id="re_register_Strength">パタンロックの強度は</div>
+        <div class="code" style="width: 50%;">
+            <div class="progress">
+                <div class="progress-bar progress-bar-striped progress-bar-animated" id="pgss10" value="0" style="width: 0%;"></div>
+            </div>
+        </div>
+
+        <div id="patternLock_re_register"></div>
+        <div class="btn-group btn-group-lg">
+
+            <button onclick="game_choice()" class="btn btn-primary">戻る</button>
+            <button id="button2" class="btn btn-primary">登録完了</button>
+        </div>
+
+
+    </div>
+    <div id="re_login" style="text-align: center; display: none">
+        <br> <br>
+        <h10><span class="maintitle">再登録</span></h10>
+        <br><br>
+        <div id="re_login_Strength">パタンロックの強度は</div>
+        <div class="code" style="width: 50%;">
+            <div class="progress">
+                <div class="progress-bar progress-bar-striped progress-bar-animated" id="pgss11" value="0" style="width: 0%;"></div>
+            </div>
+        </div>
+
+        <div id="patternLock_re_login"></div>
+
+        <button id="button3" class="btn btn-danger">再登録</button>
+    </div>
+
+    <div id="login" style="text-align: center; display: none">
+        <h10><span class="maintitle">ログイン画面</span></h10>
+        <div id="patternLock_login"></div>
+        <button class="btn btn-primary" id="login_button">ログイン</button>
+        <button onclick=" re_login()" class="btn btn-danger">忘れた</button>
+    </div>
+
+    <div id="try_login" style="text-align: center; display: none">
+        <h10><span class="maintitle"></span></h10>
+        <div id="patternLock_try_login"></div>
+        <button onclick="game_choice()" class="btn btn-primary">戻る</button>
+    </div>
+    <div id="choice" style="text-align: center; display: none">
+        <br> <br>
+        <h10><span class="maintitle">ダンジョン選択</span></h10>
+        <br> <br>
+             <div id="game_name">おかえりなさい</div>
+        <div class="btn-group-vertical">
+
+            <br> <br>
+            <button onclick="game_re_register()" class="btn btn-danger">再登録</button>
+            <br> <br>
+            <button onclick="game_rule()" class="btn btn-success">ゲーム説明</button>
+            <br> <br>
+            <button type="button" onclick="game_map(1)" class="btn btn-primary">ダンジョン1</button>
+
+            <h11 class="btn"></h11>
+
+            <button onclick="game_map(2)" class="btn btn-primary">ダンジョン2</button>
+            <h12 class="btn"></h12>
+
+            <button onclick="game_map(3)" class="btn btn-primary">ダンジョン3</button>
+            <h13 class="btn"></h13>
+            <button onclick="game_random_map(4)" class="btn btn-primary">無限ダンジョン</button>
+            <h14 class="btn"></h14>
+
+            <button onclick="game_end()" class="btn btn-success">ゲーム終了</button>
+
+        </div>
+
+    </div>
+
+    <div id="game_rule" style="text-align: center; display: none">
+        <div class="section">
+            <div class="title ">ゲーム説明</div>
+            <div class="box1">
+                <div class="catch">ゲームの流れ</div>
+
+                <p>
+                    <font class="text_rule">
+                        まず冒険先を決めるためにダンジョンを選択するとゲームマップが出現するのでマップ上にある<img id="map001" src="img/EDGE1.png" />（ゴール）を目指して勇者を操作しよう。また、マップを移動中はモンスターと戦闘が発生するので、設定したパスワードを使い敵に倒されないようにゴールを目指そう！
+                    </font>
+                </p>
+            </div>
+            <div class="box1">
+                <div class="catch">ゲームの操作方法</div>
+                <p>
+                    <font class="text_rule">
+                        操作方法はゲームマップ下にある矢印ボタン、キーボードの矢印キーで操作できる。またマップ上にある<img id="map004" src="img/EDGE8.png" />に触れると、パスワードの入力が成功した時に除去できるのでゴール近道ができるぞ。
+                    </font>
+                </p>
+            </div>
+            <div class="box1">
+                <div class="catch">「パターンの強度」＝「攻撃の強さ」</div>
+                <p><font class="text_rule">モンスターを攻撃する時は、あなたが設定したパスワードの強度に比例して強くなります。また、パスワード忘れたときやパスワードを変えたいときは再登録から<br>何度でも変えることができるので、強度の高いパスワードを発見し<br>どんどん敵を倒していこう。</font></p>
+            </div>
+
+        </div>
+        <button type="button" class="btn btn-primary" id="button_rule">戻る</button>
+    </div>
+
+    <div id="game_map" style="text-align: center; display: none">
+        <div style="text-align: end">
+            <button class="btn btn-success" onclick="game_choice()">選択画面に戻る</button>
+        </div>
+
+        <canvas id="test" width="550" height="550" class="example"></canvas>
+        <img id="map002" src="img/a.png" style="display:none" />
+        <img id="character1" src="img/EDGE6.png" style="display:none" />
+
+        <div class="text-center">
+            <button class="btn btn-secondary btn-lg" id="button10">↑</button>
+        </div>
+        <div class="text-center mt-2 ">
+            <button class="btn btn-secondary mx-3 btn-lg" id="button11">←</button>
+            ・
+            <button class="btn btn-secondary mx-3 btn-lg" id="button13">→</button>
+        </div>
+        <div class="text-center">
+            <button class="btn btn-secondary my-2 btn-lg" id="button12">↓</button>
+        </div>
+
+    </div>
+
+    <div id="map_ch" style="text-align: center; display: none">
+        <br> <br>
+        <h10><span class="maintitle" id="txet_co"></span></h10>
+        <br> <br>
+        <div id="patternLock_map"></div>
+    </div>
+
+    <div id="map" style="text-align: center; display: none">
+        <div id="maze"></div>
+    </div>
+
+    <div id="battle" style="text-align: center; display: none">
+        <div class="box" id="battle_screen1">
+
+            <div class="code" style="width: 50%;">
+
+                <div class="progress">
+
+                    <div class="progress-bar progress-bar-info" id="pgss1" style="width: 100%;"></div>
+
+                </div>
+            </div>
+
+            <img id="monster">
+
+        </div>
+        <div id="patternLock1">
+
+        </div>
+        <div class="code" style="width: 30%;">
+            <div class="progress">
+                <div class="progress-bar progress-bar-danger" id="ph1" style="width: 100%;"></div>
+            </div>
+        </div>
+
+
+    </div>
+
+    <div id="clear" style="text-align: center; display: none">
+        <br> <br>
+        <h10><span class="maintitle">ダンジョンクリア</span></h10>
+        <br> <br>
+        <button onclick="game_choice()" class="btn btn-success">選択画面</button>
+
+    </div>
+
+    <div id="over" style="text-align: center; display: none">
+        <br> <br>
+        <h10><span class="maintitle">モンスターに負けた</span></h10>
+        <br> <br>
+        <button onclick="game_choice()" class="btn btn-success">選択画面</button>
+    </div>
+
+    <div id="end" style="text-align: center; display: none">
+        <br> <br>
+        <h10><span class="maintitle">終了します</span></h10>
+        <br> <br>
+    </div>
+
+</body>
+</html>
+<script src="js/PL_game.js"></script>
