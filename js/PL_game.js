@@ -248,10 +248,10 @@ function game_choice() {
         console.log(number1)
 
         if (number1 == 1) {
-            document.querySelector("h1" + i).textContent = "クリア"
+            document.querySelector("h_game_" + i).textContent = "クリア"
         }
         else {
-            document.querySelector("h1" + i).textContent = "未クリア"
+            document.querySelector("h_game_" + i).textContent = "未クリア"
         }
     }
     //document.querySelector("h11").textContent = "クリア"
@@ -573,6 +573,7 @@ function game_map(num) {
                 }
                 break;
         }
+        
         if (n < 0.1) {
             //プレイヤーの位置を更新
             //localStorage.setItem('map1', JSON.stringify(map));
@@ -580,6 +581,7 @@ function game_map(num) {
             game_battle(num)
             console.log("接敵")
         }
+        
         if (ch == 1) {
             sessionStorage.setItem('px', JSON.stringify(0));
             sessionStorage.setItem('py', JSON.stringify(0));
@@ -633,8 +635,7 @@ function game_map(num) {
         } else {
             map = map1[cun_num]
             localStorage.setItem('map1', JSON.stringify(map));
-            sessionStorage.setItem('cun_num', JSON.stringify(cun_num));
-            
+            sessionStorage.setItem('cun_num', JSON.stringify(cun_num));          
         }
        
     }
@@ -1034,13 +1035,13 @@ function game_battle(dungeon_number) {
 }
 //
 function game_clear(dungeon_number) {
+
     localStorage.setItem('map1', JSON.stringify(0));
     localStorage.setItem('map', JSON.stringify(0));
 
     let num = JSON.parse(localStorage.getItem('num'))
     num = 1 + num
     localStorage.setItem('num', JSON.stringify(num));
-
     document.querySelector("#battle").style.display = "none";
     document.querySelector("#game_map").style.display = "none";
     document.querySelector("#clear").style.display = "block";//表示
@@ -1070,7 +1071,7 @@ function game_end() {
 }
 //
 function dungeon_sevedata(dungeon_number) {
-    localStorage.setItem(dungeon_number, 1)
+    localStorage.setItem(dungeon_number-1, 1)
     seve_data(1)
 }
 //パスワードの強度を計る

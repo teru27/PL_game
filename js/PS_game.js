@@ -1221,7 +1221,7 @@ function game_end() {
 }
 //
 function dungeon_sevedata(dungeon_number) {
-    localStorage.setItem(dungeon_number, 1)
+    localStorage.setItem(dungeon_number-1, 1)
     seve_data(1)
 }
 //パスワードの強度を計る
