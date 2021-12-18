@@ -577,8 +577,8 @@ function game_map(num) {
         if (n < 0.1) {
             //プレイヤーの位置を更新
             //localStorage.setItem('map1', JSON.stringify(map));
-            sessionStorage.setItem('battle_now', JSON.stringify(1));
-            game_battle(num)
+           // sessionStorage.setItem('battle_now', JSON.stringify(1));
+           // game_battle(num)
             console.log("接敵")
         }
         if (ch == 1) {
@@ -665,6 +665,7 @@ function game_map(num) {
                     document.querySelector("#game_map").style.display = "block";//表示
                     document.querySelector("#map_ch").style.display = "none";//表示
                     paint(c, d)
+                    initialize()
                 }
 
             }
@@ -718,6 +719,9 @@ function game_random_map(num) {
 
     if (map_change == 0) {
         map_change_load()
+    } else {
+        map = JSON.parse(localStorage.getItem('random_map_make'));
+        initialize()
     }
     function keydown(e, a) {
         //イベント中は動かない
@@ -834,7 +838,7 @@ function game_random_map(num) {
         if (n < 0.1) {
             //プレイヤーの位置を更新
             //localStorage.setItem('map1', JSON.stringify(map));
-            sessionStorage.setItem('battle_now', JSON.stringify(1));
+           // sessionStorage.setItem('battle_now', JSON.stringify(1));
             game_battle(num)
 
         }
