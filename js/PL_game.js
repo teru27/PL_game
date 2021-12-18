@@ -285,7 +285,6 @@ function game_map(num) {
     if (navigator.userAgent.match(/(iPhone|iPod|Android.*Mobile)/i)) {
         $("#game_map").css("zoom", "62%");
     } 
-    
     document.querySelector("#choice").style.display = "none";//非表示
     document.querySelector("#battle").style.display = "none";//非表示
     document.querySelector("#map_ch").style.display = "none";//非表示
@@ -315,7 +314,7 @@ function game_map(num) {
             [0, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 1, 1, 0],
             [0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0],
             [1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0],
-            [1, 0, 2, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0],
+            [1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0],
             [0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1],
             [0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 1],
             [0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0],
@@ -399,10 +398,10 @@ function game_map(num) {
             [0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 1],
             [0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 2, 1, 3]],
 
-            [[1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 2, 1, 0, 0, 1, 3],
-            [1, 0, 0, 0, 0, 1, 1, 2, 0, 1, 0, 1, 0, 0, 1, 0],
+            [[1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 1, 3],
+            [1, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 1, 0, 0, 1, 0],
             [1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 1, 1, 0, 1, 1],
-            [1, 1, 0, 0, 1, 0, 0, 1, 1, 1, 0, 0, 1, 2, 1, 1],
+            [1, 1, 0, 0, 1, 0, 0, 1, 1, 1, 0, 0, 1, 0, 1, 1],
             [0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1],
             [0, 1, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 1],
             [0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1],
@@ -573,7 +572,8 @@ function game_map(num) {
                 }
                 break;
         }
-        
+        console.log(px + "," + py)
+
         if (n < 0.1) {
             //プレイヤーの位置を更新
             //localStorage.setItem('map1', JSON.stringify(map));
@@ -581,7 +581,6 @@ function game_map(num) {
             game_battle(num)
             console.log("接敵")
         }
-        
         if (ch == 1) {
             sessionStorage.setItem('px', JSON.stringify(0));
             sessionStorage.setItem('py', JSON.stringify(0));
@@ -592,7 +591,7 @@ function game_map(num) {
         }
         paint(c, d);
     }
-    
+
     function paint(c, d) {
         let px = JSON.parse(sessionStorage.getItem('px'))
         let py = JSON.parse(sessionStorage.getItem('py'));
@@ -624,6 +623,7 @@ function game_map(num) {
 
         gc.drawImage(character1, c, d, 32, 32, px * 32, py * 32, 32, 32);
     }
+
     //ダンジョン切り替えとクリア判定
     function sub() {
         let cun_num = JSON.parse(sessionStorage.getItem('cun_num'))
@@ -635,9 +635,10 @@ function game_map(num) {
         } else {
             map = map1[cun_num]
             localStorage.setItem('map1', JSON.stringify(map));
-            sessionStorage.setItem('cun_num', JSON.stringify(cun_num));          
+            sessionStorage.setItem('cun_num', JSON.stringify(cun_num));
+
         }
-       
+
     }
     function obstacle1(map_move, hitx, hity, c, d) {
         let yes_or_no = window.confirm('パスワードを使い、障害物を退かしますか？');
@@ -648,26 +649,26 @@ function game_map(num) {
 
 
     function obstacle(map_move, hitx, hity, c, d) {
-            document.querySelector("#game_map").style.display = "none";
+        document.querySelector("#game_map").style.display = "none";
         document.querySelector("#map_ch").style.display = "block";//表示
         document.getElementById("txet_co").textContent = "パスワードを使い、障害物を退かせ！";
-            let key = JSON.parse(localStorage.getItem('key'))
-            $('#patternLock_map').patternLock({
-                timeout: 1000,//表示時間(1000で1秒)
-                //showPatternLine: false,//ルートの非表示
-                drawEnd: function (data) {
-                    if (data == key) {
-                        //マップの変更
-                        gc.drawImage(map002, 0, 0, 32, 32, hitx * 32, hity * 32, 32, 32);
-                        localStorage.setItem('map1', JSON.stringify(map));
-                        sessionStorage.setItem('obstacle_now', JSON.stringify(0));
-                        document.querySelector("#game_map").style.display = "block";//表示
-                        document.querySelector("#map_ch").style.display = "none";//表示
-                        paint(c, d)
-                    }
-
+        let key = JSON.parse(localStorage.getItem('key'))
+        $('#patternLock_map').patternLock({
+            timeout: 1000,//表示時間(1000で1秒)
+            //showPatternLine: false,//ルートの非表示
+            drawEnd: function (data) {
+                if (data == key) {
+                    //マップの変更
+                    gc.drawImage(map002, 0, 0, 32, 32, hitx * 32, hity * 32, 32, 32);
+                    localStorage.setItem('map1', JSON.stringify(map));
+                    sessionStorage.setItem('obstacle_now', JSON.stringify(0));
+                    document.querySelector("#game_map").style.display = "block";//表示
+                    document.querySelector("#map_ch").style.display = "none";//表示
+                    paint(c, d)
                 }
-            });
+
+            }
+        });
     }
 }
 //ゲームマップ切り替えなどの機能（無限）
@@ -893,6 +894,7 @@ function game_random_map(num) {
     }
 
     function obstacle(map_move, hitx, hity, c, d) {
+        localStorage.setItem('map1', JSON.stringify(0));
         document.querySelector("#game_map").style.display = "none";
         document.querySelector("#map_ch").style.display = "block";//表示
         let key = JSON.parse(localStorage.getItem('key'))
@@ -904,12 +906,12 @@ function game_random_map(num) {
                 if (data == key) {
                     //マップの変更
                     gc.drawImage(map002, 0, 0, 32, 32, hitx * 32, hity * 32, 32, 32);
-
                     localStorage.setItem('map1', JSON.stringify(map));
                     sessionStorage.setItem('obstacle_now', JSON.stringify(0));
                     document.querySelector("#game_map").style.display = "block";//表示
                     document.querySelector("#map_ch").style.display = "none";//表示
                     paint(c, d)
+                    initialize()
                 }
 
             }

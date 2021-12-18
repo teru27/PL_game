@@ -796,14 +796,12 @@ function game_random_map(num) {
     document.querySelector("#game_map").style.display = "block";//表示
     let map_change = JSON.parse(sessionStorage.getItem('map_change'));
 
-    function initialize() {
-        gc = document.getElementById("test").getContext("2d");
-        document.onkeydown = keydown;
-        paint();
-    }
     var map
     console.log(map_change)
-    function map_change_load (){
+    function map_change_load() {
+
+
+
         var maze = new Maze();
         maze.create({ algorithm: Maze.ALGO.STICK });
         sessionStorage.setItem('px', JSON.stringify(1));
@@ -831,6 +829,14 @@ function game_random_map(num) {
 
     if (map_change == 0) {
         map_change_load()
+    } else {
+        map = JSON.parse(localStorage.getItem('random_map_make'));
+        initialize()
+    }
+    function initialize() {
+        gc = document.getElementById("test").getContext("2d");
+        document.onkeydown = keydown;
+        paint();
     }
     function keydown(e, a) {
         //イベント中は動かない
@@ -869,6 +875,7 @@ function game_random_map(num) {
         let d = 0, c = 0
         let ch = 0
         let map_move = 0
+
         switch (keyCode) {
             case 39:
             case 68:
