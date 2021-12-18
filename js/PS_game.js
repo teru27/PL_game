@@ -785,6 +785,9 @@ function game_map(num) {
 
     }
 }
+
+
+
 //ゲームマップ切り替えなどの機能（無限）
 function game_random_map(num) {
     if (navigator.userAgent.match(/(iPhone|iPod|Android.*Mobile)/i)) {
@@ -799,8 +802,6 @@ function game_random_map(num) {
     var map
     console.log(map_change)
     function map_change_load() {
-
-
 
         var maze = new Maze();
         maze.create({ algorithm: Maze.ALGO.STICK });
@@ -824,11 +825,13 @@ function game_random_map(num) {
         let num_random = Math.floor(Math.random() * (max_map + 1 - min_map)) + min_map
         let num_random1 = Math.floor(Math.random() * (max_map + 1 - min_map)) + min_map
         map[num_random][num_random1] = 3
+        localStorage.setItem('random_map_make', JSON.stringify(map));
         initialize()
     }
 
     if (map_change == 0) {
         map_change_load()
+        
     } else {
         map = JSON.parse(localStorage.getItem('random_map_make'));
         initialize()
@@ -970,7 +973,6 @@ function game_random_map(num) {
         }
         paint(c, d);
     }
-
     function paint(c, d) {
         let px = JSON.parse(sessionStorage.getItem('px'))
         let py = JSON.parse(sessionStorage.getItem('py'));
@@ -1002,6 +1004,8 @@ function game_random_map(num) {
 
         gc.drawImage(character1, c, d, 32, 32, px * 32, py * 32, 32, 32);
     }
+
+    
     //ダンジョン切り替え
     function sub() {
         sessionStorage.setItem('map_change', JSON.stringify(0))
