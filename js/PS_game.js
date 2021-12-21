@@ -678,8 +678,8 @@ function game_map(num) {
         if (n < 0.1) {
             //プレイヤーの位置を更新
             //localStorage.setItem('map1', JSON.stringify(map));
-            //sessionStorage.setItem('battle_now', JSON.stringify(1));
-            //game_battle(num)
+            sessionStorage.setItem('battle_now', JSON.stringify(1));
+            game_battle(num)
             console.log("接敵")
         }
         if (ch == 1) {
