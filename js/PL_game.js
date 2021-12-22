@@ -978,6 +978,8 @@ function game_battle(dungeon_number) {
             //patternLockの値の判定
             if (loaddata == data) {
                 success = success + 1//認証の成功回数
+                console.log(Defense_p * dungeon_number)
+                console.log(Offensive_p)
                 console.log(enemy)
                 //防御力に対しての攻撃力の計算
                 if ((Mp * 100) < (Defense_p * dungeon_number)) {
