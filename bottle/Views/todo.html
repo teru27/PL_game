@@ -1,0 +1,129 @@
+﻿<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <title>ToDo List</title>
+    <!--ここで文字フォントのリンクを読み込む-->
+    <link href="https://fonts.googleapis.com/css?family=Sawarabi+Mincho" rel="stylesheet">
+    <link href="{{ url('static_file',filepath ="css/todo.css")}}" rel=" stylesheet">
+</head>
+
+<body onload="load();">
+
+    <h1>ToDo List</h1>
+    <div id="fun">
+        <form method="GET" action="/">
+            <input class="coment" type="text" id="textbox" placeholder="タスクを入力" name="todo"><!-- テキストボックスを作る -->
+            <input type="submit" value="追加" id="button"><!--  クリックボックスの表示と中のもじ指定とクリックされた時の動作   -->
+                <input type="radio" id="radio1" class="radioclass" name="radioname" value="1">重要かな
+                <input type="radio" id="radio2" class="radioclass" name="radioname" value="2">まぁまぁかも
+                <input type="radio" id="radio3" class="radioclass" name="radioname" value="3">やれるなら
+        </form>
+
+    </div>
+    <div>
+        <form action="b">
+            <button type="submit" id="button">全削除</button>
+        </form>
+    </div>
+        <div id="datanasi"></div>
+        <div class="row">
+        </div>
+        <div id="set"></div>
+
+</body>
+<script>
+    function load() {
+        let size = '{{ size }}'//pythoから受け取る
+
+        //データの有無確認
+        if (size == 0) {
+            console.log("データはなし")
+            sonota()
+        }
+        else {
+            console.log("データはあり")
+
+            let loadfile = '{{ loadfile }}'//pythoから受け取る
+            console.log(loadfile)//確認用
+
+            //特定の文字を消す
+            let file = loadfile.replace(/&#039;/g, '')
+            console.log(file)//確認用
+
+            //変数の型を調べる
+            var toString = Object.prototype.toString;
+            console.log(toString.call(file))
+
+            //文字列をオブジェクト型に変換してくれるらしい
+            let todofile = (new Function("return" + file))();
+            console.log(todofile)
+
+            //変数の型を調べる
+            var toString = Object.prototype.toString;
+            console.log(toString.call(todofile))
+
+            // ここでキーだけを取り出す
+            for (var mykey in todofile) {
+                let value = todofile[mykey]//キー対応したデータを変数に格納する
+                let todo = mykey//キー名がタスクになっている
+
+                console.log("テキストが"+todo +"でvalueが"+ value)//確認用
+                makeyouso(todo)//要素作成
+                const output1 = document.getElementById(todo)//ここでoutputする場所に変数名を付けるここで<input class="coment" type="text" placeholder="タスクを入力" >を追加 textcomet1 に追加
+                
+                output1.textContent = `${todo}`//ここで出力する
+                checkboxcolor(output1,value)//チェックボックスの判定
+          
+                //newbuttonmake(textloaddata);//機能の追加
+                taskdelete(todo)//消す処理
+            }
+        }
+    }
+
+    //親要素(set)の下に子要素を作成
+    function makeyouso(output) {
+        const newyouso = document.createElement("ul")//属性ノードの追加（）の中に作りたい名前を指定する
+        newyouso.setAttribute("id", output)//idを作成し名前を付ける
+        const setup = document.getElementById("set")//親要素
+        setup.insertBefore(newyouso, setup.firstChild)//ここで親要素の下に追加していく（何回やっても最初に追加される
+    }
+
+    //タスク削除
+    function taskdelete(output) {
+        //formをつくる
+        const form = document.createElement('form');
+        form.action = 'a'//アクションでURLを変更して移動する
+        form.method = 'GET'//GETメゾット
+
+        const newbutton = document.createElement("button");//属性ノードの追加（）も中に作りたい名前を指定する
+        newbutton.textContent = "タスク削除";//ボタンの名前
+        newbutton.name = 'data'//pythoで使うための変数名
+        newbutton.value = output//pythoに送るデータ
+
+        document.getElementById(output).appendChild(form)//formを作る
+        form.appendChild(newbutton)//formの中にbuttonを作る
+    }
+
+    //ここのif文でローカルストレージに保存したしてないか判断している（変わる）
+    function sonota() {
+        if (localStorage.length === 0) {
+            document.getElementById('datanasi').textContent = "タスクはありません";
+        }
+    }
+
+    //チェックボックスの判定(修正必要)
+    function checkboxcolor(output1,radioname) {
+
+        //ラジオボタンのvalueで文字の色をどれにするか判断している
+        if (radioname == "1") {
+            output1.style.color = "#FF3333"//ここで文字の色を変える
+        }
+        else if (radioname == "2") {
+            output1.style.color = "#800080"//ここで文字の色を変える
+        }
+        else if (radioname == "3") {
+            output1.style.color = "#FFDEAD"//ここで文字の色を変える
+        }
+    }
+</script>
+

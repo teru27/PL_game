@@ -1,0 +1,41 @@
+body {
+        background: #8fb49a; /* 全体の背景の色   */
+    }
+
+    h1 {
+        margin: 0px; /*周りの余白*/
+        color: #000000; /*文字の色*/
+        font-size: 3em; /*文字サイズ*/
+        font-family: 'Sawarabi Mincho'; /*文字フォント名*/
+    }
+
+    button {
+        border: 0; /* 枠線 */
+        border-radius: 10px; /*枠線の角の曲がり具合*/
+        background: #4676D7; /*ボタンの色*/
+        color: #ffffff; /*文字の色*/
+        padding: 10px 20px; /*上下px　左右pxになっている*/
+        font-size: 17px; /*文字の大きさ*/
+    }
+
+    #textbox {
+        border-radius: 4px; /*枠線の角の曲がり具合*/
+        border: 2px solid #1d49aa; /*枠線の太さと色*/
+        font-size: 25px; /*文字の大きさ*/
+    }
+        /*テキストボックスが選択されたら表示する*/
+        #textbox:focus {
+            border: 2px solid #ff9900; /*枠線の太さと色*/
+            z-index: 1; /*重なりの順番　0が基準*/
+            outline: 0; /*アウトラインのスタイルの指定*/
+        }
+
+    #datanasi {
+        font-size: 30px; /*文字の大きさ*/
+        font-family: "Sawarabi Mincho"; /*文字フォント名*/
+    }
+
+    #set {
+        font-size: 40px; /*文字の大きさ*/
+        font-family: "Sawarabi Mincho"; /*文字フォント名*/
+    }
