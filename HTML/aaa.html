@@ -1,0 +1,13 @@
+﻿
+	<script >
+        var datalist = {
+            data1: "hoge1",
+            data2: "hoge2"
+        }
+
+       // localStorage.setItem("datalist", datalist);
+       // localStorage.getItem("datalist"); // -> "[object Object]"
+        localStorage.setItem("datalist", JSON.stringify(datalist));
+       // JSON.parse(localStorage.getItem("datalist"))  // -> {"data1":"hoge1", "data2":"hoge2"}
+
+	</script>

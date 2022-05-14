@@ -1,0 +1,105 @@
+/* レイアウト */
+body{
+ margin: 0;
+ background-image: url(images/ba22_05.png);
+ background-repeat: repeat;
+}
+
+#container{
+ width: 800;
+ margin: auto;
+ border-left: solid 1px #AAAAAA;
+ border-right: solid 1px #AAAAAA; 
+ background-color: #FFFFFF;
+}
+ 
+#wrapper{
+ padding: 0 20px;
+}
+
+article{
+ width: 530px;
+ float: left;
+ margin: 30px 0;
+}
+
+#side{
+ width: 200px;
+ float: right;
+ margin: 30px 0;
+}
+ 
+/* ヘッダー */
+header{
+ background-image: url(images/nature_sky_01.jpg);
+ width: auto;
+ height: 100px;
+ border-bottom: solid 1px #AAAAAA;
+ padding: 20px;
+ margin: 0;
+ font-size: 0.875em;
+ color: #9DDDFF;
+}
+
+/* コンテンツ */
+section{
+ width: 530px;
+}
+
+section h2{
+ margin: 0;
+ margin-bottom: 15px;
+ font-size: 16px;
+ background-color: #27A4E2;
+ line-height: 32px;
+ padding-left: 10px;
+ color: #FFFFFF:
+}
+
+.text{
+ font-size: 14px;
+ line-height: 1.5;
+ margin: 0;
+ margin-bottom: 20px;
+}
+
+/* メニュー */
+#menu{
+ background-color: #0088CC;
+ width: 160px;
+ font-size: 12px;
+ background-position: left bottom;
+ padding: 20px;
+}
+
+#menu li{
+ border-bottom: solid 1px #FFFFFF;
+ padding-bottom: 8px;
+ margin-bottom: 8px;
+ line-height: 1.2;
+ list-style-type: none;
+}
+
+#menu li a{
+ color: #FFFFFF;
+ text-decoration: none:
+}
+
+#menu ul{
+ margin: 0;
+ padding: 0;
+ border-top: solid 1px #FFFFFF;
+ padding-top: 8px;
+}
+
+/* フッター */
+footer{
+ clear: both;
+ width: auto;
+ background-color: #27A4E2;
+ border-top: solid 1px #AAAAAA;
+ padding: 20px 10px;
+ color: #FFFFFF;
+ font-size: 14px;
+ margin: 0;
+}
